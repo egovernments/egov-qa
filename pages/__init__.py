@@ -8,3 +8,15 @@ ComplaintSubmittedPage
 )
 
 from .UserRegistration import RegistrationPage
+
+from .HomePage import HomePage
+
+from .ComplaintFeedbackPage import ComplaintFeedbackPage
+
+from .LanguageSelectionPage import LanguageSelectionPage
+
+
+
+from .ComplaintUnassignPage import ComplaintUnassignPage
+
+from .ComplaintReassignPage import ComplaintReassignPage
