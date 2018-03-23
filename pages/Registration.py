@@ -10,17 +10,18 @@ class _OTPPage(Page):
         txtOTP = "id=otp"
         btnGetStarted = "button#otp-start"
         btnResend = "div#otp-resend"
+#for Each Button Make one method
 
     def set(self, otp):
-        set(ID.txtOTP, otp)
+        set(self.ID.txtOTP, otp)
         return self
 
     def submit(self):
-        click(ID.btnGetStarted)
+        click(self.ID.btnGetStarted)
         return self
 
     def resend(self):
-        click(ID.btnResend)
+        click(self.ID.btnResend)
         return self
 
     def navigate(self):
