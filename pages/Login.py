@@ -5,8 +5,8 @@ from framework.selenium_plus import *
 @PageObject
 class _LoginPage(Page):
     class ID:
-        txtMobileNumber = "input[id='mobile-number-field']"
-        btnLogin = "button[id='login-submit-action']"
+        txtMobileNumber = "input#mobile-number-field"
+        btnLogin = "button#login-submit-action"
 
     def navigate(self):
         goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/user/login")

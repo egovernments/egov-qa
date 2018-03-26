@@ -1,4 +1,4 @@
-from pages import OTPPage, AddComplaintPage, ReopenComplaintPage
+from pages import OTPPage, AddComplaintPage, ReopenComplaintPage, ComplaintTypePage
 from framework.selenium_plus import *
 from pages import LoginPage
 
@@ -20,9 +20,17 @@ def test_create_complaint():
 
 def test_login():
     LoginPage.navigate().set("1234567890").submit()
-    # assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen"
-    # quit_driver()
+    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen"
+    quit_driver()
 
 
 def test_reopen_complaint():
     ReopenComplaintPage.navigate().set("Complaint not resolved").submit()
+    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/complaint-submitted"
+    quit_driver()
+
+
+def test_complaint_details():
+    ComplaintTypePage.navigate()
+    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/complaint-details?status=filed"
+    quit_driver()

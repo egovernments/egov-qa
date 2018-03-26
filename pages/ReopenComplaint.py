@@ -5,7 +5,7 @@ from framework.selenium_plus import *
 @PageObject
 class _ReopenComplaintPage(Page):
     class ID:
-        radReopenReason = "input[id='reopencomplaint-radio-button-0']"
+        radReopenReason = "input#reopencomplaint-radio-button-0"
         txtTypeComplaint = "#reopencomplaint-comment-field"
         btnSubmit = "#reopencomplaint-submit-action"
 
