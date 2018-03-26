@@ -42,4 +42,3 @@ def test_my_complaints():
     card.track_complaint()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/complaint-details?status=rejected"
 
-
