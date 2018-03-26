@@ -5,8 +5,9 @@ from framework.selenium_plus import *
 @PageObject
 class _LoginPage(Page):
     class ID:
-        txtMobileNumber = "input#mobile-number-field"
+        txtMobileNumber = "input#person-phone"
         btnLogin = "button#login-submit-action"
+        btnProfile = "#header-profile"
 
     def navigate(self):
         goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/user/login")
@@ -18,6 +19,10 @@ class _LoginPage(Page):
 
     def submit(self):
         click(self.ID.btnLogin)
+        return self
+
+    def profile(self):
+        click(self.ID.btnProfile)
         return self
 
 
