@@ -2,6 +2,7 @@ from pages import OTPPage, AddComplaintPage
 from framework.selenium_plus import *
 from pages.CitizenProfile import CitizenProfilePage
 from pages.ComplaintSubmitted import ComplaintSubmittedPage
+from pages.MyComplaints import MyComplaintsPage
 
 
 def test_otp_submission():
@@ -26,3 +27,19 @@ def test_complain_submitted():
     ComplaintSubmittedPage.navigate()
     print(ComplaintSubmittedPage.get_complaint_number())
     ComplaintSubmittedPage.click_continue()
+    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen"
+
+def test_my_complaints():
+    complaints = MyComplaintsPage
+    complaints.navigate()
+    cards = complaints.get_all_complaints()
+    card = cards[2]
+
+    print (card.get_complaint_header())
+    print( card.get_complaint_status())
+    print(card.get_complaint_no())
+    print(card.get_complaint_date())
+    card.track_complaint()
+    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/complaint-details?status=rejected"
+
+
