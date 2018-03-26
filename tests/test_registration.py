@@ -26,3 +26,4 @@ def test_complain_submitted():
     ComplaintSubmittedPage.navigate()
     print(ComplaintSubmittedPage.get_complaint_number())
     ComplaintSubmittedPage.click_continue()
+    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen"

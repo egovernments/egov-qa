@@ -14,7 +14,6 @@ class _ComplaintSubmittedPage(Page):
         return self
 
     def get_complaint_number(self):
-        print(find(self.ID.lblComplain).text)
         return find(self.ID.lblComplain).text
 
     def click_continue(self):

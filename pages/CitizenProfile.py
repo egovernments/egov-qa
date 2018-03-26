@@ -6,7 +6,7 @@ from framework.selenium_plus import *
 class _CitizenProfilePage(Page):
     class ID:
         txtName = "input#profile-form-name"
-        txtMailId = "input#profile-form-email"
+        txtEmailId = "input#profile-form-email"
         drpCity = "input#person-city"
         btnSave = "button#profile-save-action"
         txtSearch = "div.search-field-container input"
@@ -16,9 +16,9 @@ class _CitizenProfilePage(Page):
         goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/user/profile")
         return self
 
-    def set(self, name, mail):
+    def set(self, name, email):
         set(self.ID.txtName, name)
-        set(self.ID.txtMailId, mail)
+        set(self.ID.txtEmailId, email)
         return self
 
     def set_city(self, city):
