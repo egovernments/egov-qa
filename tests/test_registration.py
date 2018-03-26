@@ -1,4 +1,4 @@
-from pages import OTPPage, AddComplaintPage, RegistrationPage
+from pages import OTPPage, AddComplaintPage, RegistrationPage, ComplaintRejected, ComplaintResolved
 from framework.selenium_plus import *
 
 
@@ -20,3 +20,13 @@ def test_user_registration():
     userRegistration.navigate()
     userRegistration.set("9988776655", "FirstName", "Bathi").submit()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/user/otp"
+
+def test_complaint_rejected():
+    complaintRejected = ComplaintRejected
+    complaintRejected.navigate()
+    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/complaint-details?status=rejected"
+
+def test_complaint_resolved():
+    complaintResolved = ComplaintResolved
+    complaintResolved.navigate()
+    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/complaint-details?status=resolved"

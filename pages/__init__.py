@@ -5,3 +5,5 @@ from .CreateComplaint import (
 )
 
 from .UserRegistration import RegistrationPage
+from .ComplaintRejected import ComplaintRejected
+from .ComplaintResolved import ComplaintResolved
