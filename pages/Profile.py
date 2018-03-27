@@ -14,15 +14,15 @@ class _ProfilePage(Page):
         btnProfilePhoto = "#profile-upload-icon"
         btnPhotoRemover = "#uploadDrawerRemoveIcon"
 
-    def profileupdate(self, name, emailid):
+    def update(self, name, emailid):
         set(self.ID.txtProfileName, name)
         set(self.ID.txtProfileEmailId, emailid)
 
-    def profilephotoremover(self):
+    def photo_remover(self):
         click(self.ID.btnProfilePhoto)
         click(self.ID.btnPhotoRemover)
 
-    def profilesave(self):
+    def save(self):
         click(self.ID.btnProfileSave)
         return self
 

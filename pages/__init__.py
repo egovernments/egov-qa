@@ -7,3 +7,4 @@ from .CreateComplaint import (
 from .Login import LoginPage
 from .Navigation import (TopMenuPage, BottomMenuPage)
 from .Profile import ProfilePage
+from .ReopenComplaint import ReopenComplaintPage

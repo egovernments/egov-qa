@@ -1,7 +1,13 @@
-from pages import OTPPage, AddComplaintPage, ComplaintTypePage, TopMenuPage, BottomMenuPage, ProfilePage
 from framework.selenium_plus import *
+
+from pages import OTPPage
+from pages import AddComplaintPage
+from pages import ComplaintTypePage
+from pages import TopMenuPage
+from pages import BottomMenuPage
+from pages import ProfilePage
+from pages import ReopenComplaintPage
 from pages import LoginPage
-from pages.ReopenComplaint import ReopenComplaintPage
 
 
 def test_otp_submission():
@@ -22,19 +28,16 @@ def test_create_complaint():
 def test_login():
     LoginPage.navigate().set("1234567890").submit()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen"
-    quit_driver()
 
 
 def test_reopen_complaint():
     ReopenComplaintPage.navigate().set("Complaint not resolved").submit()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/complaint-submitted"
-    quit_driver()
 
 
 def test_complaint_details():
     ComplaintTypePage.navigate()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/complaint-details?status=filed"
-    quit_driver()
 
 
 def test_navigation():
@@ -46,7 +49,6 @@ def test_navigation():
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/user/profile"
     TopMenuPage.back()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen"
-    quit_driver()
 
     # this test is for verifying navigation
 
@@ -57,9 +59,8 @@ def test_profile():
     TopMenuPage.ham()
     LoginPage.profile()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/user/profile"
-    ProfilePage.profileupdate("Singh", "def@ulb.in")
-    ProfilePage.profilephotoremover()
-    ProfilePage.profilesave()
+    ProfilePage.update("Singh", "def@ulb.in")
+    ProfilePage.photo_remover()
+    ProfilePage.save()
     TopMenuPage.back()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen"
-    quit_driver()
