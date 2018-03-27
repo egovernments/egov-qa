@@ -32,9 +32,7 @@ class _ComplainCardPage(Page):
         return find(self.ID.lblComplaintNo, context=self.container).text
 
     def track_complaint(self):
-        elem = find(self.ID.btnTrack, context=self.container)
-        execute_script("arguments[0].scrollIntoView();", elem)
-        elem.click()
+        click(self.ID.btnTrack, context=self.container, scroll_in_view=True)
 
 @PageObject
 class _MyComplaintsPage(Page):

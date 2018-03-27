@@ -1,23 +1,14 @@
 from selenium.common.exceptions import InvalidElementStateException
 
-from framework.common import Page, PageObject
+from framework.common import Page, PageObject, Component
 from framework.selenium_plus import *
 
 
-@PageObject
-class _AddComplaintPage(Page):
+class UploadImageComponent(Component):
     class ID:
-        txtLocation = "input#addComplaint-location-details"
-        txtComplaintDetails = "input#addComplaint-additional-details"
-        txtComplaintType = "input#addComplaint-complaint-type"
-        txtLandmarkDetails = "input#addComplaint-landmark-details"
-        txtSearchAddress = "input.searchBoxStyles"
-        # Todo: The pick button should have an id
-        btnPickAddress = "div.pickBtn button div"
-        lblSearchAddressResults = "div.pac-container > div.pac-item"
-
-        fileImageUploadPlaceHolder = ".upload-placeholder input,.upload-icon-cont input"
         prmBtnRemoveImage = "xpath=(//div[contains(@class,'image-remove')])[{}]"
+        fileImageUploadPlaceHolder = ".upload-placeholder input,.upload-icon-cont input"
+        pass
 
     def remove_image_1(self):
         click(self.ID.prmBtnRemoveImage.format(1))
@@ -27,6 +18,41 @@ class _AddComplaintPage(Page):
 
     def remove_image_3(self):
         click(self.ID.prmBtnRemoveImage.format(3))
+
+    def upload_images(self, *images):
+        assert 0 <= len(images) <= 3, "Maximum 3 photos can be uploaded"
+        if not images:
+            return
+
+        for image in images:
+            elem = find(self.ID.fileImageUploadPlaceHolder)
+            try:
+                set(elem, image)
+            except InvalidElementStateException:
+                execute_script("""
+                var elem = arguments[0];
+                elem.style.display = ""
+                """, elem)
+                set(elem, image)
+
+
+
+@PageObject
+class _AddComplaintPage(Page, UploadImageComponent):
+    def __init__(self):
+        print("i was called")
+
+
+    class ID:
+        txtLocation = "input#addComplaint-location-details"
+        txtComplaintDetails = "input#addComplaint-additional-details"
+        txtComplaintType = "input#addComplaint-complaint-type"
+        txtLandmarkDetails = "input#addComplaint-landmark-details"
+        txtSearchAddress = "input.searchBoxStyles"
+        # Todo: The pick button should have an id
+        btnPickAddress = "button#map-pick-button"
+        lblSearchAddressResults = "div.pac-container > div.pac-item"
+
 
     def set_location_by_address(self, address, result_index=0):
         click(self.ID.txtLocation)
@@ -50,21 +76,6 @@ class _AddComplaintPage(Page):
     def navigate(self):
         goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/add-complaint")
 
-    def upload_images(self, *images):
-        assert 0 <= len(images) <= 3, "Maximum 3 photos can be uploaded"
-        if not images:
-            return
-
-        for image in images:
-            elem = find(self.ID.fileImageUploadPlaceHolder)
-            try:
-                set(elem, image)
-            except InvalidElementStateException:
-                execute_script("""
-                var elem = arguments[0];
-                elem.style.display = ""
-                """, elem)
-                set(elem, image)
 
 
 @PageObject
