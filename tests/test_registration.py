@@ -1,4 +1,4 @@
-from pages import OTPPage, AddComplaintPage
+from pages import OTPPage, AddComplaintPage, RegistrationPage
 from framework.selenium_plus import *
 from pages.CitizenProfile import CitizenProfilePage
 from pages.ComplaintSubmitted import ComplaintSubmittedPage
@@ -42,3 +42,8 @@ def test_my_complaints():
     card.track_complaint()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/complaint-details?status=rejected"
 
+def test_user_registration():
+    userRegistration = RegistrationPage
+    userRegistration.navigate()
+    userRegistration.set("9988776655", "FirstName", "Bathi").submit()
+    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/user/otp"

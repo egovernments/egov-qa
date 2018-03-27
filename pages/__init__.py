@@ -6,3 +6,5 @@ from .CreateComplaint import (
 from .ComplaintSubmitted import (
 ComplaintSubmittedPage
 )
+
+from .UserRegistration import RegistrationPage
