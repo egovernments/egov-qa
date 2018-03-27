@@ -12,7 +12,7 @@ class _RegistrationPage(Page):
         txtName = "input#person-name"
         txtCity = "input#person-city"
         # todo: fix this identified
-        btnSubmit = "xpath=//span[.='Submit']" # button#login-submit-action"
+        btnSubmit = "button#login-submit-action"
         # todo: fix this identifed by UI team-
         txtSearchCity = "input[id*='Search']"
         prmLblSearchResultCity = "xpath=//div[contains(text(), '{}')]"
