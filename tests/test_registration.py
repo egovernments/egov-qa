@@ -1,6 +1,14 @@
 from pytest import fixture
 
-from pages import OTPPage, AddComplaintPage, RegistrationPage
+from pages import RegistrationPage
+from pages import OTPPage
+from pages import HomePage
+from pages import LanguageSelectionPage
+from pages import AddComplaintPage
+from pages import ComplaintFeedbackPage
+from pages import LoginPage
+from pages import ComplaintUnassignPage
+from pages import ComplaintReassignPage
 from framework.selenium_plus import *
 from pages.CitizenProfile import CitizenProfilePage
 from pages.ComplaintSubmitted import ComplaintSubmittedPage
@@ -73,7 +81,42 @@ def test_my_complaints():
 
 
 def test_user_registration():
-    user_reg = RegistrationPage
-    user_reg.navigate()
-    user_reg.set("9988776655", "FirstName", "Bathi").submit()
+    userRegistration = RegistrationPage
+    userRegistration.navigate()
+    userRegistration.set("9988776655", "FirstName", "Bathi").submit()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/user/otp"
+
+
+def test_language_selection():
+    ls = LanguageSelectionPage
+    ls.navigate()
+    ls.language("punjabi").language("hindi").language("english").submit()
+
+    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/user/register"
+
+
+def test_homepage():
+    hp = HomePage
+
+    hp.navigate().new_complaint()
+    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/add-complaint"
+
+    hp.navigate().my_complaints()
+    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/my-complaints"
+
+
+def test_complaintfeedbackpage():
+    cf = ComplaintFeedbackPage
+    cf.navigate().star_click(1)
+    cf.check_services().check_quality_of_work()
+    cf.set("good to go").submit()
+    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/feedback"
+
+
+def test_complaintunassignedpage():
+    cap=ComplaintUnassignPage
+    cap.navigate().assign().reject()
+
+def test_complaintreassignpage():
+    crp=ComplaintReassignPage
+    crp.navigate().reject().assign()
