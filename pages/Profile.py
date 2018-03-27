@@ -6,21 +6,18 @@ from framework.selenium_plus import *
 class _ProfilePage(Page):
     class ID:
         txtProfileName = "#profile-form-name"
-        txtPersonCity = "#person-city"
         txtProfileEmailId = "#profile-form-email"
-        txtSearchCity = "#undefined-Search--1135"  # todo, id is dynamic
-        btnCity = "div:nth-child(1)>div>div>div>div:nth-child(3)"  # todo, required id
         btnProfileSave = "#profile-save-action"
         btnProfilePhoto = "#profile-upload-icon"
-        btnPhotoRemover = "#uploadDrawerRemoveIcon"
+        btnPhotoRemove = "#uploadDrawerRemoveIcon"
 
     def update(self, name, emailid):
         set(self.ID.txtProfileName, name)
         set(self.ID.txtProfileEmailId, emailid)
 
-    def photo_remover(self):
+    def photo_remove(self):
         click(self.ID.btnProfilePhoto)
-        click(self.ID.btnPhotoRemover)
+        click(self.ID.btnPhotoRemove)
 
     def save(self):
         click(self.ID.btnProfileSave)

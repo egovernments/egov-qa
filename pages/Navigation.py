@@ -32,18 +32,7 @@ class _BottomMenuPage(Page):
 class _TopMenuPage(Page):
     class ID:
         btnHam = "div:nth-child(1)>div:nth-child(1)>button"  # todo, this filed required id
-        btnHome = "#header-home"
-        btnLang = "#header-language"
-        btnEnglish = "div.drawer-button-toggle-container>button:nth-child(1)"  # todo, this filed required id
-        btnHindi = "div.drawer-button-toggle-container>button:nth-child(2)"  # todo, this filed required id
-        btnPunjabi = "div.drawer-button-toggle-container>button:nth-child(3)"  # todo, this filed required id
-        btnContactUs = "#header-contact-us"
-        btnHowItWorks = "#header-how-it-works"
-        btnLogout = "#header-logout"
         btnBackNavigate = "#back-navigator"
-        profileName = "class = label-container name-Profile"
-        profileLocation = "class = label-container loc-Profile" # todo, has duplicate class name and required id
-        profileEmailId = "class = label-container loc-Profile"  # todo, has duplicate class name and required id
 
     def ham(self):
         click(self.ID.btnHam)
