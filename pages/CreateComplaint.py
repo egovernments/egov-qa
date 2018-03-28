@@ -77,7 +77,6 @@ class _AddComplaintPage(Page, UploadImageComponent):
         goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/add-complaint")
 
 
-
 @PageObject
 class _ComplaintTypePage(Page):
     class ID:
@@ -90,6 +89,10 @@ class _ComplaintTypePage(Page):
 
     def select_complaint_type(self, complaint_type):
         click(self.ID.prmLblComplaintType.format(complaint_type))
+        return self
+
+    def navigate(self):
+        goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/complaint-details?status=filed")
         return self
 
 
