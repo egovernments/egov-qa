@@ -1,3 +1,4 @@
+import selenium
 from selenium import webdriver
 from selenium.common.exceptions import StaleElementReferenceException, \
     TimeoutException
@@ -11,6 +12,7 @@ __author__ = 'Tarun'
 
 default_timeout = 10
 driver = None
+
 
 class count_zero_or_invisible(object):
 
@@ -116,8 +118,12 @@ def get_identifier(identifier):
     return (map_locator_to_by[locator], locatorValue)
 
 
-def click(identifier, context=None, timeout=-1):
-    find(identifier, context, timeout, EC.element_to_be_clickable).click()
+def click(identifier, context=None, timeout=-1, scroll_in_view=False):
+    elem = find(identifier, context, timeout, EC.element_to_be_clickable)
+    if scroll_in_view:
+        scroll_into_view(elem)
+
+    elem.click()
 
 
 def set(identifier, text, context=None, timeout=-1):
@@ -215,7 +221,7 @@ def init_driver(param_driver):
     driver.implicitly_wait(0)
 
 
-def get_driver():
+def get_driver() -> selenium.webdriver.remote.WebDriver:
     """
         @rtype: selenium.webdriver.remote.WebDriver
     """
@@ -224,6 +230,15 @@ def get_driver():
         driver = webdriver.Chrome()
         init_driver(driver)
     return driver
+
+
+def scroll_into_view(elem_or_identifier):
+    elem = find(elem_or_identifier)
+    execute_script(
+        "arguments[0].scrollIntoView()",
+
+    )
+    return elem
 
 
 def quit_driver():
