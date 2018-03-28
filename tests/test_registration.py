@@ -30,3 +30,8 @@ def test_complaint_resolved():
     complaintResolved = ComplaintResolved
     complaintResolved.navigate()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/complaint-details?status=resolved"
+
+def test_complaint_reopen():
+    complaintRejected = ComplaintRejected
+    complaintRejected.reOpen()
+    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/reopen-complaint"
