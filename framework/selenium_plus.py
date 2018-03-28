@@ -79,51 +79,58 @@ def goto(url):
     get_context().get(url)
 
 
+map_locator_to_by = {
+    "id": By.ID,
+    "class": By.CLASS_NAME,
+    "css": By.CSS_SELECTOR,
+    "xpath": By.XPATH,
+    "linktext": By.LINK_TEXT,
+    "text": By.LINK_TEXT,
+    "partialtext": By.PARTIAL_LINK_TEXT,
+    "partiallinktext": By.PARTIAL_LINK_TEXT,
+    "name": By.NAME,
+    "tag": By.TAG_NAME,
+    "tagname": By.TAG_NAME
+}
+
+
 def get_identifier(identifier):
     locator = "css"
-    locatorValue = ""
+    locator_value = ""
+
     if isinstance(identifier, dict):
-        if not 'locator' in identifier:
+        if 'locator' not in identifier:
             raise ValueError(
                 "The identifier has no specified locator - {}".format(
                     identifier))
         identifier = identifier['locator']
 
-    map_locator_to_by = {
-        "id": By.ID,
-        "class": By.CLASS_NAME,
-        "css": By.CSS_SELECTOR,
-        "xpath": By.XPATH,
-        "linktext": By.LINK_TEXT,
-        "text": By.LINK_TEXT,
-        "partialtext": By.PARTIAL_LINK_TEXT,
-        "partiallinktext": By.PARTIAL_LINK_TEXT,
-        "name": By.NAME,
-        "tag": By.TAG_NAME,
-        "tagname": By.TAG_NAME
-    }
-
-    if isinstance(identifier, str) or isinstance(identifier, unicode):
+    if isinstance(identifier, str):
         identify = identifier.split('=', 1)
         if len(identify) == 1:
-            locatorValue = identify[0]
+            locator_value = identify[0]
         else:
             locator = identify[0]
-            locatorValue = identify[1]
+            locator_value = identify[1]
 
     if not locator.lower() in map_locator_to_by:
         locator = "css"
-        locatorValue = identifier
+        locator_value = identifier
 
-    return (map_locator_to_by[locator], locatorValue)
+    return (map_locator_to_by[locator], locator_value)
 
 
 def click(identifier, context=None, timeout=-1, scroll_in_view=False):
-    elem = find(identifier, context, timeout, EC.element_to_be_clickable)
     if scroll_in_view:
-        scroll_into_view(elem)
+        elem = scroll_into_view(identifier, context=context, timeout=timeout)
+    else:
+        elem = find(identifier, context, timeout, EC.element_to_be_clickable)
 
     elem.click()
+
+
+def exists(identifier, context=None, timeout=-1, condition=EC.presence_of_element_located):
+    return find(identifier, context, timeout, condition)
 
 
 def set(identifier, text, context=None, timeout=-1):
@@ -196,6 +203,8 @@ def find(identifier, context=None, timeout=-1,
 
     if context is None:
         context = driver
+    elif context is str:
+        context = find(context)
 
     locator = get_identifier(identifier)
     wdw = WebDriverWait(driver=context, timeout=timeout)
@@ -221,7 +230,7 @@ def init_driver(param_driver):
     driver.implicitly_wait(0)
 
 
-def get_driver() -> selenium.webdriver.remote.WebDriver:
+def get_driver():
     """
         @rtype: selenium.webdriver.remote.WebDriver
     """
@@ -232,11 +241,11 @@ def get_driver() -> selenium.webdriver.remote.WebDriver:
     return driver
 
 
-def scroll_into_view(elem_or_identifier):
-    elem = find(elem_or_identifier)
+def scroll_into_view(elem_or_identifier, **kwargs):
+    elem = find(elem_or_identifier, **kwargs)
     execute_script(
         "arguments[0].scrollIntoView()",
-
+        elem
     )
     return elem
 
@@ -264,3 +273,21 @@ def get_page_source():
 
 def get_url():
     return get_driver().current_url
+
+
+def get(elem, **kwargs):
+    return find(elem, **kwargs).text
+
+
+def unhide(identifier, **kwargs):
+    elem = find(identifier, **kwargs)
+    execute_script("""
+        var elem = arguments[0];
+        elem.style.display = "";
+        elem.style.visibility = "";
+    """, elem)
+    return elem
+
+
+def get_html(identifier, context=None, timeout=-1):
+    return execute_script("return arguments[0].outerHTML", find(identifier, context=context, timeout=timeout))

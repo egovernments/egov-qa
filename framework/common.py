@@ -40,7 +40,4 @@ class Page(object):
 
 
 class Component(object):
-    def __init__(self):
-        print("i was called")
-
     pass

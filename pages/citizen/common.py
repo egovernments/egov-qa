@@ -1,22 +1,43 @@
 from functools import partial
 
-from framework.common import Page, PageObject
-from framework.selenium_plus import *
+from framework.common import PageObject, Page
+from framework.selenium_plus import click, goto
+
+__all__ = ['HomePage', 'LanguageSelectionPage']
+
 
 @PageObject
-class _LanguageSelectionPage(Page):
+class HomePage(Page):
+    class ID:
+        btnNewComplain = "div#home-new-complaint"
+        btnOldComplain = "div#home-old-complaint"
+
+    def new_complaint(self):
+        click(self.ID.btnNewComplain)
+        return self
+
+    def my_complaints(self):
+        click(self.ID.btnOldComplain)
+        return self
+
+    def navigate(self):
+        goto("http://egov-micro-dev.egovernments.org/app/v3/citizen")
+        return self
+
+
+@PageObject
+class LanguageSelectionPage(Page):
     class LANGUAGES:
         ENGLISH = "english"
         HINDI = "hindi"
         PUNJABI = "punjabi"
 
     class ID:
-        #TO-DO  add ID for language
+        # TO-DO  add ID for language
         btnContinue = "button#continue-action"
         btnLanguageHindi = ".language-selection-card  div.button-toggle-container > button:nth-child(1)"
         btnLanguageEnglish = ".language-selection-card  div.button-toggle-container > button:nth-child(2)"
-        btnLanguagePunjabi=".language-selection-card  div.button-toggle-container > button:nth-child(3)"
-
+        btnLanguagePunjabi = ".language-selection-card  div.button-toggle-container > button:nth-child(3)"
 
     btnLanguage = {
         LANGUAGES.HINDI: ID.btnLanguageHindi,
@@ -39,5 +60,3 @@ class _LanguageSelectionPage(Page):
     def navigate(self):
         goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/user/language-selection")
         return self
-
-LanguageSelectionPage = _LanguageSelectionPage()
