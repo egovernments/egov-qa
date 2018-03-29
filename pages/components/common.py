@@ -120,7 +120,7 @@ class BottomMenuComponent(Component):
         btnHome = ".bottom-navigation #home-button"
         btnInfo = "#information-button"
         btnPayments = "#payments-button"
-        btnComplaints = "#complaints-button"
+        btnComplaints = "#complaints.py-button"
 
     def home(self):
         click(self.ID.btnHome)

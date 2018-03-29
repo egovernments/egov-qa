@@ -112,7 +112,7 @@ class MyComplaintsPage(Page):
         return cards
 
     def navigate(self):
-        goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/my-complaints")
+        goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/my-complaints.py")
 
     def add_complaint_plus_button(self):
         click(self.ID.btnAddComplaintPlus)
