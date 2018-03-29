@@ -93,7 +93,7 @@ def test_homepage():
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/add-complaint"
 
     hp.navigate().my_complaints()
-    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/my-complaints.py"
+    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/my-complaints"
 
 
 def test_complaintfeedbackpage():
