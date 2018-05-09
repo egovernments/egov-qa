@@ -10,12 +10,12 @@ __all__ = ['AddComplaintPage', 'ComplaintFeedbackPage', 'ComplaintSubmittedPage'
 
 @PageObject
 class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintTypeComponent):
-
     class ID:
-        txtLocation = "input#addComplaint-location-details"
-        txtComplaintDetails = "input#addComplaint-additional-details"
-        txtComplaintType = "input#addComplaint-complaint-type"
-        txtLandmarkDetails = "input#addComplaint-landmark-details"
+        txtLocation = "input#address"
+        txtComplaintDetails = "[id='additional details']"
+        txtComplaintType = "input#complaint-type"
+        txtLandmarkDetails = "input#landmark"
+        btnSubmit = "id=addComplaint-submit-complaint"
 
     def set_location_by_address(self, address, result_index=0):
         click(self.ID.txtLocation)
@@ -34,6 +34,9 @@ class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintT
     def navigate(self):
         goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/add-complaint")
 
+    def submit(self):
+        click(self.ID.btnSubmit)
+
 
 @PageObject
 class ComplaintFeedbackPage(Page):
@@ -51,7 +54,6 @@ class ComplaintFeedbackPage(Page):
         return self
 
     def star_click(self, a):
-        print(a)
         click(self.ID.prmStarRating.format(int(a) - 1))
         return self
 
@@ -103,6 +105,8 @@ class MyComplaintsPage(Page):
     class ID:
         rowComplaintCards = "xpath=//div[contains(@class,'complaint-card-wrapper')]"
         btnAddComplaintPlus = "button#mycomplaints-add"
+        txtComment = "id=citizen-comment"
+        btnSend = "class=comment-send"
 
     def get_all_complaints(self) -> List[ComplainCardComponent]:
         cards = []
@@ -113,9 +117,19 @@ class MyComplaintsPage(Page):
 
     def navigate(self):
         goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/my-complaints")
+        return self
 
     def add_complaint_plus_button(self):
         click(self.ID.btnAddComplaintPlus)
+        return self
+
+    def comment(self, comments):
+        set(self.ID.txtComment, comments)
+        return self
+
+    def send_comment(self):
+        click(self.ID.btnSend)
+        return self
 
 
 @PageObject

@@ -1,10 +1,11 @@
 from time import sleep
-
+from environment import *
 from framework.common import PageObject, Page
 from framework.selenium_plus import goto, set, click
 from ..components import *
 
-__all__ = ['LoginPage', 'OTPPage', 'RegistrationPage']
+__all__ = ['LoginPage', 'OTPPage', 'RegistrationPage', 'LogoutPage']
+
 
 @PageObject
 class LoginPage(Page):
@@ -14,7 +15,7 @@ class LoginPage(Page):
         btnProfile = "#header-profile"
 
     def navigate(self):
-        goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/user/login")
+        goto(BASE_URL + APP_CITIZEN_URL)
         return self
 
     def set(self, mobile_number):
@@ -33,7 +34,7 @@ class LoginPage(Page):
 @PageObject
 class OTPPage(Page):
     class ID:
-        txtOTP = "id=otp"
+        txtOTP = "input#otp"
         btnGetStarted = "button#otp-start"
         btnResend = "div#otp-resend"
 
@@ -79,4 +80,20 @@ class RegistrationPage(Page, SelectCityComponent):
 
     def navigate(self):
         goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/user/register")
+        return self
+
+
+@PageObject
+class LogoutPage(Page):
+    class ID:
+        btnLogout = "xpath=.//div[text()='Logout']"
+        btnYes = "xpath=.//div[text()='Yes']"
+
+    def navigate(self):
+        goto(BASE_URL + CITIZEN_HOME_URL)
+        return self
+
+    def submit(self):
+        click(self.ID.btnLogout)
+        click(self.ID.btnYes)
         return self

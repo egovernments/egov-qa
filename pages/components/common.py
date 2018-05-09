@@ -47,8 +47,9 @@ class LocationComponent(Component):
 class UploadImageComponent(Component):
     class ID:
         prmBtnRemoveImage = "xpath=(//div[contains(@class,'image-remove')])[{}]"
-        fileImageUploadPlaceHolder = ".upload-placeholder input,.upload-icon-cont input"
+        fileImageUploadPlaceHolder = ".upload-placeholder input,.upload-photo-overlay input"
         pass
+
 
     def remove_image_1(self):
         click(self.ID.prmBtnRemoveImage.format(1))
@@ -93,6 +94,7 @@ class ComplainCardComponent(Component):
         btnTrack = ".complaint-track-btn button"
         colComplaintImages = ".complaint-image"
 
+
     def __init__(self, container=None):
         self.container = container
 
@@ -112,7 +114,10 @@ class ComplainCardComponent(Component):
         return get(self.ID.lblComplaintNo, context=self.container)
 
     def track_complaint(self):
-        click(self.ID.btnTrack, context=self.container, scroll_in_view=True)
+        click(self.container)
+
+
+
 
 
 class BottomMenuComponent(Component):

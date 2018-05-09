@@ -1,5 +1,4 @@
 from functools import partial
-
 from framework.common import PageObject, Page
 from framework.selenium_plus import click, goto
 
@@ -35,8 +34,8 @@ class LanguageSelectionPage(Page):
     class ID:
         # TO-DO  add ID for language
         btnContinue = "button#continue-action"
-        btnLanguageHindi = ".language-selection-card  div.button-toggle-container > button:nth-child(1)"
-        btnLanguageEnglish = ".language-selection-card  div.button-toggle-container > button:nth-child(2)"
+        btnLanguageHindi = ".language-selection-card  div.button-toggle-container > button:nth-child(2)"
+        btnLanguageEnglish = ".language-selection-card  div.button-toggle-container > button:nth-child(1)"
         btnLanguagePunjabi = ".language-selection-card  div.button-toggle-container > button:nth-child(3)"
 
     btnLanguage = {
