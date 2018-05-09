@@ -1,12 +1,5 @@
-from pytest import fixture
-
-from pages import *
-
 from framework.selenium_plus import *
-from pages.employee.Login import *
-
 from pages.flows.common import *
-import time
 
 
 # def pytest_sessionstart(session):
@@ -32,7 +25,6 @@ def test_otp_submission():
     otp.navigate()
 
     otp.set("12345").get_started()
-    print(get_url())
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen"
 
 
@@ -58,7 +50,6 @@ def test_citizen_profile():
 def test_complain_submitted():
     complaint_subpage = ComplaintSubmittedPage()
     complaint_subpage.navigate()
-    print(complaint_subpage.get_complaint_number())
     complaint_subpage.click_continue()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen"
 
@@ -68,11 +59,6 @@ def test_my_complaints():
     complaints.navigate()
     cards = complaints.get_all_complaints()
     card = cards[2]
-
-    print(card.get_complaint_header())
-    print(card.get_complaint_status())
-    print(card.get_complaint_no())
-    print(card.get_complaint_date())
     card.track_complaint()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/complaint-details?status=rejected"
 
@@ -163,7 +149,6 @@ def test_register_mobile_less10():
     reg = RegistrationPage()
     reg.navigate().set(876543, 'satish', 'Amritsar')
     reg.submit()
-    print(get_url())
     # assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/user/otp"
 
 
@@ -172,7 +157,6 @@ def test_register_mobile_greater10():
     reg = RegistrationPage()
     reg.navigate().set(87654398887773333, 'satish', 'Amritsar')
     reg.submit()
-    print(get_url())
     # assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/user/otp"
 
 
@@ -181,7 +165,7 @@ def test_register_mobile_withspecialchar():
     reg = RegistrationPage()
     reg.navigate().set("876543Lhkjh", 'satish', 'Amritsar')
     reg.submit()
-    print(get_url())
+
     # assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/user/otp"
 
 
@@ -218,7 +202,6 @@ def test_create_complaintsatish():
     com.set_landmark_details("landmark details")
     com.set_complaint_details("complain details")
     com.submit()
-    print(ComplaintSubmittedPage().get_complaint_number())
 
     ComplaintSubmittedPage().click_continue()
 
@@ -228,14 +211,16 @@ def test_citizen_login():
 
 
 def test_new_complaint(login_citizen):
-    create_new_complaint("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs", "landmarkdetail",True)
+    create_new_complaint("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs", "landmarkdetail", True)
+
 
 def test_new_complaint_by_plus_icon(login_citizen):
-    create_new_complaint_by_plus_icon( "Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs","landmarkdetail", True)
+    create_new_complaint_by_plus_icon("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs",
+                                      "landmarkdetail", True)
 
 
 def test_open_complaint_and_comment(login_citizen, logout_citizen):
-    complain_number="09/05/2018/000652"
+    complain_number = "09/05/2018/000652"
     comment_on_given_complaint(complain_number)
 
 
@@ -243,20 +228,8 @@ def test_logout(login_citizen):
     logout_citizen()
 
 
-
 def test_complaint_register_to_resolve(login_citizen):
-
     create_new_complaint("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs", "landmarkdetail", True)
-    complain_number=ComplaintSubmittedPage().get_complaint_number()
-    print(complain_number)
+    complain_number = ComplaintSubmittedPage().get_complaint_number()
     logout_citizen()
-    print("done")
-    login_gro("9090909010","murali@1993")
-
-
-
-
-
-
-
-
+    login_gro("9090909010", "murali@1993")

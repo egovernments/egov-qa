@@ -1,4 +1,5 @@
 from typing import List
+
 from framework.common import PageObject, Page
 from framework.selenium_plus import *
 from ..components import *
@@ -53,7 +54,6 @@ class ComplaintFeedbackPage(Page):
         return self
 
     def star_click(self, a):
-        print(a)
         click(self.ID.prmStarRating.format(int(a) - 1))
         return self
 

@@ -1,5 +1,7 @@
 import time
+
 from pytest import fixture
+
 from environment import *
 from pages import *
 from pages.employee.Login import *
@@ -17,6 +19,7 @@ def login_citizen(username=None, otp=None):
     otppage = OTPPage()
     otppage.set(otp)
     otppage.get_started()
+
 
 def create_new_complaint(location, additional_details, complaint_type_search, complaint_type_select, landmark,
                          flag_submit_complaint=True):
@@ -57,7 +60,6 @@ def create_new_complaint_by_plus_icon(location, additional_details, complaint_ty
 def comment_on_given_complaint(my_complaint_number):
     HomePage().my_complaints()
     all_complaint = MyComplaintsPage().get_all_complaints()
-    print(all_complaint)
     complaint_number = []
 
     for i in all_complaint:
@@ -79,8 +81,5 @@ def logout_citizen():
 def login_gro(username=None, password=None):
     username1 = username
     password1 = password
-    print(username1)
-    print(password1)
     le = LoginEmployeePage()
     le.navigate()
-    print("in function")

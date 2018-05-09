@@ -25,8 +25,6 @@ class LoginEmployeePage(Page):
         return self
 
     def navigate(self):
-        print(BASE_URL)
-        print(APP_EMPLOYEE_URL)
         goto(BASE_URL+APP_EMPLOYEE_URL)
         return self
 
