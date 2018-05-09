@@ -90,7 +90,7 @@ class LogoutPage(Page):
         btnYes = "xpath=.//div[text()='Yes']"
 
     def navigate(self):
-        goto(CITIZEN_HOME_URL)
+        goto(BASE_URL+ CITIZEN_HOME_URL)
         return self
 
     def submit(self):

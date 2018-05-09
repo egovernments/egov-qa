@@ -5,6 +5,6 @@ APP_EMPLOYEE_URL = "/employee/user/login"
 DEFAULT_CITIZEN_USERNAME="8792101399"
 
 
-CITIZEN_HOME_URL="http://egov-micro-dev.egovernments.org/app/v3/citizen"
+CITIZEN_HOME_URL="/citizen"
 
 
