@@ -237,6 +237,7 @@ def get_driver():
     global driver
     if driver is None:
         driver = webdriver.Chrome()
+        driver.maximize_window()
         init_driver(driver)
     return driver
 

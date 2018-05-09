@@ -11,11 +11,16 @@ __all__ = ['AddComplaintPage', 'ComplaintFeedbackPage', 'ComplaintSubmittedPage'
 @PageObject
 class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintTypeComponent):
     class ID:
-        txtLocation = "input#address"
+        btnFileComplaint = "id=home-new-complaint"
+        txtLocation = "id=address"
         txtComplaintDetails = "[id='additional details']"
         txtComplaintType = "input#complaint-type"
-        txtLandmarkDetails = "input#landmark"
+        txtLandmarkDetails = "id=landmark"
         btnSubmit = "id=addComplaint-submit-complaint"
+
+    def file_complaint(self):
+        click(self.ID.btnFileComplaint)
+        return self
 
     def set_location_by_address(self, address, result_index=0):
         click(self.ID.txtLocation)
@@ -31,11 +36,9 @@ class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintT
     def set_complaint_details(self, details):
         set(self.ID.txtComplaintDetails, details)
 
-    def navigate(self):
-        goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/add-complaint")
-
     def submit(self):
         click(self.ID.btnSubmit)
+        return self
 
 
 @PageObject
@@ -85,7 +88,7 @@ class ComplaintFeedbackPage(Page):
 @PageObject
 class ComplaintSubmittedPage(Page):
     class ID:
-        btnContinue = "button#complaint-submitted-continue"
+        btnContinue = "id=complaint-submitted-continue"
         lblComplainNumber = ".complaint-number-value .label-text"
         lblComplaintSuccessfulMessage = "xpath=//div[contains(text(),'Complaint registered successfully')]"
 
@@ -103,10 +106,11 @@ class ComplaintSubmittedPage(Page):
 @PageObject
 class MyComplaintsPage(Page):
     class ID:
+        btnMyComplaints = "id=home-old-complaint"
         rowComplaintCards = "xpath=//div[contains(@class,'complaint-card-wrapper')]"
         btnAddComplaintPlus = "button#mycomplaints-add"
         txtComment = "id=citizen-comment"
-        btnSend = "class=comment-send"
+        btnSendComment = "svg[class='comment-send']"
 
     def get_all_complaints(self) -> List[ComplainCardComponent]:
         cards = []
@@ -115,20 +119,20 @@ class MyComplaintsPage(Page):
 
         return cards
 
-    def navigate(self):
-        goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/my-complaints")
+    def search_myComplaints(self):
+        click(self.ID.btnMyComplaints)
         return self
 
     def add_complaint_plus_button(self):
         click(self.ID.btnAddComplaintPlus)
         return self
 
-    def comment(self, comments):
-        set(self.ID.txtComment, comments)
+    def add_comments(self, citizen_comment):
+        set(self.ID.txtComment, citizen_comment)
         return self
 
     def send_comment(self):
-        click(self.ID.btnSend)
+        click(self.ID.btnSendComment)
         return self
 
 
@@ -138,10 +142,6 @@ class ReopenComplaintPage(Page):
         radReopenReason = "input#reopencomplaint-radio-button-0"
         txtTypeComplaint = "#reopencomplaint-comment-field"
         btnSubmit = "#reopencomplaint-submit-action"
-
-    def navigate(self):
-        goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/reopen-complaint")
-        return self
 
     def set(self, type_complaint):
         set(self.ID.txtTypeComplaint, type_complaint)

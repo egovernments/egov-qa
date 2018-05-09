@@ -61,6 +61,9 @@ class UploadImageComponent(Component):
         click(self.ID.prmBtnRemoveImage.format(3))
 
     def upload_images(self, *images):
+        if type(images) is tuple and len(images) > 0 and type(images[0]) is list:
+            images = images[0]
+
         assert 0 <= len(images) <= 3, "Maximum 3 photos can be uploaded"
         if not images:
             return
@@ -115,9 +118,6 @@ class ComplainCardComponent(Component):
 
     def track_complaint(self):
         click(self.container)
-
-
-
 
 
 class BottomMenuComponent(Component):
