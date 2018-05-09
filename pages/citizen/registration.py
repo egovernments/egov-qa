@@ -1,11 +1,11 @@
 from time import sleep
-
+from environment import *
 from framework.common import PageObject, Page
 from framework.selenium_plus import goto, set, click
 from ..components import *
 
-from environment import *
-__all__ = ['LoginPage', 'OTPPage', 'RegistrationPage','LogoutPage']
+__all__ = ['LoginPage', 'OTPPage', 'RegistrationPage', 'LogoutPage']
+
 
 @PageObject
 class LoginPage(Page):
@@ -90,7 +90,7 @@ class LogoutPage(Page):
         btnYes = "xpath=.//div[text()='Yes']"
 
     def navigate(self):
-        goto(BASE_URL+ CITIZEN_HOME_URL)
+        goto(BASE_URL + CITIZEN_HOME_URL)
         return self
 
     def submit(self):

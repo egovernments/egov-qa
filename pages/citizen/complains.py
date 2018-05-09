@@ -1,5 +1,4 @@
 from typing import List
-
 from framework.common import PageObject, Page
 from framework.selenium_plus import *
 from ..components import *
@@ -12,13 +11,10 @@ __all__ = ['AddComplaintPage', 'ComplaintFeedbackPage', 'ComplaintSubmittedPage'
 class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintTypeComponent):
     class ID:
         txtLocation = "input#address"
-        txtComplaintDetails ="[id='additional details']"
+        txtComplaintDetails = "[id='additional details']"
         txtComplaintType = "input#complaint-type"
         txtLandmarkDetails = "input#landmark"
         btnSubmit = "id=addComplaint-submit-complaint"
-
-
-
 
     def set_location_by_address(self, address, result_index=0):
         click(self.ID.txtLocation)
@@ -39,7 +35,6 @@ class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintT
 
     def submit(self):
         click(self.ID.btnSubmit)
-
 
 
 @PageObject
@@ -110,8 +105,9 @@ class MyComplaintsPage(Page):
     class ID:
         rowComplaintCards = "xpath=//div[contains(@class,'complaint-card-wrapper')]"
         btnAddComplaintPlus = "button#mycomplaints-add"
-        txtcomment= "id=citizen-comment"
-        btnsend="class=comment-send"
+        txtComment = "id=citizen-comment"
+        btnSend = "class=comment-send"
+
     def get_all_complaints(self) -> List[ComplainCardComponent]:
         cards = []
         for card in finds(self.ID.rowComplaintCards):
@@ -121,22 +117,19 @@ class MyComplaintsPage(Page):
 
     def navigate(self):
         goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/my-complaints")
+        return self
 
     def add_complaint_plus_button(self):
         click(self.ID.btnAddComplaintPlus)
         return self
 
-    def comment(self,comments):
-        set(self.ID.txtcomment,comments)
+    def comment(self, comments):
+        set(self.ID.txtComment, comments)
         return self
 
-    def sendcomment(self):
-        click(self.ID.btnsend)
+    def send_comment(self):
+        click(self.ID.btnSend)
         return self
-
-
-
-
 
 
 @PageObject
@@ -157,5 +150,3 @@ class ReopenComplaintPage(Page):
     def submit(self):
         click(self.ID.btnSubmit)
         return self
-
-

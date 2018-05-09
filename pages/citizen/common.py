@@ -1,14 +1,8 @@
 from functools import partial
-
 from framework.common import PageObject, Page
 from framework.selenium_plus import click, goto
 
 __all__ = ['HomePage', 'LanguageSelectionPage']
-
-
-
-
-
 
 
 @PageObject
@@ -16,7 +10,6 @@ class HomePage(Page):
     class ID:
         btnNewComplain = "div#home-new-complaint"
         btnOldComplain = "div#home-old-complaint"
-
 
     def new_complaint(self):
         click(self.ID.btnNewComplain)
