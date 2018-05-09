@@ -10,12 +10,15 @@ __all__ = ['AddComplaintPage', 'ComplaintFeedbackPage', 'ComplaintSubmittedPage'
 
 @PageObject
 class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintTypeComponent):
-
     class ID:
-        txtLocation = "input#addComplaint-location-details"
-        txtComplaintDetails = "input#addComplaint-additional-details"
-        txtComplaintType = "input#addComplaint-complaint-type"
-        txtLandmarkDetails = "input#addComplaint-landmark-details"
+        txtLocation = "input#address"
+        txtComplaintDetails ="[id='additional details']"
+        txtComplaintType = "input#complaint-type"
+        txtLandmarkDetails = "input#landmark"
+        btnSubmit = "id=addComplaint-submit-complaint"
+
+
+
 
     def set_location_by_address(self, address, result_index=0):
         click(self.ID.txtLocation)
@@ -33,6 +36,10 @@ class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintT
 
     def navigate(self):
         goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/add-complaint")
+
+    def submit(self):
+        click(self.ID.btnSubmit)
+
 
 
 @PageObject
@@ -103,7 +110,8 @@ class MyComplaintsPage(Page):
     class ID:
         rowComplaintCards = "xpath=//div[contains(@class,'complaint-card-wrapper')]"
         btnAddComplaintPlus = "button#mycomplaints-add"
-
+        txtcomment= "id=citizen-comment"
+        btnsend="class=comment-send"
     def get_all_complaints(self) -> List[ComplainCardComponent]:
         cards = []
         for card in finds(self.ID.rowComplaintCards):
@@ -116,6 +124,19 @@ class MyComplaintsPage(Page):
 
     def add_complaint_plus_button(self):
         click(self.ID.btnAddComplaintPlus)
+        return self
+
+    def comment(self,comments):
+        set(self.ID.txtcomment,comments)
+        return self
+
+    def sendcomment(self):
+        click(self.ID.btnsend)
+        return self
+
+
+
+
 
 
 @PageObject
@@ -136,3 +157,5 @@ class ReopenComplaintPage(Page):
     def submit(self):
         click(self.ID.btnSubmit)
         return self
+
+

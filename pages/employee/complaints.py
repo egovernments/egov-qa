@@ -30,7 +30,7 @@ class ComplaintReassignPage(Page):
         # todo satish: add id for call,commenet box,send button
         btnReject = "button#actionOne"
         btnAssign = "button#actionTwo"
-        txtComments = "textarea"
+        txtComments = "textarea[id]"
 
     def reject(self):
         click(self.ID.btnReject)

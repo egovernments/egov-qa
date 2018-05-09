@@ -10,7 +10,7 @@ import time
 
 __author__ = 'Tarun'
 
-default_timeout = 10
+default_timeout = 30
 driver = None
 
 
@@ -291,3 +291,4 @@ def unhide(identifier, **kwargs):
 
 def get_html(identifier, context=None, timeout=-1):
     return execute_script("return arguments[0].outerHTML", find(identifier, context=context, timeout=timeout))
+

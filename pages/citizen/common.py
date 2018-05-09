@@ -3,7 +3,20 @@ from functools import partial
 from framework.common import PageObject, Page
 from framework.selenium_plus import click, goto
 
-__all__ = ['HomePage', 'LanguageSelectionPage']
+__all__ = ['HomePage', 'LanguageSelectionPage','CreateComplaintSatish']
+
+
+@PageObject
+class CreateComplaintSatish(Page):
+    class ID:
+
+        btnNewComplain = "div#home-new-complaint"
+
+    def new_complaint(self):
+        click(self.ID.btnNewComplain)
+        return self
+
+
 
 
 @PageObject
@@ -11,6 +24,7 @@ class HomePage(Page):
     class ID:
         btnNewComplain = "div#home-new-complaint"
         btnOldComplain = "div#home-old-complaint"
+
 
     def new_complaint(self):
         click(self.ID.btnNewComplain)
@@ -35,8 +49,8 @@ class LanguageSelectionPage(Page):
     class ID:
         # TO-DO  add ID for language
         btnContinue = "button#continue-action"
-        btnLanguageHindi = ".language-selection-card  div.button-toggle-container > button:nth-child(1)"
-        btnLanguageEnglish = ".language-selection-card  div.button-toggle-container > button:nth-child(2)"
+        btnLanguageHindi = ".language-selection-card  div.button-toggle-container > button:nth-child(2)"
+        btnLanguageEnglish = ".language-selection-card  div.button-toggle-container > button:nth-child(1)"
         btnLanguagePunjabi = ".language-selection-card  div.button-toggle-container > button:nth-child(3)"
 
     btnLanguage = {
