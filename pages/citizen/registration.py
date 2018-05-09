@@ -1,4 +1,5 @@
 from time import sleep
+
 from environment import *
 from framework.common import PageObject, Page
 from framework.selenium_plus import goto, set, click
@@ -14,8 +15,8 @@ class LoginPage(Page):
         btnLogin = "button#login-submit-action"
         btnProfile = "#header-profile"
 
-    def navigate(self):
-        goto(BASE_URL + APP_CITIZEN_URL)
+    def navigate(self, end_point):
+        goto(BASE_URL + end_point)
         return self
 
     def set(self, mobile_number):
@@ -48,10 +49,6 @@ class OTPPage(Page):
 
     def resend(self):
         click(self.ID.btnResend)
-        return self
-
-    def navigate(self):
-        goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/user/otp")
         return self
 
 
@@ -88,10 +85,6 @@ class LogoutPage(Page):
     class ID:
         btnLogout = "xpath=.//div[text()='Logout']"
         btnYes = "xpath=.//div[text()='Yes']"
-
-    def navigate(self):
-        goto(BASE_URL + CITIZEN_HOME_URL)
-        return self
 
     def submit(self):
         click(self.ID.btnLogout)
