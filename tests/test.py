@@ -13,7 +13,7 @@ def my_fixture():
     # setup_stuff
     yield
     try:
-        # quit_driver()
+        quit_driver()
         pass
     finally:
         pass
@@ -84,11 +84,11 @@ def test_homepage():
     hp.navigate().new_complaint()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/add-complaint"
 
-    hp.navigate().my_complaints()
+    hp.navigate().select_my_complaint()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/my-complaints"
 
 
-def test_complaintfeedbackpage():
+def test_complaint_feedback():
     cf = ComplaintFeedbackPage()
     cf.navigate().star_click(4)
     cf.check_services().check_quality_of_work().check_resolution_time().check_others()
@@ -134,16 +134,6 @@ def test_profile():
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen"
 
 
-def test_complaintunassignedpage():
-    cap = ComplaintUnassignPage()
-    cap.navigate().assign().reject()
-
-
-def test_complaintreassignpage():
-    crp = ComplaintReassignPage()
-    crp.navigate().reject().assign().set("ok")
-
-
 def test_register_mobile_less10():
     LanguageSelectionPage().navigate().language("english").submit()
     reg = RegistrationPage()
@@ -160,7 +150,7 @@ def test_register_mobile_greater10():
     # assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/user/otp"
 
 
-def test_register_mobile_withspecialchar():
+def test_register_mobile_with_specialchar():
     LanguageSelectionPage().navigate().language("english").submit()
     reg = RegistrationPage()
     reg.navigate().set("876543Lhkjh", 'satish', 'Amritsar')
@@ -169,67 +159,58 @@ def test_register_mobile_withspecialchar():
     # assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/user/otp"
 
 
-def test_duplicate_mobilenumber():
+def test_duplicate_mobile_number():
     LanguageSelectionPage().navigate().language("english").submit()
     reg = RegistrationPage()
     reg.navigate().set("8792101399", 'satish', 'Amritsar').submit()
     reg.navigate().set("8792101399", 'satish', 'Amritsar').submit()
 
 
-def test_create_complaint():
-    comp = AddComplaintPage()
-    comp.navigate()
-    comp.set_complaint_type("Overflowing Garbage Bins")
-    comp.set_location_by_address("Homigo Ant")
-    photo1 = "/home/satish/UDEMY/UdemyProject/Book/static/Book/back1.jpg"
-    photo2 = "/home/satish/UDEMY/UdemyProject/Book/static/Book/back1.jpg"
-    photo3 = "/home/satish/UDEMY/UdemyProject/Book/static/Book/back1.jpg"
-    UploadImageComponent().upload_images(photo1, photo2, photo3)
-    comp.set_landmark_details("landmark details")
-    comp.set_complaint_details("complain details")
-    comp.submit()
-    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/add-complaint"
+def test_add_complaint(citizen_login):
+    # Create a new complaint
+    add_complaint_details(
+        "Water Body",
+        "Amritsar, Punjab, India ",
+        "Street end",
+        "Leakage of water",
+        "D:/Repositories/rainmaker_automation/egov-qa/assets/images/image1.jpg"
+    )
+    # Acknowledgement on successful complaint submission
+    complaintNo = complaint_successful_page()
+    print(complaintNo)
+
+    # Search and view complaint created on My Complaints
+    view_my_complaints(complaint_number)
+
+    # Navigate to the home page and logout
+    navigation = TopMenuNavigationComponent()
+    navigation.back().back()
+    logout()
 
 
-def test_create_complaintsatish():
-    com = AddComplaintPage()
-    LoginPage().navigate().set("8792101399").submit()
-    OTPPage().set("123456").get_started()
-    CreateComplaintSatish().new_complaint()
-    com.set_complaint_type("Stray Dogs", "StrayDogs")
-    com.set_location_by_address("Amritsar, Punjab, India")
-    time.sleep(3)  # TO-DO Remove the time delay
-    com.set_landmark_details("landmark details")
-    com.set_complaint_details("complain details")
-    com.submit()
+def test_citizen_should_file_complaint_with_one_image(citizen_login, upload_photo=DEFAULT_IMAGELIST_ONE):
+    # Create a new complaint
+    complaint_type = "Water Body"
+    location = "Amritsar, Punjab, India "
+    landmark = "Street end"
+    additional_details = "Leakage of water"
 
-    ComplaintSubmittedPage().click_continue()
-
-
-def test_citizen_login():
-    login_citizen('8792101399', "123456")
+    add_complaint_details(
+        complaint_type,
+        location,
+        landmark,
+        additional_details,
+        upload_photo
+    )
 
 
-def test_new_complaint(login_citizen):
-    create_new_complaint("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs", "landmarkdetail", True)
+def test_citizen_should_file_complaint_with_two_image(citizen_login):
+    test_citizen_should_file_complaint_with_one_image(citizen_login, upload_photo=DEFAULT_IMAGELIST_TWO)
 
 
-def test_new_complaint_by_plus_icon(login_citizen):
-    create_new_complaint_by_plus_icon("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs",
-                                      "landmarkdetail", True)
+def test_citizen_should_file_complaint_with_three_image(citizen_login):
+    test_citizen_should_file_complaint_with_one_image(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE)
 
 
-def test_open_complaint_and_comment(login_citizen, logout_citizen):
-    complain_number = "09/05/2018/000652"
-    comment_on_given_complaint(complain_number)
-
-
-def test_logout(login_citizen):
-    logout_citizen()
-
-
-def test_complaint_register_to_resolve(login_citizen):
-    create_new_complaint("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs", "landmarkdetail", True)
-    complain_number = ComplaintSubmittedPage().get_complaint_number()
-    logout_citizen()
-    login_gro("9090909010", "murali@1993")
+def test_citizen_should_file_complaint_without_image(citizen_login):
+    test_citizen_should_file_complaint_with_one_image(citizen_login, [])

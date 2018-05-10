@@ -50,7 +50,6 @@ class UploadImageComponent(Component):
         fileImageUploadPlaceHolder = ".upload-placeholder input,.upload-photo-overlay input"
         pass
 
-
     def remove_image_1(self):
         click(self.ID.prmBtnRemoveImage.format(1))
 
@@ -96,7 +95,6 @@ class ComplainCardComponent(Component):
         lblComplaintNo = ".complaint-complaint-number .label-text"
         btnTrack = ".complaint-track-btn button"
         colComplaintImages = ".complaint-image"
-
 
     def __init__(self, container=None):
         self.container = container
