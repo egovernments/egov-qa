@@ -15,8 +15,8 @@ class LoginPage(Page):
         btnLogin = "button#login-submit-action"
         btnProfile = "#header-profile"
 
-    def navigate(self, end_point):
-        goto(BASE_URL + end_point)
+    def navigate(self):
+        goto(BASE_URL + APP_CITIZEN_URL)
         return self
 
     def set(self, mobile_number):
