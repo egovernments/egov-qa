@@ -32,7 +32,7 @@ def GRO_employee_login(username=None, password=None):
 def last_mile_employee_login(username=None, otp=None):
     username = username or LAST_MILE_EMPLOYEE_USERNAME
     otp = otp or DEFAULT_FIXED_OTP
-    LoginPage().navigate(APP_EMPLOYEE_URL).set(username).submit()
+    LoginPage().navigate().set(username).submit()
     OTPPage().set(otp).get_started()
     yield
 
@@ -59,7 +59,7 @@ def add_complaint_details(complaint_type, location, landmark, additional_details
         complaint.submit()
 
 
-def complaint_successful_page():
+def complaint_registration_number_recevied():
     acknowledgement = ComplaintSubmittedPage()
     co = acknowledgement.get_complaint_number()
     complaint_number.append(acknowledgement.get_complaint_number())
@@ -69,10 +69,9 @@ def complaint_successful_page():
 
 def view_my_complaints(complaint_number=0):
     myComplaint = MyComplaintsPage()
-    myComplaint.select_my_complaint()
+    myComplaint.click_my_complaint()
     cards = myComplaint.get_all_complaints()
 
-    print(len(cards))
     for i in cards:
         complain.append(i.get_complaint_no())
     if complaint_number == 0:
@@ -81,6 +80,20 @@ def view_my_complaints(complaint_number=0):
     else:
         a = complain.index(complaint_number[0])
         cards[a].track_complaint()
+
+
+def comment_on_complaint(comment):
+    myComplaint = MyComplaintsPage()
+    myComplaint.add_comments(comment)
+    myComplaint.send_comment()
+
+
+def complaint_feedback(rating, comment):
+    complaint_feedback = ComplaintFeedbackPage()
+    complaint_feedback.rate()
+    complaint_feedback.star_click(rating)
+    complaint_feedback.check_services().check_resolution_time()
+    complaint_feedback.set(comment).submit()
 
 
 def assign_open_complaints(complaint_number, comments, assignee):

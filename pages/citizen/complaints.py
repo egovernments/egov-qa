@@ -45,6 +45,7 @@ class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintT
 @PageObject
 class ComplaintFeedbackPage(Page):
     class ID:
+        btnRate = "xpath=.//div[text()='RATE']"
         prmStarRating = "span#feedback-ratings{}"
         chkServices = "input#feedback-checkbox0"
         chkResolutionTime = "input#feedback-checkbox1"
@@ -81,6 +82,10 @@ class ComplaintFeedbackPage(Page):
         click(self.ID.btnFeedbackSubmit)
         return self
 
+    def rate(self):
+        click(self.ID.btnRate)
+        return self
+
 
 @PageObject
 class ComplaintSubmittedPage(Page):
@@ -102,7 +107,7 @@ class MyComplaintsPage(Page):
         btnMyComplaints = ".file-complaint"
         rowComplaintCards = "xpath=//div[contains(@class,'complaint-card-wrapper')]"
         btnAddComplaintPlus = "button#mycomplaints-add"
-        txtComment = "div#citizen-comment"
+        txtComment = "textarea#citizen-comment"
         btnSend = "svg[class='comment-send']"
         lblComplaintNumber = "xpath=//div[contains(@class,'complaint-complaint-number')]/*[text()='{}']"
 
@@ -119,7 +124,7 @@ class MyComplaintsPage(Page):
 
         return cards
 
-    def select_my_complaint(self):
+    def click_my_complaint(self):
         click(self.ID.btnMyComplaints)
         return self
 
