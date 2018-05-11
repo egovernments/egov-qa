@@ -5,7 +5,7 @@ from framework.selenium_plus import *
 from ..components import *
 
 __all__ = ['AddComplaintPage', 'ComplaintFeedbackPage', 'ComplaintSubmittedPage', 'MyComplaintsPage',
-           'ReopenComplaintPage']
+           'ReopenComplaintPage', 'ComplaintSummaryPage']
 
 
 @PageObject
@@ -51,7 +51,7 @@ class ComplaintFeedbackPage(Page):
         chkQualityOfWork = "input#feedback-checkbox2"
         chkOthers = "input#feedback-checkbox3"
         txtFeedbackComment = "textarea#feedback-comments"
-        btnFeedbackSubmit = "button#feedback-submit"
+        btnFeedbackSubmit = "button#feedback-submit-action"
 
     def set(self, feedback_comment):
         set(self.ID.txtFeedbackComment, feedback_comment)
@@ -99,11 +99,18 @@ class ComplaintSubmittedPage(Page):
 @PageObject
 class MyComplaintsPage(Page):
     class ID:
-        btnMyComplaints = "div#home-old-complaint"
+        btnMyComplaints = ".file-complaint"
         rowComplaintCards = "xpath=//div[contains(@class,'complaint-card-wrapper')]"
         btnAddComplaintPlus = "button#mycomplaints-add"
         txtComment = "div#citizen-comment"
         btnSend = "svg[class='comment-send']"
+        lblComplaintNumber = "xpath=//div[contains(@class,'complaint-complaint-number')]/*[text()='{}']"
+
+    def open_compalint(self, complaint_number):
+        elem = find(self.ID.lblComplaintNumber.format(complaint_number))
+        scroll_into_view(elem)
+        click(elem)
+        return self
 
     def get_all_complaints(self) -> List[ComplainCardComponent]:
         cards = []
@@ -133,7 +140,7 @@ class MyComplaintsPage(Page):
 class ReopenComplaintPage(Page):
     class ID:
         radReopenReason = "input#reopencomplaint-radio-button-0"
-        txtTypeComplaint = "div#reopencomplaint-comment-field"
+        txtTypeComplaint = "#reopencomplaint-comment-field"
         btnSubmit = "button#reopencomplaint-submit-action"
 
     def set(self, type_complaint):
@@ -142,4 +149,48 @@ class ReopenComplaintPage(Page):
 
     def submit(self):
         click(self.ID.btnSubmit)
+        return self
+
+
+@PageObject
+class ComplaintSummaryPage(Page):
+    class ID:
+        lblComplainNumber = "#complaint-details-complaint-number .label-text"
+        lblcomplaintStatus = "#complaint-details-current-status .label-text"
+        lblSubmissionDate = "#complaint-details-submission-date .label-text"
+        lblComplaintType = ".rainmaker-big-font"
+        lblLocation = "#complaint-details-complaint-location .label-text"
+        lblAdditionalComment = "#complaint-details-complaint-description .label-text"
+        lblImageCount = ".complaint-detail-full-width img.img-responsive"
+
+        btnRate = "xpath=// div[contains( @class ,'label-container ')]/*[text()='RATE']"
+        btnReopen = "xpath=// div[contains( @class ,'label-container ')]/*[text()='RE-OPEN']"
+
+    def get_compalint_type(self):
+        return get(self.ID.lblComplaintType)
+
+    def get_complaint_number(self):
+        return get(self.ID.lblComplainNumber)
+
+    def get_complaint_status(self):
+        return get(self.ID.lblcomplaintStatus)
+
+    def get_complaint_submission_date(self):
+        return get(self.ID.lblSubmissionDate)
+
+    def get_no_of_image(self):
+        return len(finds(self.ID.lblImageCount))
+
+    def get_location(self):
+        return get(self.ID.lblLocation)
+
+    def get_additional_comments(self):
+        return get(self.ID.lblAdditionalComment)
+
+    def reopen_complaint(self):
+        click(self.ID.btnReopen)
+        return self
+
+    def rate_complaint(self):
+        click(self.ID.btnRate)
         return self

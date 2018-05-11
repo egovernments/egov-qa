@@ -17,7 +17,6 @@ def citizen_login(username=None, otp=None):
     otp = otp or DEFAULT_FIXED_OTP
     LoginPage().navigate().set(username).submit()
     OTPPage().set(otp).get_started()
-    yield
 
 
 @fixture
@@ -43,14 +42,8 @@ def logout():
     LogoutPage().submit()
 
 
-def add_complaint_details(
-        complaint_type,
-        location,
-        landmark,
-        additional_details,
-        upload_photo,
-        flag_complaint_submit=True
-):
+def add_complaint_details(complaint_type, location, landmark, additional_details, upload_photo,
+                          flag_complaint_submit=True):
     complaint = AddComplaintPage()
     complaint.file_complaint()
     complaint.set_complaint_type(complaint_type)
@@ -59,6 +52,7 @@ def add_complaint_details(
     complaint.set_landmark_details(landmark)
     complaint.set_complaint_details(additional_details)
     complaint.upload_images(upload_photo)
+
     time.sleep(2)
 
     if flag_complaint_submit:
@@ -73,7 +67,7 @@ def complaint_successful_page():
     return co
 
 
-def view_my_complaints(complaint_number = 0):
+def view_my_complaints(complaint_number=0):
     myComplaint = MyComplaintsPage()
     myComplaint.select_my_complaint()
     cards = myComplaint.get_all_complaints()
@@ -98,3 +92,48 @@ def assign_open_complaints(complaint_number, comments, assignee):
     cards[a].track_complaint()
     complaints.add_comments(comments).send_comment()
     complaints.assign_complaint(assignee)
+
+
+def open_complaint(complaint_number):
+    MyComplaintsPage().select_my_complaint()
+    time.sleep(4)
+    MyComplaintsPage().open_compalint(complaint_number)
+    time.sleep(5)
+
+
+def complaint_details(complaint_number):
+    MyComplaintsPage().select_my_complaint()
+    time.sleep(4)
+    MyComplaintsPage().open_compalint(complaint_number)
+    time.sleep(4)
+    csp = ComplaintSummaryPage()
+    print(csp.get_complaint_number())
+    print(csp.get_additional_comments())
+    print(csp.get_compalint_type())
+    print(csp.get_complaint_submission_date())
+    print(csp.get_complaint_status())
+    print(csp.get_no_of_image())
+    print(csp.get_location())
+    print("done")
+
+
+def rate_closed_complaint(complaint_number):
+    MyComplaintsPage().select_my_complaint()
+    time.sleep(4)
+    MyComplaintsPage().open_compalint(complaint_number)
+    csp = ComplaintSummaryPage()
+    csp.rate_complaint()
+    cfp = ComplaintFeedbackPage()
+    cfp.star_click(4)
+    cfp.check_others()
+    cfp.set("done i am happy with work").submit()
+
+
+def reopen_closed_complaint(complaint_number):
+    MyComplaintsPage().select_my_complaint()
+    time.sleep(4)
+    MyComplaintsPage().open_compalint(complaint_number)
+    csp = ComplaintSummaryPage()
+    time.sleep(2)
+    csp.reopen_complaint()
+    ReopenComplaintPage().set("still there is a problem").submit()
