@@ -7,8 +7,8 @@ from pages import *
 from pages.employee.common import *
 from pages.employee.complaints import *
 
-complaint_number = []
-complain = []
+# complaint_number = []
+# complain = []
 
 
 @fixture
@@ -48,11 +48,10 @@ def add_complaint_details(complaint_type, location, landmark, additional_details
     complaint.add_icon()
     complaint.set_complaint_type(complaint_type)
     complaint.set_location_by_address(location)
-    time.sleep(3)
+    time.sleep(2)
     complaint.set_landmark_details(landmark)
     complaint.set_complaint_details(additional_details)
     complaint.upload_images(upload_photo)
-
     time.sleep(2)
 
     if flag_complaint_submit:
@@ -61,13 +60,13 @@ def add_complaint_details(complaint_type, location, landmark, additional_details
 
 def complaint_registration_number_recevied():
     acknowledgement = ComplaintSubmittedPage()
-    co = acknowledgement.get_complaint_number()
-    complaint_number.append(acknowledgement.get_complaint_number())
+    complaint_no = acknowledgement.get_complaint_number()
     acknowledgement.click_continue()
-    return co
+    return complaint_no
 
 
 def view_my_complaints(complaint_number):
+    complain = []
     myComplaint = MyComplaintsPage()
     AddComplaintPage().complaints_icon()
     # myComplaint.click_my_complaint()
@@ -75,8 +74,8 @@ def view_my_complaints(complaint_number):
 
     for i in cards:
         complain.append(i.get_complaint_no())
-    c = complain.index(complaint_number)
-    cards[c].track_complaint()
+    complaints = complain.index(complaint_number)
+    cards[complaints].track_complaint()
     # if complaint_number == 0:
     #     print("entered if")
     #     for cn in complain:
@@ -115,46 +114,48 @@ def assign_open_complaints(complaint_number, comments, assignee):
 
 def open_complaint(complaint_number):
     MyComplaintsPage().select_my_complaint()
-    time.sleep(4)
+    time.sleep(2)
     MyComplaintsPage().open_compalint(complaint_number)
-    time.sleep(5)
+    time.sleep(2)
 
 
 def complaint_details(complaint_number):
     MyComplaintsPage().select_my_complaint()
-    time.sleep(4)
+    time.sleep(2)
     MyComplaintsPage().open_compalint(complaint_number)
-    time.sleep(4)
-    csp = ComplaintSummaryPage()
-    print(csp.get_complaint_number())
-    print(csp.get_additional_comments())
-    print(csp.get_compalint_type())
-    print(csp.get_complaint_submission_date())
-    print(csp.get_complaint_status())
-    print(csp.get_no_of_image())
-    print(csp.get_location())
+    time.sleep(2)
+    """
+    complaint_summary_page = ComplaintSummaryPage()
+    print(complaint_summary_page.get_complaint_number())
+    print(complaint_summary_page.get_additional_comments())
+    print(complaint_summary_page.get_compalint_type())
+    print(complaint_summary_page.get_complaint_submission_date())
+    print(complaint_summary_page.get_complaint_status())
+    print(complaint_summary_page.get_no_of_image())
+    print(complaint_summary_page.get_location())
     print("done")
+    """
 
 
 def rate_closed_complaint(complaint_number):
     MyComplaintsPage().select_my_complaint()
-    time.sleep(4)
+    time.sleep(2)
     MyComplaintsPage().open_compalint(complaint_number)
-    csp = ComplaintSummaryPage()
-    csp.rate_complaint()
-    cfp = ComplaintFeedbackPage()
-    cfp.star_click(4)
-    cfp.check_others()
-    cfp.set("done i am happy with work").submit()
+    complaint_summary_page = ComplaintSummaryPage()
+    complaint_summary_page.rate_complaint()
+    complaint_feedback_page = ComplaintFeedbackPage()
+    complaint_feedback_page.star_click(4)
+    complaint_feedback_page.check_others()
+    complaint_feedback_page.set("done i am happy with work").submit()
 
 
 def reopen_closed_complaint(complaint_number):
     MyComplaintsPage().select_my_complaint()
     time.sleep(4)
     MyComplaintsPage().open_compalint(complaint_number)
-    csp = ComplaintSummaryPage()
+    complaint_summary_page = ComplaintSummaryPage()
     time.sleep(2)
-    csp.reopen_complaint()
+    complaint_summary_page.reopen_complaint()
     ReopenComplaintPage().set("still there is a problem").submit()
 
 

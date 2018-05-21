@@ -158,14 +158,14 @@ def test_pgr_workflow(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
     quit_driver()
     # Login as GRO
     gro_employee_login("Amardeep", "12345678")
-    view_my_complaints(complaint_number)
-    assign_open_complaints(complaint_number, "Complaint Assigned", "LastMileEmployee")
+    view_my_complaints(complaint_no)
+    assign_open_complaints(complaint_no, "Complaint Assigned", "LastMileEmployee")
     logout()
     quit_driver()
     # Login as Last Mile Employee
     last_mile_employee_login("Antarikshkumar", "12345678")
-    view_my_complaints(complaint_number)
-    resolve_assigned_complaint(complaint_number, "Complaint Resolved")
+    view_my_complaints(complaint_no)
+    resolve_assigned_complaint(complaint_no, "Complaint Resolved")
     logout()
     quit_driver()
 
