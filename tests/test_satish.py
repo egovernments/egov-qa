@@ -28,11 +28,6 @@ def test_new_complaint(citizen_login):
     create_new_complaint("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs", "landmarkdetail", True)
 
 
-def test_new_complaint_by_plus_icon(citizen_login):
-    create_new_complaint_by_plus_icon("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs",
-                                      "landmarkdetail", True)
-
-
 def test_open_complaint_and_comment(citizen_login, logout_citizen):
     complain_number = "09/05/2018/000652"
     comment_on_given_complaint(complain_number)
@@ -40,28 +35,6 @@ def test_open_complaint_and_comment(citizen_login, logout_citizen):
 
 def test_logout(citizen_login):
     logout_citizen()
-
-
-def test_add_complaint(citizen_login):
-    # Create a new complaint
-    add_complaint_details(
-        "Water Body",
-        "Amritsar, Punjab, India ",
-        "Street end",
-        "Leakage of water",
-        "D:/Repositories/rainmaker_automation/egov-qa/assets/images/image1.jpg"
-    )
-    # Acknowledgement on successful complaint submission
-    complaintNo = complaint_successful_page()
-    print(complaintNo)
-
-    # Search and view complaint created on My Complaints
-    view_my_complaints(complaint_number)
-
-    # Navigate to the home page and logout
-    navigation = TopMenuNavigationComponent()
-    navigation.back().back()
-    logout()
 
 
 def test_citizen_should_file_complaint_with_one_image(citizen_login, upload_photo=DEFAULT_IMAGELIST_ONE):
@@ -103,4 +76,4 @@ def test_rate_closed_compalint(citizen_login):
 
 
 def test_reopen_closed_complaint(citizen_login):
-    reopen_closed_complaint("10/05/2018/000676")
+    reopen_closed_complaint("21/05/2018/000820")

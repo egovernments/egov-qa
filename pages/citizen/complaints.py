@@ -5,17 +5,18 @@ from framework.selenium_plus import *
 from ..components import *
 
 __all__ = ['AddComplaintPage', 'ComplaintFeedbackPage', 'ComplaintSubmittedPage', 'MyComplaintsPage',
-           'ReopenComplaintPage', 'ComplaintSummaryPage']
+           'ReopenComplaintPage', 'ComplaintSummaryPage', 'ComplaintReopenedPage']
 
 
 @PageObject
 class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintTypeComponent):
     class ID:
-        btnFileComplaint = "div#home-new-complaint"
+        btnFileComplaint = ".file-complaint"
         txtLocation = "input#address"
         txtComplaintDetails = "textarea[id='additional details']"
         txtComplaintType = "input#complaint-type"
         txtLandmarkDetails = "input#landmark"
+        btnAddIcon = "button#mycomplaints-add"
         btnSubmit = "button#addComplaint-submit-complaint"
 
     def file_complaint(self):
@@ -40,7 +41,11 @@ class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintT
         set(self.ID.txtComplaintDetails, details)
         return self
 
-    def click_submit(self):
+    def click_on_add_icon(self):
+        click(self.ID.btnAddIcon)
+        return self
+
+    def submit(self):
         click(self.ID.btnSubmit)
         return self
 
@@ -141,10 +146,26 @@ class MyComplaintsPage(Page):
 
 @PageObject
 class ReopenComplaintPage(Page, UploadImageComponent):
+    class Reason:
+        NO_WORK_WAS_DONE = "No work was done"
+        ONLY_PARTIAL_WORK_WAS_DONE = "Only partial work was done"
+        EMPLOYEE_DID_NOT_TURN_UP = "Employee did not turn up"
+        NO_PERMANENT_SOLUTION = "No permanent solution"
+
     class ID:
-        radReopenReason = "input#reopencomplaint-radio-button-0"
+        prmRadReopenReason = "input[type='radio'][value='{}']"
         txtTypeComplaint = "#reopencomplaint-comment-field"
         btnSubmit = "button#reopencomplaint-submit-action"
+
+    REOPEN_REASON = {
+        Reason.NO_WORK_WAS_DONE: ID.prmRadReopenReason.format("No work was done"),
+        Reason.ONLY_PARTIAL_WORK_WAS_DONE: ID.prmRadReopenReason.format("Only partial work was done"),
+        Reason.EMPLOYEE_DID_NOT_TURN_UP: ID.prmRadReopenReason.format("Employee did not turn up"),
+        Reason.NO_PERMANENT_SOLUTION: ID.prmRadReopenReason.format("No permanent solution"),
+    }
+
+    def reason_for_reopen(self, choice):
+        click(self.REOPEN_REASON[choice])
 
     def set(self, type_complaint):
         set(self.ID.txtTypeComplaint, type_complaint)
@@ -197,3 +218,16 @@ class ComplaintSummaryPage(Page):
     def rate_complaint(self):
         click(self.ID.btnRate)
         return self
+
+
+@PageObject
+class ComplaintReopenedPage(Page):
+    class ID:
+        lblAcknowledgement = ".thankyou-text .label-text"
+        btnGoToHome = "#success-message-acknowledgement"
+
+    def get_successful_message(self):
+        return get(self.ID.lblAcknowledgement)
+
+    def go_to_home(self):
+        click(self.ID.btnGoToHome)

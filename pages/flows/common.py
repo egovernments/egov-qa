@@ -68,23 +68,6 @@ def logout():
     LogoutPage().submit()
 
 
-def add_complaint_details(complaint_type, location, landmark, additional_details, upload_photo,
-                          flag_complaint_submit=True):
-    complaint = AddComplaintPage()
-    complaint.file_complaint()
-    complaint.set_complaint_type(complaint_type)
-    complaint.set_location_by_address(location)
-    time.sleep(3)
-    complaint.set_landmark_details(landmark)
-    complaint.set_complaint_details(additional_details)
-    complaint.upload_images(upload_photo)
-
-    time.sleep(2)
-
-    if flag_complaint_submit:
-        complaint.submit()
-
-
 def complaint_successful_page():
     acknowledgement = ComplaintSubmittedPage()
     co = acknowledgement.get_complaint_number()
@@ -157,12 +140,20 @@ def rate_closed_complaint(complaint_number):
 
 def reopen_closed_complaint(complaint_number):
     MyComplaintsPage().select_my_complaint()
-    time.sleep(4)
     MyComplaintsPage().open_compalint(complaint_number)
     csp = ComplaintSummaryPage()
-    time.sleep(2)
     csp.reopen_complaint()
     ReopenComplaintPage().set("still there is a problem").submit()
+    rcp = ReopenComplaintPage()
+    rcp.reason_for_reopen(rcp.Reason.NO_WORK_WAS_DONE)
+    rcp.set("work should be done")
+    rcp.submit()
+    acknowledgement = ComplaintReopenedPage().get_successful_message()
+    assert "Re-opened" in acknowledgement, "acknowledgement should contain the Re-Opened"
+    ComplaintReopenedPage().go_to_home()
+    MyComplaintsPage().select_my_complaint()
+    MyComplaintsPage().open_compalint(complaint_number)
+    assert ComplaintSummaryPage().get_complaint_status() == "Re-opened", "status is not Re-Opened"
 
 
 def login_gro(username=None, password=None):
@@ -185,7 +176,8 @@ def create_new_complaint(
     acp.navigate() \
         .set_landmark_details(landmark_details) \
         .set_complaint_details(additional_details) \
-        .set_complaint_type(complaint_type_select, complaint_type_search) \
+        .set_complaint_type(complaint_type_select, comp
+    laint_type_search) \
         .set_location_by_address(location)
     acp.upload_images(images)
 
