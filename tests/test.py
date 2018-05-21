@@ -11,7 +11,7 @@ from pages.flows.common import *
 # def pytest_sessionfinish(session, exitstatus):
 #     # teardown_stuff
 from pages.employee.complains import ComplaintResolvedCommentPage, RequestReassignReasonPage
-from pages.flows.common import create_new_complaint,
+from pages.flows.common import create_new_complaint
 
 
 @fixture(autouse=True, scope='session')
@@ -25,10 +25,6 @@ def my_fixture():
         pass
     # teardown_stuff
 
-
-
-def test_citizen_login():
-    login_citizen('8792101399', "123456")
 
 
 def test_new_complaint(login_citizen):
@@ -188,22 +184,6 @@ def test_add_complaint(citizen_login):
     logout()
 
 
-def test_citizen_should_file_complaint_with_one_image(citizen_login, upload_photo=DEFAULT_IMAGELIST_ONE):
-    # Create a new complaint
-    complaint_type = "Water Body"
-    location = "Amritsar, Punjab, India "
-    landmark = "Street end"
-    additional_details = "Leakage of water"
-
-    add_complaint_details(
-        complaint_type,
-        location,
-        landmark,
-        additional_details,
-        upload_photo
-    )
-
-
 def test_complaint_register_to_resolve(login_citizen):
     create_new_complaint("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs", "landmarkdetail", True)
     complain_number = ComplaintSubmittedPage().get_complaint_number()
@@ -303,5 +283,7 @@ def test_citizen_should_file_complaint_without_images(login_citizen):
 
     # Read complaint #
     # assert complaint is not blank
+
+
 
 
