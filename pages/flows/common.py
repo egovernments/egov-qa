@@ -58,10 +58,12 @@ def add_complaint_details(complaint_type, location, landmark, additional_details
         complaint.submit()
 
 
-def complaint_registration_number_recevied():
+def complaint_registration_number_recevied(flag_is_continue=True):
     acknowledgement = ComplaintSubmittedPage()
     complaint_no = acknowledgement.get_complaint_number()
-    acknowledgement.click_continue()
+
+    if flag_is_continue:
+        acknowledgement.click_continue()
     return complaint_no
 
 
