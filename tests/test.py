@@ -15,7 +15,7 @@ def my_fixture():
     # setup_stuff
     yield
     try:
-        # quit_driver()
+        quit_driver()
         pass
     finally:
         pass
@@ -67,27 +67,22 @@ def test_user_registration():  # done
     user_reg.navigate()
     user_reg.set("9988776655", "FirstName", "Bathinda").submit()
 
+def test_language_selection():
+    language_selection = LanguageSelectionPage()
+    language_selection.navigate()
+    language_selection.language("punjabi").language("hindi").language("english").submit()
 
-def test_language_selection():  # done
-    ls = LanguageSelectionPage()
-    ls.navigate()
-    ls.language("punjabi").language("hindi").language("english").submit()
-
-
-def test_homepage():  # done
-    hp = HomePage()
-    hp.navigate().new_complaint()
-    hp.navigate().my_complaints()
-    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/my-complaints"
-    hp.navigate().click_my_complaint()
+def test_homepage():
+    home_page = HomePage()
+    home_page.navigate().new_complaint()
+    home_page.navigate().click_my_complaint()
 
 
-def test_complaintfeedbackpage():  # done
-    cf = ComplaintFeedbackPage()
-    cf.navigate().star_click(4)
-    cf.check_services().check_quality_of_work().check_resolution_time().check_others()
-    cf.set("good to go").submit()
-
+def test_complaint_feedback():
+    complaint_feedback_page = ComplaintFeedbackPage()
+    complaint_feedback_page.navigate().star_click(4)
+    complaint_feedback_page.check_services().check_quality_of_work().check_resolution_time().check_others()
+    complaint_feedback_page.set("Good to go").submit()
 
 def test_reopen_complaint():  # added uploading picture method #done
     photo1 = "/home/abh/Pictures/Screenshot from 2018-02-11 13-13-22.png"
@@ -130,21 +125,30 @@ def test_complaint_resolved_comment():  # done
 
 def test_register_mobile_less10():
     LanguageSelectionPage().navigate().language("english").submit()
-    reg = RegistrationPage()
-    reg.navigate().set(876543, 'satish', 'Amritsar')
-    reg.submit()
+    registration = RegistrationPage()
+    registration.navigate().set(876543, 'satish', 'Amritsar')
+    registration.submit()
 
 
 def test_register_mobile_greater10():
     LanguageSelectionPage().navigate().language("english").submit()
-    reg = RegistrationPage()
-    reg.navigate().set(87654398887773333, 'satish', 'Amritsar')
-    reg.submit()
+    registration = RegistrationPage()
+    registration.navigate().set(87654398887773333, 'satish', 'Amritsar')
+    registration.submit()
 
 
-def test_new_complaint_by_plus_icon(login_citizen):
-    create_new_complaint_by_plus_icon("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs",
-                                      "landmarkdetail", True)
+def test_register_mobile_with_specialchar():
+    LanguageSelectionPage().navigate().language("english").submit()
+    registration = RegistrationPage()
+    registration.navigate().set("876543Lhkjh", 'satish', 'Amritsar')
+    registration.submit()
+
+
+def test_duplicate_mobile_number():
+    LanguageSelectionPage().navigate().language("english").submit()
+    registration = RegistrationPage()
+    registration.navigate().set("8792101399", 'satish', 'Amritsar').submit()
+    registration.navigate().set("8792101399", 'satish', 'Amritsar').submit()
 
 
 def test_add_complaint(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
