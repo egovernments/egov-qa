@@ -1,7 +1,6 @@
 import time
 
 from pytest import fixture
-
 from environment import *
 from pages import *
 from pages.employee.common import EmployeeLoginPage
@@ -10,13 +9,41 @@ from pages.employee.complaints import UnassignedComplaintsPage
 complaint_number = []
 complain = []
 
+from environment import *
+from pages import LoginPage, OTPPage, AddComplaintPage, HomePage
 
 @fixture
 def citizen_login(username=None, otp=None):
     username = username or DEFAULT_CITIZEN_USERNAME
     otp = otp or DEFAULT_FIXED_OTP
-    LoginPage().navigate().set(username).submit()
-    OTPPage().set(otp).get_started()
+    loginpage = LoginPage()
+    loginpage.navigate()
+
+    loginpage.set(username)
+    loginpage.submit()
+    otppage = OTPPage()
+    otppage.set(otp)
+    otppage.get_started()
+
+
+
+
+def create_new_complaint_by_plus_icon(location, additional_details, complaint_type_search, complaint_type_select,
+                                      landmark, flag_submit_complaint=True):
+    HomePage().my_complaints()
+    addcomplaintpage = AddComplaintPage()
+    MyComplaintsPage().add_complaint_plus_button()
+    addcomplaintpage.set_location_by_address(location)
+    addcomplaintpage.set_complaint_details(additional_details)
+    addcomplaintpage.set_landmark_details(landmark)
+    addcomplaintpage.set_complaint_type(complaint_type_search, complaint_type_select)
+    image1 = "/home/satish/Pictures/bank1.png"
+    image2 = "/home/satish/Pictures/bank1.png"
+    image3 = "/home/satish/Pictures/bank1.png"
+    addcomplaintpage.upload_images(image1, image2, image3)
+
+    time.sleep(3)
+    addcomplaintpage.submit()
 
 
 @fixture
@@ -137,3 +164,31 @@ def reopen_closed_complaint(complaint_number):
     time.sleep(2)
     csp.reopen_complaint()
     ReopenComplaintPage().set("still there is a problem").submit()
+
+def login_gro(username=None, password=None):
+    LoginPage().navigate().set(username).submit()
+    OTPPage().set(DEFAULT_FIXED_OTP).get_started()
+    yield
+    HomePage().navigate()
+
+
+def create_new_complaint(
+        location,
+        additional_details,
+        landmark_details,
+        complaint_type_search,
+        complaint_type_select,
+        images,
+        flag_submit_complaint=True
+):
+    acp = AddComplaintPage()
+
+    acp.navigate()\
+        .set_landmark_details(landmark_details)\
+        .set_complaint_details(additional_details)\
+        .set_complaint_type(complaint_type_select, complaint_type_search)\
+        .set_location_by_address(location)
+    acp.upload_images(images)
+
+    if flag_submit_complaint:
+        acp.click_submit()

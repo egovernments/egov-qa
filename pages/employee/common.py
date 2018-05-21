@@ -35,3 +35,8 @@ class EmployeeLoginPage(Page):
     def profile(self):
         click(self.ID.btnProfile)
         return self
+
+@PageObject
+class EmployeeLogoutPage(Page):
+    def logout(self):
+        click(self.TopMenuNavigationComponent.ham())

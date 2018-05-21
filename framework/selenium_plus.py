@@ -120,11 +120,11 @@ def get_identifier(identifier):
     return (map_locator_to_by[locator], locator_value)
 
 
-def click(identifier, context=None, timeout=-1, scroll_in_view=False):
+def click(identifier, context=None, timeout=-1, scroll_in_view=False, condition=EC.element_to_be_clickable):
     if scroll_in_view:
         elem = scroll_into_view(identifier, context=context, timeout=timeout)
     else:
-        elem = find(identifier, context, timeout, EC.element_to_be_clickable)
+        elem = find(identifier, context, timeout, condition)
 
     elem.click()
 
