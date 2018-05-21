@@ -12,10 +12,12 @@ __all__ = ['UnassignedComplaintsPage', 'ComplaintResolvedCommentPage', 'Complain
 class UnassignedComplaintsPage(Page):
     class ID:
         rowComplaintCards = "xpath=//div[contains(@class,'complaint-card-wrapper')]"
-        txtComment = "id=citizen-comment"
+        txtComment = "textarea#citizen-comment"
         btnSendComment = "svg[class='comment-send']"
-        btnAssign = "id=actionTwo"
-        txtEmployeeSearch = "id=employee-search"
+        btnAssign = "button#actionTwo"
+        txtEmployeeSearch = "input#employee-search"
+        lblAssignee = "id#23289"
+        btnAssignLastMile = "//div[contains(text(), 'ASSIGN')]"
 
     def get_all_complaints(self) -> List[ComplainCardComponent]:
         cards = []
@@ -32,8 +34,11 @@ class UnassignedComplaintsPage(Page):
         click(self.ID.btnSendComment)
         return self
 
-    def assign_complaint(self):
+    def assign_complaint(self, assignee):
         click(self.ID.btnAssign)
+        set(self.ID.txtEmployeeSearch, assignee)
+        click(self.ID.lblAssignee)
+        click(self.ID.btnAssignLastMile)
 
 
 @PageObject

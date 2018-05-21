@@ -16,8 +16,8 @@ class EmployeeLoginPage(Page):
         btnLogin = "id=login-submit-action"
         btnProfile = "#header-profile"
 
-    def navigate(self, end_point):
-        goto(APP_HOST+end_point)
+    def navigate(self):
+        goto(BASE_URL + APP_EMPLOYEE_URL)
         return self
 
     def employee_id(self, employee_id):
