@@ -143,6 +143,7 @@ def test_register_mobile_greater10():
     reg.navigate().set(87654398887773333, 'satish', 'Amritsar')
     reg.submit()
 
+
 def test_add_complaint(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
     # Create a new complaint
     add_complaint_details("Garbage", "Amritsar, Punjab, India ", "Street end", "Leakage of water", upload_photo)
