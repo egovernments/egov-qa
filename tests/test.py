@@ -111,11 +111,6 @@ def test_navigation():  # DONE
 
     # this test is for verifying navigation
 
-
-def test_reopen_complaint():
-    ReopenComplaintPage().navigate().set("Complaint not resolved").submit()
-
-
 def test_profile():  # done
     LoginPage().navigate().set("9999999999").submit()
     OTPPage().set("12345").get_started()
