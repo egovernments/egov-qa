@@ -45,7 +45,7 @@ def add_complaint_details(complaint_type, location, landmark, additional_details
                           flag_complaint_submit=True):
     complaint = AddComplaintPage()
     complaint.complaints_icon()
-    complaint.add_icon()
+    complaint.click_on_plus_icon()
     complaint.set_complaint_type(complaint_type)
     complaint.set_location_by_address(location)
     time.sleep(2)
