@@ -11,7 +11,8 @@ __all__ = ['AddComplaintPage', 'ComplaintFeedbackPage', 'ComplaintSubmittedPage'
 @PageObject
 class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintTypeComponent):
     class ID:
-        btnFileComplaint = ".file-complaint"
+        btnFileComplaint = "xpath=//div[contains(text(), 'Complaints')]"
+        btnAddComplaint = "button#mycomplaints-add"
         txtLocation = "input#address"
         txtComplaintDetails = "textarea[id='additional details']"
         txtComplaintType = "input#complaint-type"
@@ -19,8 +20,12 @@ class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintT
         btnAddIcon = "button#mycomplaints-add"
         btnSubmit = "button#addComplaint-submit-complaint"
 
-    def file_complaint(self):
+    def complaints_icon(self):
         click(self.ID.btnFileComplaint)
+        return self
+
+    def click_on_add_my_complaints(self):
+        click(self.ID.btnAddComplaint)
         return self
 
     def set_location_by_address(self, address, result_index=0):
@@ -41,7 +46,7 @@ class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintT
         set(self.ID.txtComplaintDetails, details)
         return self
 
-    def click_on_add_icon(self):
+    def add_icon(self):
         click(self.ID.btnAddIcon)
         return self
 
