@@ -18,7 +18,7 @@ __all__ = ['ComplaintTypeComponent',
 class ComplaintTypeComponent(Component):
     class ID:
         txtComplaintTypeSearch = "input#complainttype-search"
-        prmLblComplaintType = "xpath=//div[.='{}']"
+        prmLblComplaintType = "xpath=//div[contains(text(), '{}')]"
 
     def select_complaint_type(self, complaint_type, complaint_filter=None):
         if complaint_filter is None:

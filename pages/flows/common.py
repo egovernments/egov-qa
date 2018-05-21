@@ -1,30 +1,68 @@
 import time
 
 from pytest import fixture
+
 from environment import *
 from pages import *
-from pages.employee.common import EmployeeLoginPage
-from pages.employee.complaints import UnassignedComplaintsPage
-
-complaint_number = []
-complain = []
-
-from environment import *
-from pages import LoginPage, OTPPage, AddComplaintPage, HomePage
+from pages.employee.common import *
+from pages.employee.complaints import *
 
 
 @fixture
 def citizen_login(username=None, otp=None):
     username = username or DEFAULT_CITIZEN_USERNAME
     otp = otp or DEFAULT_FIXED_OTP
-    loginpage = LoginPage()
-    loginpage.navigate()
+    navigate = LoginPage().navigate()
+    navigate.set(username).submit()
+    OTPPage().set(otp).get_started()
 
-    loginpage.set(username)
-    loginpage.submit()
-    otppage = OTPPage()
-    otppage.set(otp)
-    otppage.get_started()
+
+@fixture
+def gro_employee_login(username=None, password=None):
+    username = username or GRO_EMPLOYEE_USERNAME
+    password = password or DEFAULT_PASSWORD
+    EmployeeLoginPage().navigate().employee_id(username) \
+        .password(password).submit()
+
+
+@fixture
+def last_mile_employee_login(username=None, password=None):
+    username = username or LAST_MILE_EMPLOYEE_USERNAME
+    password = password or DEFAULT_PASSWORD
+    EmployeeLoginPage().navigate().employee_id(username) \
+        .password(password).submit()
+
+
+@fixture
+def logout():
+    TopMenuNavigationComponent().ham()
+    LogoutPage().submit()
+
+
+def add_complaint_details(complaint_type, location, landmark, additional_details, upload_photo,
+                          flag_complaint_submit=True):
+    complaint = AddComplaintPage()
+    complaint.complaints_icon()
+    complaint.click_on_plus_icon()
+    complaint.set_complaint_type(complaint_type)
+    complaint.set_location_by_address(location)
+    time.sleep(2)
+    complaint.set_landmark_details(landmark)
+    complaint.set_complaint_details(additional_details)
+    complaint.upload_images(upload_photo)
+    time.sleep(2)
+
+    if flag_complaint_submit:
+        complaint.submit()
+
+
+def complaint_registration_number_recevied(flag_is_continue=True):
+    acknowledgement = ComplaintSubmittedPage()
+    complaint_no = acknowledgement.get_complaint_number()
+
+    if flag_is_continue:
+        acknowledgement.click_continue()
+    return complaint_no
 
 
 def create_new_complaint_by_plus_icon(location, additional_details, complaint_type_search, complaint_type_select,
@@ -45,77 +83,48 @@ def create_new_complaint_by_plus_icon(location, additional_details, complaint_ty
     addcomplaintpage.submit()
 
 
-@fixture
-def GRO_employee_login(username=None, password=None):
-    username = username or GRO_EMPLOYEE_USERNAME
-    password = password or DEFAULT_PASSWORD
-    EmployeeLoginPage().navigate(APP_EMPLOYEE_URL).employee_id(username) \
-        .password(password).submit()
-    yield
-
-
-@fixture
-def last_mile_employee_login(username=None, otp=None):
-    username = username or LAST_MILE_EMPLOYEE_USERNAME
-    otp = otp or DEFAULT_FIXED_OTP
-    LoginPage().navigate(APP_EMPLOYEE_URL).set(username).submit()
-    OTPPage().set(otp).get_started()
-    yield
-
-
-def logout():
-    TopMenuNavigationComponent().ham()
-    LogoutPage().submit()
-
-
-def add_complaint_details(complaint_type, location, landmark, additional_details, upload_photo,
-                          flag_complaint_submit=True):
-    complaint = AddComplaintPage()
-    complaint.file_complaint()
-    complaint.set_complaint_type(complaint_type)
-    complaint.set_location_by_address(location)
-    time.sleep(3)
-    complaint.set_landmark_details(landmark)
-    complaint.set_complaint_details(additional_details)
-    complaint.upload_images(upload_photo)
-
-    time.sleep(2)
-
-    if flag_complaint_submit:
-        complaint.submit()
-
-
 def complaint_successful_page():
     acknowledgement = ComplaintSubmittedPage()
     co = acknowledgement.get_complaint_number()
-    complaint_number.append(acknowledgement.get_complaint_number())
     acknowledgement.click_continue()
     return co
 
 
-def view_my_complaints(complaint_number=0):
+def view_my_complaints(complaint_number):
+    complain = []
     myComplaint = MyComplaintsPage()
-    myComplaint.select_my_complaint()
+    AddComplaintPage().complaints_icon()
+    # myComplaint.click_my_complaint()
     cards = myComplaint.get_all_complaints()
 
-    print(len(cards))
     for i in cards:
         complain.append(i.get_complaint_no())
-    if complaint_number == 0:
-        for cn in complain:
-            print(cn)
-    else:
-        a = complain.index(complaint_number[0])
-        cards[a].track_complaint()
+    complaints = complain.index(complaint_number)
+    cards[complaints].track_complaint()
+    # if complaint_number == 0:
+    #     print("entered if")
+    #     for cn in complain:
+    #         print(cn)
+    # else:
+    #     print("entered else")
+    #     a = complain.index(complaint_number)
+    #     print(a)
+    #     cards[a].track_complaint()
+
+
+def comment_on_complaint(comment):
+    myComplaint = MyComplaintsPage()
+    myComplaint.add_comments(comment)
+    myComplaint.send_comment()
 
 
 def assign_open_complaints(complaint_number, comments, assignee):
     complaints = UnassignedComplaintsPage()
-    cards = complaints.get_all_complaints()
-    for i in cards:
-        complain.append(i.get_complaint_no())
-    a = complain.index(complaint_number[0])
-    cards[a].track_complaint()
+    # cards = complaints.get_all_complaints()
+    # for i in cards:
+    #     complain.append(i.get_complaint_no())
+    # a = complain.index(complaint_number[0])
+    # cards[a].track_complaint()
     complaints.add_comments(comments).send_comment()
     complaints.assign_complaint(assignee)
 
@@ -163,31 +172,3 @@ def reopen_closed_complaint(complaint_number):
     time.sleep(2)
     csp.reopen_complaint()
     ReopenComplaintPage().set("still there is a problem").submit()
-
-
-def login_gro(username=None, password=None):
-    LoginPage().navigate().set(username).submit()
-    OTPPage().set(DEFAULT_FIXED_OTP).get_started()
-    yield
-    HomePage().navigate()
-
-
-def create_new_complaint(
-        location,
-        additional_details,
-        landmark_details,
-        complaint_type_search,
-        complaint_type_select,
-        images,
-        flag_submit_complaint=True):
-    acp = AddComplaintPage()
-
-    acp.navigate() \
-        .set_landmark_details(landmark_details) \
-        .set_complaint_details(additional_details) \
-        .set_complaint_type(complaint_type_select, complaint_type_search) \
-        .set_location_by_address(location)
-    acp.upload_images(images)
-
-    if flag_submit_complaint:
-        acp.click_submit()
