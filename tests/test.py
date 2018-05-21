@@ -1,16 +1,11 @@
-from pytest import fixture
-
-from environment import DEFAULT_IMAGELIST_ONE, DEFAULT_IMAGELIST_THREE, DEFAULT_IMAGELIST_TWO
-from pages import *
 from framework.selenium_plus import *
-from pages.flows.common import *
-
 # def pytest_sessionstart(session):
 #     # setup_stuff
 #
 # def pytest_sessionfinish(session, exitstatus):
 #     # teardown_stuff
 from pages.employee.complains import ComplaintResolvedCommentPage, RequestReassignReasonPage
+from pages.flows.common import *
 from pages.flows.common import create_new_complaint
 
 
@@ -26,9 +21,9 @@ def my_fixture():
     # teardown_stuff
 
 
-
 def test_new_complaint(login_citizen):
     create_new_complaint("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs", "landmarkdetail", True)
+
 
 def test_otp_submission():  # done
     otp = OTPPage()
@@ -105,9 +100,10 @@ def test_login():
     OTPPage().set("123456").get_started()
     # assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen"
 
-
-
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/stv3/citizen/add-complaint"
+
+
+git
 
 
 def test_reopen_complaint():  # added uploading picture method #done
@@ -153,13 +149,9 @@ def test_complaint_resolved_comment():  # done
     resolved.set_comment("GOTTYA").click_mark_resolved()
 
 
-
-
-
 def test_new_complaint_by_plus_icon(login_citizen):
     create_new_complaint_by_plus_icon("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs",
                                       "landmarkdetail", True)
-
 
 
 def test_add_complaint(citizen_login):
@@ -187,7 +179,7 @@ def test_add_complaint(citizen_login):
 def test_complaint_register_to_resolve(login_citizen):
     create_new_complaint("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs", "landmarkdetail", True)
     complain_number = ComplaintSubmittedPage().get_complaint_number()
-    #logout_citizen()
+    # logout_citizen()
     login_gro("9090909010", "murali@1993")
 
 
@@ -245,9 +237,6 @@ def test_flow_check_1():
     AddComplaintPage().upload_images(photo1, photo2, photo3)
     AddComplaintPage().set_complaint_details("VAGAO YAAR JALDI")
     AddComplaintPage().set_landmark_details("HAIN WAHI HAI")
-    # AddComplaintPage().click_submit()
-    # print(ComplaintSubmittedPage().get_complaint_number())
-    # ComplaintSubmittedPage().click_continue()
 
 
 def test_citizen_should_file_complaint_with_one_image(login_citizen, images=DEFAULT_IMAGELIST_ONE):
@@ -276,14 +265,6 @@ def test_citizen_should_file_complaint_with_three_image(login_citizen):
 
 def test_citizen_should_file_complaint_without_images(login_citizen):
     test_citizen_should_file_complaint_with_one_image(login_citizen, [])
-    #assign_to_last_mile_employee()
-    # gro_reject_complaint()
 
-    # reassign_request_last_mile_employee()
-
-    # Read complaint #
-    # assert complaint is not blank
-
-
-
-
+def test_citizen_should_file_complaint_without_image(citizen_login):
+    test_citizen_should_file_complaint_with_one_image(citizen_login, [])
