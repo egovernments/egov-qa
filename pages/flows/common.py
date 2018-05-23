@@ -176,3 +176,7 @@ def reopen_closed_complaint(complaint_number):
     time.sleep(2)
     complaint_summary_page.reopen_complaint()
     ReopenComplaintPage().set("still there is a problem").submit()
+
+
+def resolve_assigned_complaint(complaint_number, comments):
+    pass

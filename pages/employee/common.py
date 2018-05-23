@@ -29,8 +29,9 @@ class EmployeeLoginPage(Page):
 =======
 >>>>>>> 529e330... Modified Test cases
     def navigate(self):
-        goto(BASE_URL + APP_EMPLOYEE_URL)
-        return self
+        url = BASE_URL + APP_EMPLOYEE_URL
+        goto(url)
+        return url
 
     def employee_id(self, employee_id):
         set(self.ID.txtEmployeeID, employee_id)

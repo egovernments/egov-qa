@@ -91,21 +91,6 @@ def test_reopen_complaint():  # added uploading picture method #done
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/complaint-submitted"
 
 
-def test_navigation():  # DONE
-    LoginPage().navigate().set("9999999999").submit()
-    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/user/otp"
-    OTPPage().set("12345").get_started()
-    BottomMenuComponent().info().payments().complaints().home()
-    TopMenuNavigationComponent().ham()
-    LoginPage().profile()
-    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/user/profile"
-    TopMenuNavigationComponent().back()
-    TopMenuNavigationComponent.ham()
-
-    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen"
-
-    # this test is for verifying navigation
-
 def test_profile():  # done
     LoginPage().navigate().set("9999999999").submit()
     OTPPage().set("12345").get_started()
