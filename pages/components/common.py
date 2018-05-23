@@ -11,8 +11,21 @@ __all__ = ['ComplaintTypeComponent',
            'ComplainCardComponent',
            'TopMenuNavigationComponent',
            'BottomMenuComponent',
-           'SideBarComponentEmployee'
+           'SideBarComponentEmployee',
+           'CommonComponent'
            ]
+
+
+class CommonComponent(Component):
+    class ID:
+        iconBusy = "div#loading-indicator"
+        toastNotification = "div#toast-message"
+
+        def wait_for_busy(self):
+            wait_for_appear_then_disappear(self.ID.iconBusy)
+
+        def wait_for_toast(self):
+            return wait_for_appear_then_disappear(self.ID.toastNotification)
 
 
 class ComplaintTypeComponent(Component):

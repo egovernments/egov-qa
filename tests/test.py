@@ -15,7 +15,7 @@ def my_fixture():
     # setup_stuff
     yield
     try:
-        quit_driver()
+        # quit_driver()
         pass
     finally:
         pass
@@ -55,57 +55,24 @@ def test_complain_submitted():  # done
 
 
 def test_my_complaints():  # done
+    citizen_login()
     complaints = MyComplaintsPage()
-    complaints.navigate()
+    # complaints.navigate()
+
     cards = complaints.get_all_complaints()
     card = cards[2]
     card.track_complaint()
-
 
 def test_user_registration():  # done
     user_reg = RegistrationPage()
     user_reg.navigate()
     user_reg.set("9988776655", "FirstName", "Bathinda").submit()
 
+
 def test_language_selection():
     language_selection = LanguageSelectionPage()
     language_selection.navigate()
     language_selection.language("punjabi").language("hindi").language("english").submit()
-
-def test_homepage():
-    home_page = HomePage()
-    home_page.navigate().new_complaint()
-    home_page.navigate().click_my_complaint()
-
-
-def test_complaint_feedback():
-    complaint_feedback_page = ComplaintFeedbackPage()
-    complaint_feedback_page.navigate().star_click(4)
-    complaint_feedback_page.check_services().check_quality_of_work().check_resolution_time().check_others()
-    complaint_feedback_page.set("Good to go").submit()
-
-def test_reopen_complaint():  # added uploading picture method #done
-    photo1 = "/home/abh/Pictures/Screenshot from 2018-02-11 13-13-22.png"
-    ReopenComplaintPage().navigate().set("Complaint not resolved").upload_images(photo1)
-    ReopenComplaintPage().submit()
-    assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/complaint-submitted"
-
-
-def test_profile():  # done
-    LoginPage().navigate().set("9999999999").submit()
-    OTPPage().set("12345").get_started()
-    TopMenuNavigationComponent().ham()
-    LoginPage().profile()
-    ProfilePage().update("Singh", "def@ulb.in")
-    ProfilePage().photo_remove()
-    ProfilePage().save()
-    TopMenuNavigationComponent().back()
-
-
-def test_complaint_resolved_comment():  # done
-    resolved = ComplaintResolvedCommentPage()
-    resolved.navigate().upload_images("/home/abh/Pictures/Screenshot from 2018-02-11 13-13-22.png")
-    resolved.set_comment("GOTTYA").click_mark_resolved()
 
 
 def test_register_mobile_less10():
@@ -129,11 +96,24 @@ def test_register_mobile_with_specialchar():
     registration.submit()
 
 
-def test_duplicate_mobile_number():
-    LanguageSelectionPage().navigate().language("english").submit()
-    registration = RegistrationPage()
-    registration.navigate().set("8792101399", 'satish', 'Amritsar').submit()
-    registration.navigate().set("8792101399", 'satish', 'Amritsar').submit()
+def test_profile():
+    citizen_login()
+    TopMenuNavigationComponent().ham()
+    LoginPage().profile()
+    ProfilePage().update("Manjunatha S ", "manju@ulb.in")
+    # ProfilePage().photo_remove()
+    # ProfilePage().save()
+    assert ProfilePage().save() == "Profile is Successfully Updated"
+    navigation = TopMenuNavigationComponent()
+    navigation.back()
+    logout()
+
+
+def test_homepage():
+    citizen_login()
+    home_page = HomePage()
+    home_page.new_complaint()
+    home_page.navigate().click_my_complaint()
 
 
 def test_add_complaint(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
@@ -149,6 +129,17 @@ def test_add_complaint(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
     navigation = TopMenuNavigationComponent()
     navigation.back().back()
     logout()
+
+
+def test_complaint_feedback():
+    complaint_feedback_page = ComplaintFeedbackPage()
+    complaint_feedback_page.navigate().star_click(4)
+    complaint_feedback_page.check_services().check_quality_of_work().check_resolution_time().check_others()
+    complaint_feedback_page.set("Good to go").submit()
+
+
+def test_reopen_complaint():
+    ReopenComplaintPage().navigate().set("Complaint not resolved").submit()
 
 
 def test_pgr_workflow(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
@@ -277,3 +268,9 @@ def test_citizen_should_file_complaint_with_three_image(login_citizen):
 
 def test_citizen_should_file_complaint_without_images(login_citizen):
     test_citizen_should_file_complaint_with_one_image(login_citizen, [])
+
+
+def test_complaint_resolved_comment():  # done
+    resolved = ComplaintResolvedCommentPage()
+    resolved.navigate().upload_images("/home/abh/Pictures/Screenshot from 2018-02-11 13-13-22.png")
+    resolved.set_comment("GOTTYA").click_mark_resolved()

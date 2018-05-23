@@ -36,9 +36,12 @@ class ProfilePage(Page):
         btnProfileSave = "#profile-save-action"
         btnProfilePhoto = "#profile-upload-icon"
         btnPhotoRemove = "#uploadDrawerRemoveIcon"
+        lblToaster = "#toast-message span"
 
     def update(self, name, email_id):
+        clear(self.ID.txtProfileName)
         set(self.ID.txtProfileName, name)
+        clear(self.ID.txtProfileEmailId)
         set(self.ID.txtProfileEmailId, email_id)
 
     def photo_remove(self):
@@ -47,4 +50,4 @@ class ProfilePage(Page):
 
     def save(self):
         click(self.ID.btnProfileSave)
-        return self
+        return wait_for_appear_then_disappear(self.ID.lblToaster)

@@ -84,6 +84,7 @@ class OTPPage(Page):
     def otp_has_resent(self):
         return get(self.ID.lblResentOTPMsg)
 
+
 @PageObject
 class RegistrationPage(Page, SelectCityComponent):
     class ID:
