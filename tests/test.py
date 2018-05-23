@@ -131,17 +131,6 @@ def test_add_complaint(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
     logout()
 
 
-def test_complaint_feedback():
-    complaint_feedback_page = ComplaintFeedbackPage()
-    complaint_feedback_page.navigate().star_click(4)
-    complaint_feedback_page.check_services().check_quality_of_work().check_resolution_time().check_others()
-    complaint_feedback_page.set("Good to go").submit()
-
-
-def test_reopen_complaint():
-    ReopenComplaintPage().navigate().set("Complaint not resolved").submit()
-
-
 def test_pgr_workflow(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
     # Create a new complaint
     add_complaint_details("Garbage", "Amritsar, Punjab, India ", "Street end", "Leakage of water", upload_photo)
