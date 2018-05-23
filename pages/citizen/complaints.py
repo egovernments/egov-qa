@@ -13,7 +13,7 @@ class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintT
     class ID:
         btnFileComplaint = "div#home-new-complaint"
         txtLocation = "input#address"
-        txtComplaintDetails = "[id='additional details']"
+        txtComplaintDetails = "textarea[id='additional details']"
         txtComplaintType = "input#complaint-type"
         txtLandmarkDetails = "input#landmark"
         btnSubmit = "button#addComplaint-submit-complaint"
@@ -30,14 +30,17 @@ class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintT
     def set_complaint_type(self, complaint_type, complaint_filter=None):
         click(self.ID.txtComplaintType)
         self.select_complaint_type(complaint_type, complaint_filter)
+        return self
 
     def set_landmark_details(self, details):
         set(self.ID.txtLandmarkDetails, details)
+        return self
 
     def set_complaint_details(self, details):
         set(self.ID.txtComplaintDetails, details)
+        return self
 
-    def submit(self):
+    def click_submit(self):
         click(self.ID.btnSubmit)
         return self
 
@@ -58,23 +61,23 @@ class ComplaintFeedbackPage(Page):
         return self
 
     def star_click(self, a):
-        click(self.ID.prmStarRating.format(int(a) - 1))
+        click(self.ID.prmStarRating.format(int(a) - 1), condition=EC.presence_of_element_located)
         return self
 
     def check_services(self):
-        click(self.ID.chkServices)
+        click(self.ID.chkServices, condition=EC.presence_of_element_located)
         return self
 
     def check_resolution_time(self):
-        click(self.ID.chkResolutionTime)
+        click(self.ID.chkResolutionTime, condition=EC.presence_of_element_located)
         return self
 
     def check_quality_of_work(self):
-        click(self.ID.chkQualityOfWork)
+        click(self.ID.chkQualityOfWork, condition=EC.presence_of_element_located)
         return self
 
     def check_others(self):
-        click(self.ID.chkOthers)
+        click(self.ID.chkOthers, condition=EC.presence_of_element_located)
         return self
 
     def submit(self):
@@ -137,7 +140,7 @@ class MyComplaintsPage(Page):
 
 
 @PageObject
-class ReopenComplaintPage(Page):
+class ReopenComplaintPage(Page, UploadImageComponent):
     class ID:
         radReopenReason = "input#reopencomplaint-radio-button-0"
         txtTypeComplaint = "#reopencomplaint-comment-field"
@@ -156,7 +159,7 @@ class ReopenComplaintPage(Page):
 class ComplaintSummaryPage(Page):
     class ID:
         lblComplainNumber = "#complaint-details-complaint-number .label-text"
-        lblcomplaintStatus = "#complaint-details-current-status .label-text"
+        lblComplaintStatus = "#complaint-details-current-status .label-text"
         lblSubmissionDate = "#complaint-details-submission-date .label-text"
         lblComplaintType = ".rainmaker-big-font"
         lblLocation = "#complaint-details-complaint-location .label-text"
@@ -173,7 +176,7 @@ class ComplaintSummaryPage(Page):
         return get(self.ID.lblComplainNumber)
 
     def get_complaint_status(self):
-        return get(self.ID.lblcomplaintStatus)
+        return get(self.ID.lblComplaintStatus)
 
     def get_complaint_submission_date(self):
         return get(self.ID.lblSubmissionDate)

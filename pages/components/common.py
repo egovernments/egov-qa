@@ -10,7 +10,8 @@ __all__ = ['ComplaintTypeComponent',
            'SelectCityComponent',
            'ComplainCardComponent',
            'TopMenuNavigationComponent',
-           'BottomMenuComponent'
+           'BottomMenuComponent',
+           'SideBarComponentEmployee'
            ]
 
 
@@ -156,8 +157,30 @@ class TopMenuNavigationComponent(Component):
         return self
 
 
-class SideBarComponent(Component):
+class SideBarComponentEmployee(Component):
     class ID:
-        pass
+        btnHome = "#header-home"
+        btnClosedComplaint = "#header-closed-complaint"
+        btnEmployeeDirectory = "#header-contact-us"
+        btnEditProfile = "#header-profile"
+        btnLogOut = "#header-logout"
+    def click_home(self):
+        click(self.ID.btnHome)
+        return self
 
-    pass
+    def click_closed_complaint(self):
+        click(self.ID.btnClosedComplaint)
+        return self
+
+    def click_employee_directory(self):
+        click(self.ID.btnEmployeeDirectory)
+        return self
+
+    def click_edit_profile(self):
+        click(self.ID.btnEditProfile)
+        return self
+
+    def click_logout(self):
+        click(self.ID.btnLogOut)
+        return self
+

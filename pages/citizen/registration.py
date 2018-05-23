@@ -59,6 +59,7 @@ class RegistrationPage(Page, SelectCityComponent):
         txtPhoneNumber = "input#person-phone"
         txtName = "input#person-name"
         btnSubmit = "button#login-submit-action"
+        btnLogin= "div#otp-resend"
 
     def set_city(self, city):
         click(self.ID.drpCity)
@@ -73,6 +74,10 @@ class RegistrationPage(Page, SelectCityComponent):
     def submit(self):
         sleep(1)
         click(self.ID.btnSubmit)
+        return self
+
+    def login(self):
+        click(self.ID.btnLogin)
         return self
 
     def navigate(self):
