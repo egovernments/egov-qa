@@ -7,8 +7,6 @@ from pages import *
 from pages.employee.common import *
 from pages.employee.complaints import *
 
-# complaint_number = []
-# complain = []
 
 @fixture
 def citizen_login(username=None, otp=None):
@@ -212,3 +210,7 @@ def create_new_complaint(
 
     if flag_submit_complaint:
         acp.click_submit()
+
+
+def resolve_assigned_complaint(complaint_number, comments):
+    pass

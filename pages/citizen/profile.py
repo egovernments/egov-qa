@@ -18,10 +18,6 @@ class CitizenProfilePage(Page, SelectCityComponent):
         super(CitizenProfilePage, self).set_city(city)
         return self
 
-    def navigate(self):
-        goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/user/profile")
-        return self
-
     def set(self, name, email):
         set(self.ID.txtName, name)
         set(self.ID.txtEmailId, email)
