@@ -1,3 +1,4 @@
+from environment import DEFAULT_IMAGELIST_ONE
 from framework.common import PageObject, Page
 from framework.selenium_plus import *
 from ..components import *
@@ -43,6 +44,10 @@ class ProfilePage(Page):
         set(self.ID.txtProfileName, name)
         clear(self.ID.txtProfileEmailId)
         set(self.ID.txtProfileEmailId, email_id)
+
+    def change_photo(self):
+        UploadImageComponent().upload_images(DEFAULT_IMAGELIST_ONE)
+
 
     def photo_remove(self):
         click(self.ID.btnProfilePhoto)
