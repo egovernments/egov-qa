@@ -1,5 +1,33 @@
-from framework.selenium_plus import *
-from pages import LoginPage, OTPPage
+from pages.citizen.common import *
+from pages.citizen.registration import *
+
+
+def test_register_with_mobile_number_less_than_10():
+    LanguageSelectionPage().navigate().language("english").submit()
+    registration = RegistrationPage()
+    registration.navigate().set(876543, 'satish', 'Amritsar')
+    registration.submit()
+
+
+def test_register_with_mobile_number_greater_than_10():
+    LanguageSelectionPage().navigate().language("english").submit()
+    registration = RegistrationPage()
+    registration.navigate().set(87654398887773333, 'satish', 'Amritsar')
+    registration.submit()
+
+
+def test_register_mobile_number_with_specialchar():
+    LanguageSelectionPage().navigate().language("english").submit()
+    registration = RegistrationPage()
+    registration.navigate().set("876543Lhkjh", 'satish', 'Amritsar')
+    registration.submit()
+
+
+def test_duplicate_mobile_number():
+    LanguageSelectionPage().navigate().language("english").submit()
+    registration = RegistrationPage()
+    registration.navigate().set("8792101399", 'satish', 'Amritsar').submit()
+    registration.navigate().set("8792101399", 'satish', 'Amritsar').submit()
 
 
 def test_citizen_login_assertions():

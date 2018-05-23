@@ -190,7 +190,7 @@ def wait_any(identifiers, **kwargs):
 
 
 def find(identifier, context=None, timeout=-1,
-         condition=EC.presence_of_element_located):
+         condition=EC.presence_of_element_located) -> WebElement:
     """
         @return: Returns the web element found by identifier
         @rtype: selenium.webdriver.remote.webelement.WebElement
@@ -280,6 +280,10 @@ def get(elem, **kwargs):
     return find(elem, **kwargs).text
 
 
+def clear(elem, **kwargs):
+    find(elem, **kwargs).clear()
+
+
 def unhide(identifier, **kwargs):
     elem = find(identifier, **kwargs)
     execute_script("""
@@ -288,6 +292,13 @@ def unhide(identifier, **kwargs):
         elem.style.visibility = "";
     """, elem)
     return elem
+
+
+def wait_for_appear_then_disappear(id_or_elem, appear_timeout=5, disappear_timeout=60):
+    elem = find(id_or_elem, timeout=appear_timeout)
+    text = elem.text.strip()
+    find(id_or_elem, timeout=disappear_timeout, condition=EC.invisibility_of_element_located)
+    return text
 
 
 def get_html(identifier, context=None, timeout=-1):

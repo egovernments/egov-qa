@@ -15,7 +15,7 @@ def my_fixture():
     # setup_stuff
     yield
     try:
-        quit_driver()
+        # quit_driver()
         pass
     finally:
         pass
@@ -42,6 +42,26 @@ def test_logout(login_citizen):
     logout()
 
 
+def test_profile():
+    citizen_login()
+    TopMenuNavigationComponent().ham()
+    LoginPage().profile()
+    ProfilePage().update("Manjunatha S ", "manju@ulb.in")
+    # ProfilePage().photo_remove()
+    # ProfilePage().save()
+    assert ProfilePage().save() == "Profile is Successfully Updated"
+    navigation = TopMenuNavigationComponent()
+    navigation.back()
+    logout()
+
+
+def test_homepage():
+    citizen_login()
+    home_page = HomePage()
+    home_page.new_complaint()
+    home_page.navigate().click_my_complaint()
+
+
 def test_citizen_profile():  # error
     cp = CitizenProfilePage()
     cp.navigate().set("ABH", "satishkrgu95@gmail.com").set_city("Amritsar").save()
@@ -55,27 +75,24 @@ def test_complain_submitted():  # done
 
 
 def test_my_complaints():  # done
+    citizen_login()
     complaints = MyComplaintsPage()
-    complaints.navigate()
+    # complaints.navigate()
+
     cards = complaints.get_all_complaints()
     card = cards[2]
     card.track_complaint()
-
 
 def test_user_registration():  # done
     user_reg = RegistrationPage()
     user_reg.navigate()
     user_reg.set("9988776655", "FirstName", "Bathinda").submit()
 
+
 def test_language_selection():
     language_selection = LanguageSelectionPage()
     language_selection.navigate()
     language_selection.language("punjabi").language("hindi").language("english").submit()
-
-def test_homepage():
-    home_page = HomePage()
-    home_page.navigate().new_complaint()
-    home_page.navigate().click_my_complaint()
 
 
 def test_complaint_feedback():
@@ -91,7 +108,6 @@ def test_reopen_complaint():  # added uploading picture method #done
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/complaint-submitted"
 
 
-<<<<<<< HEAD
 def test_navigation():  # DONE
     LoginPage().navigate().set("9999999999").submit()
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen/user/otp"
@@ -106,20 +122,6 @@ def test_navigation():  # DONE
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen"
 
     # this test is for verifying navigation
-
-
-=======
->>>>>>> Added Test Assertions
-def test_profile():  # done
-    LoginPage().navigate().set("9999999999").submit()
-    OTPPage().set("12345").get_started()
-    TopMenuNavigationComponent().ham()
-    LoginPage().profile()
-    ProfilePage().update("Singh", "def@ulb.in")
-    ProfilePage().photo_remove()
-    ProfilePage().save()
-    TopMenuNavigationComponent().back()
-
 
 def test_complaint_resolved_comment():  # done
     resolved = ComplaintResolvedCommentPage()
@@ -146,13 +148,6 @@ def test_register_mobile_with_specialchar():
     registration = RegistrationPage()
     registration.navigate().set("876543Lhkjh", 'satish', 'Amritsar')
     registration.submit()
-
-
-def test_duplicate_mobile_number():
-    LanguageSelectionPage().navigate().language("english").submit()
-    registration = RegistrationPage()
-    registration.navigate().set("8792101399", 'satish', 'Amritsar').submit()
-    registration.navigate().set("8792101399", 'satish', 'Amritsar').submit()
 
 
 def test_add_complaint(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):

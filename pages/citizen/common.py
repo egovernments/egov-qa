@@ -19,10 +19,6 @@ class HomePage(Page):
         click(self.ID.btnOldComplain)
         return self
 
-    def navigate(self):
-        goto("http://egov-micro-dev.egovernments.org/app/v3/citizen")
-        return self
-
 
 @PageObject
 class LanguageSelectionPage(Page):
