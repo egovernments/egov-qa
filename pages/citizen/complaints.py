@@ -159,7 +159,7 @@ class ReopenComplaintPage(Page, UploadImageComponent):
 class ComplaintSummaryPage(Page):
     class ID:
         lblComplainNumber = "#complaint-details-complaint-number .label-text"
-        lblcomplaintStatus = "#complaint-details-current-status .label-text"
+        lblComplaintStatus = "#complaint-details-current-status .label-text"
         lblSubmissionDate = "#complaint-details-submission-date .label-text"
         lblComplaintType = ".rainmaker-big-font"
         lblLocation = "#complaint-details-complaint-location .label-text"
@@ -176,7 +176,7 @@ class ComplaintSummaryPage(Page):
         return get(self.ID.lblComplainNumber)
 
     def get_complaint_status(self):
-        return get(self.ID.lblcomplaintStatus)
+        return get(self.ID.lblComplaintStatus)
 
     def get_complaint_submission_date(self):
         return get(self.ID.lblSubmissionDate)

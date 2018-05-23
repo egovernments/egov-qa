@@ -12,6 +12,7 @@ complain = []
 from environment import *
 from pages import LoginPage, OTPPage, AddComplaintPage, HomePage
 
+
 @fixture
 def citizen_login(username=None, otp=None):
     username = username or DEFAULT_CITIZEN_USERNAME
@@ -24,8 +25,6 @@ def citizen_login(username=None, otp=None):
     otppage = OTPPage()
     otppage.set(otp)
     otppage.get_started()
-
-
 
 
 def create_new_complaint_by_plus_icon(location, additional_details, complaint_type_search, complaint_type_select,
@@ -165,6 +164,7 @@ def reopen_closed_complaint(complaint_number):
     csp.reopen_complaint()
     ReopenComplaintPage().set("still there is a problem").submit()
 
+
 def login_gro(username=None, password=None):
     LoginPage().navigate().set(username).submit()
     OTPPage().set(DEFAULT_FIXED_OTP).get_started()
@@ -179,14 +179,13 @@ def create_new_complaint(
         complaint_type_search,
         complaint_type_select,
         images,
-        flag_submit_complaint=True
-):
+        flag_submit_complaint=True):
     acp = AddComplaintPage()
 
-    acp.navigate()\
-        .set_landmark_details(landmark_details)\
-        .set_complaint_details(additional_details)\
-        .set_complaint_type(complaint_type_select, complaint_type_search)\
+    acp.navigate() \
+        .set_landmark_details(landmark_details) \
+        .set_complaint_details(additional_details) \
+        .set_complaint_type(complaint_type_select, complaint_type_search) \
         .set_location_by_address(location)
     acp.upload_images(images)
 
