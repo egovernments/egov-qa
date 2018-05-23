@@ -6,7 +6,7 @@ from ..components import *
 
 __all__ = ['UnassignedComplaintsPage', 'ComplaintResolvedCommentPage', 'ComplaintResolvedPageSucessPage',
            'RequestReassignReasonPage',
-           'ReAssignComplaintSuccessPage']
+           'ReAssignComplaintSuccessPage', 'GroHomePage', 'ComplaintSummaryPage']
 
 
 class UnassignedComplaintsPage(Page):
@@ -135,3 +135,84 @@ class ReAssignComplaintSuccessPage(Page):
 
     def click_continue(self):
         click(self.ID.btnContinue)
+
+
+@PageObject
+class GroHomePage(Page):
+    class ID:
+        btnUnassigned = ".unassigned-label-text"
+        btnAssigned = ".assigned-label-text"
+        lblComplaintNumber = "xpath=//div[contains(@class,'complaint-complaint-number')]/*[text()='{}']"
+
+    def click_unassigned_complaint_list(self):
+        click(self.ID.btnUnassigned)
+        return self
+
+    def click_assigned_complaint_list(self):
+        click(self.ID.btnAssigned)
+        return self
+
+    def open_compalint(self, complaint_number):
+        elem = find(self.ID.lblComplaintNumber.format(complaint_number))
+        scroll_into_view(elem)
+        click(elem)
+        return self
+
+
+@PageObject
+class ComplaintSummaryPage(Page):
+    class ID:
+        lblComplainNumber = "#complaint-details-complaint-number .label-text"
+        lblcomplaintStatus = "#complaint-details-current-status .label-text"
+        lblSubmissionDate = "#complaint-details-submission-date .label-text"
+        lblComplaintType = ".rainmaker-big-font"
+        lblLocation = "#complaint-details-complaint-location .label-text"
+        lblAdditionalComment = "#complaint-details-complaint-description .label-text"
+        lblImageCount = ".complaint-detail-full-width img.img-responsive"
+        btnRequestReAssign = "//div[text()='REQUEST RE-ASSIGN']"
+        btnMarkResolved = "//div[text()='MARK RESOLVED']"
+        btnReject = "//div[text()='REJECT']"
+        btnAssign = "//div[text()='ASSIGN']"
+
+
+
+    def get_compalint_type(self):
+        return get(self.ID.lblComplaintType)
+
+    def get_complaint_number(self):
+        return get(self.ID.lblComplainNumber)
+
+    def get_complaint_status(self):
+        return get(self.ID.lblcomplaintStatus)
+
+    def get_complaint_submission_date(self):
+        return get(self.ID.lblSubmissionDate)
+
+    def get_no_of_image(self):
+        return len(finds(self.ID.lblImageCount))
+
+    def get_location(self):
+        return get(self.ID.lblLocation)
+
+    def get_additional_comments(self):
+        return get(self.ID.lblAdditionalComment)
+
+    def click_reject(self):
+        click(self.ID.btnReject)
+        return self
+
+    def click_assign(self):
+        click(self.ID.btnAssign)
+        return self
+
+    def click_mark_resolved(self):
+        click(self.ID.btnMarkResolved)
+        return self
+
+    def click_request_reassign(self):
+        click(self.ID.btnRequestReAssign)
+        return self
+
+
+
+

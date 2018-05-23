@@ -13,10 +13,11 @@ def test_homepage_displayed_after_sucessful_login(login_citizen):
 def test_upadate_profile(login_citizen):
     TopMenuNavigationComponent().ham()
     LoginPage().profile()
-    ProfilePage().change_profile_picture()
-    ProfilePage().profile_upload_image(DEFAULT_IMAGELIST_ONE)
-    ProfilePage().set_email_id("abhilash.seth@gmail.com").set_name("Abhilash Seth").set_city("Am")
-    ProfilePage().save()
+    profile = ProfilePage()
+    profile.change_profile_picture()
+    profile.profile_upload_image(DEFAULT_IMAGELIST_ONE)
+    profile.set_email_id("abhilash.seth@gmail.com").set_name("Abhilash Seth").set_city("Am")
+    profile.save()
 
 def test_discard_changes_in_profile(login_citizen):
     TopMenuNavigationComponent().ham()
@@ -72,7 +73,7 @@ def test_image_no(login_citizen, images=DEFAULT_IMAGELIST_THREE):
     assert complaint_no == ComplaintSummaryPage().get_complaint_number(), "COMPAINT NO IS WRONG"
     assert ComplaintSummaryPage().get_no_of_image() == 3, "IMAGE NO IS NOT RIGHT"
     assert complaint_details == ComplaintSummaryPage.get_additional_details(), "ADDITIONAL DETAILS IS WRONG"
-    assert landmark_details == ComplaintSummaryPage().
+    assert landmark_details == ComplaintSummaryPage()
 
 
 
