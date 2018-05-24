@@ -2,7 +2,7 @@ from time import sleep
 
 from environment import *
 from framework.common import PageObject, Page
-from framework.selenium_plus import goto, set, click, get
+from framework.selenium_plus import goto, set, click, get, wait_for_appear_then_disappear
 from ..components import *
 
 __all__ = ['LoginPage', 'OTPPage', 'RegistrationPage', 'LogoutPage']
@@ -15,7 +15,7 @@ class LoginPage(Page):
         btnLogin = "button#login-submit-action"
         btnProfile = "#header-profile"
         lblMobileNumber = "//label[contains(text(), 'Mobile Number')]"
-        lblRequired = "xpath=//label[@for='person-phone']/following-sibling::div[last()]"
+        lblMobileNumberErrrorMessage = "xpath=//label[@for='person-phone']/following-sibling::div[last()]"
         lblUserNameValidation = "div#root>div>div>div"
 
     def navigate(self):
@@ -35,8 +35,8 @@ class LoginPage(Page):
         click(self.ID.btnProfile)
         return self
 
-    def error_message(self):
-        required = get(self.ID.lblRequired)
+    def get_mobileno_error_message(self):
+        required = get(self.ID.lblMobileNumberErrrorMessage)
         return required
 
     def get_citizen_login_id(self):
@@ -52,10 +52,11 @@ class OTPPage(Page):
         txtOTP = "input#otp"
         btnGetStarted = "button#otp-start"
         btnResend = "div#otp-resend"
-        lblOTP = "xpath=//label[@for='otp']/following-sibling::div[text()[1]]"
+        lblEnterOTP = "xpath=//label[@for='otp']/following-sibling::div[text()[1]]"
         lblOTPSentTo = "xpath=//div[@class='label-text otp-mobile-number']"
         lblErrorMsg = "xpath=//label[@for='otp']/following-sibling::div[last()]"
         lblResentOTPMsg = "xpath=//span[text()='OTP has been Resent']"
+        lblToaster = "div#toast-message span"
 
     def set(self, otp):
         set(self.ID.txtOTP, otp)
@@ -67,10 +68,10 @@ class OTPPage(Page):
 
     def resend(self):
         click(self.ID.btnResend)
-        return self
+        return wait_for_appear_then_disappear(self.ID.lblToaster)
 
     def enter_otp(self):
-        return get(self.ID.lblOTP)
+        return get(self.ID.lblEnterOTP)
 
     def otp_sent_to(self):
         return get(self.ID.lblOTPSentTo)

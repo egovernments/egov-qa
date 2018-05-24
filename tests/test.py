@@ -15,7 +15,7 @@ def my_fixture():
     # setup_stuff
     yield
     try:
-        # quit_driver()
+        quit_driver()
         pass
     finally:
         pass

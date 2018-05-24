@@ -82,6 +82,7 @@ def create_new_complaint_by_plus_icon(location, additional_details, complaint_ty
     time.sleep(3)
     addcomplaintpage.submit()
 
+
 def complaint_successful_page():
     acknowledgement = ComplaintSubmittedPage()
     co = acknowledgement.get_complaint_number()
@@ -93,23 +94,6 @@ def view_my_complaints(complaint_number):
     complain = []
     AddComplaintPage().complaints_icon()
     myComplaint = MyComplaintsPage()
-    cards = myComplaint.get_all_complaints()
-
-    for i in cards:
-        complain.append(i.get_complaint_no())
-
-    complaints = complain.index(complaint_number)
-    cards[complaints].track_complaint()
-
-    # if complaint_number == 0:
-    #     print("entered if")
-    #     for cn in complain:
-    #         print(cn)
-    # else:
-    #     print("entered else")
-    #     a = complain.index(complaint_number)
-    #     print(a)
-    #     cards[a].track_complaint()
 
 
 def comment_on_complaint(comment):

@@ -36,12 +36,12 @@ def test_citizen_login_assertions():
 
     # Required field assertion
     citizen_url.submit()
-    mobile_number_required = login_page.error_message()
+    mobile_number_required = login_page.get_mobileno_error_message()
     assert mobile_number_required == "Invalid Mobile Number", "Mobile Number is mandatory field to be enter"
 
     # Mobile number validation
     citizen_url.set("1").submit()
-    invalid_mobile_number = login_page.error_message()
+    invalid_mobile_number = login_page.get_mobileno_error_message()
     assert invalid_mobile_number == "Invalid Mobile Number", "Mobile Number should contain 10 digits only"
 
     citizen_url.set("797517933").submit()
@@ -81,8 +81,7 @@ def test_otp_assertions():
     assert otp_page.invalid_otp() == "Invalid OTP"
 
     # Resend OTP validation
-    otp_page.resend()
-    assert otp_page.otp_has_resent() == "OTP has been Resent"
+    assert otp_page.resend() == "OTP has been Resent"
 
 
 def test_add_complaint_assertion():

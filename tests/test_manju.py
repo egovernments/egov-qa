@@ -13,7 +13,7 @@ def my_fixture():
     # setup_stuff
     yield
     try:
-        # quit_driver()
+        quit_driver()
         pass
     finally:
         pass
@@ -68,7 +68,7 @@ def test_profile_update():
     LoginPage().profile()
     ProfilePage().update("Manjunatha S", "manju@ulb.in")
     ProfilePage().change_photo()
-    # ProfilePage().save()
+    ProfilePage().save()
     assert ProfilePage().save() == "Profile is Successfully Updated"
     navigation = TopMenuNavigationComponent()
     navigation.back()
