@@ -91,15 +91,16 @@ def complaint_successful_page():
 
 def view_my_complaints(complaint_number):
     complain = []
-    myComplaint = MyComplaintsPage()
     AddComplaintPage().complaints_icon()
-    # myComplaint.click_my_complaint()
+    myComplaint = MyComplaintsPage()
     cards = myComplaint.get_all_complaints()
 
     for i in cards:
         complain.append(i.get_complaint_no())
+
     complaints = complain.index(complaint_number)
     cards[complaints].track_complaint()
+
     # if complaint_number == 0:
     #     print("entered if")
     #     for cn in complain:

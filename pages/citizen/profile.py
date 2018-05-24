@@ -48,7 +48,6 @@ class ProfilePage(Page):
     def change_photo(self):
         UploadImageComponent().upload_images(DEFAULT_IMAGELIST_ONE)
 
-
     def photo_remove(self):
         click(self.ID.btnProfilePhoto)
         click(self.ID.btnPhotoRemove)

@@ -19,15 +19,12 @@ class EmployeeLoginPage(Page):
         btnLogin = "button#login-submit-action"
         btnProfile = "#header-profile"
 
-<<<<<<< HEAD
     class ERROR_MESSAGE:
         errMsgRequired = "CORE_COMMON_REQUIRED_ERRMSG"
         errPop = "Invalid login credentials"
         errMsgEnterValidName = "Please enter a valid user name"
         errMsgEnterValidPassword = "Password is Incorrect"
 
-=======
->>>>>>> 529e330... Modified Test cases
     def navigate(self):
         url = BASE_URL + APP_EMPLOYEE_URL
         goto(url)

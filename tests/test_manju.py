@@ -96,7 +96,7 @@ def test_add_complaint(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
     complaint_no = complaint_registration_number_recevied()
     print(complaint_no)
     # Search and view complaint created on My Complaints
-    view_my_complaints(complaint_no)
+    open_complaint(complaint_no)
     comment_on_complaint("Add comments")
     # Navigate to the home page and logout
     navigation = TopMenuNavigationComponent()
