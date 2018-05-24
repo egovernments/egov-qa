@@ -83,6 +83,7 @@ def test_my_complaints():  # done
     card = cards[2]
     card.track_complaint()
 
+
 def test_user_registration():  # done
     user_reg = RegistrationPage()
     user_reg.navigate()
@@ -100,6 +101,7 @@ def test_complaint_feedback():
     complaint_feedback_page.navigate().star_click(4)
     complaint_feedback_page.check_services().check_quality_of_work().check_resolution_time().check_others()
     complaint_feedback_page.set("Good to go").submit()
+
 
 def test_reopen_complaint():  # added uploading picture method #done
     photo1 = "/home/abh/Pictures/Screenshot from 2018-02-11 13-13-22.png"
@@ -122,6 +124,7 @@ def test_navigation():  # DONE
     assert get_url() == "http://egov-micro-dev.egovernments.org/app/v3/citizen"
 
     # this test is for verifying navigation
+
 
 def test_complaint_resolved_comment():  # done
     resolved = ComplaintResolvedCommentPage()
