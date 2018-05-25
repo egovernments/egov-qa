@@ -52,7 +52,6 @@ class OTPPage(Page):
         txtOTP = "input#otp"
         btnGetStarted = "button#otp-start"
         btnResend = "div#otp-resend"
-        lblEnterOTP = "xpath=//label[@for='otp']/following-sibling::div[text()[1]]"
         lblOTPSentTo = "xpath=//div[@class='label-text otp-mobile-number']"
         lblErrorMsg = "xpath=//label[@for='otp']/following-sibling::div[last()]"
         lblResentOTPMsg = "xpath=//span[text()='OTP has been Resent']"
@@ -69,9 +68,6 @@ class OTPPage(Page):
     def resend(self):
         click(self.ID.btnResend)
         return wait_for_appear_then_disappear(self.ID.lblToaster)
-
-    def enter_otp(self):
-        return get(self.ID.lblEnterOTP)
 
     def otp_sent_to(self):
         return get(self.ID.lblOTPSentTo)
@@ -93,7 +89,7 @@ class RegistrationPage(Page, SelectCityComponent):
         txtPhoneNumber = "input#person-phone"
         txtName = "input#person-name"
         btnSubmit = "button#login-submit-action"
-        btnLogin= "div#otp-resend"
+        btnLogin = "div#otp-resend"
 
     def set_city(self, city):
         click(self.ID.drpCity)

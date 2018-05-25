@@ -30,7 +30,7 @@ class CitizenProfilePage(Page, SelectCityComponent):
 
 
 @PageObject
-class ProfilePage(Page):
+class ProfilePage(Page, UploadImageComponent):
     class ID:
         txtProfileName = "#profile-form-name"
         txtProfileEmailId = "#profile-form-email"
@@ -45,8 +45,10 @@ class ProfilePage(Page):
         clear(self.ID.txtProfileEmailId)
         set(self.ID.txtProfileEmailId, email_id)
 
-    def change_photo(self):
-        UploadImageComponent().upload_images(PROFILE_IMAGE)
+    def change_profile_picture(self, upload_photo):
+        click(self.ID.btnProfilePhoto)
+        self.profile_upload_image(upload_photo)
+        return self
 
     def photo_remove(self):
         click(self.ID.btnProfilePhoto)
@@ -54,4 +56,7 @@ class ProfilePage(Page):
 
     def save(self):
         click(self.ID.btnProfileSave)
+        return self
+
+    def toaster_message(self):
         return wait_for_appear_then_disappear(self.ID.lblToaster)

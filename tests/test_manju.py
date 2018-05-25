@@ -62,14 +62,14 @@ def test_user_registration():
     user_reg.set("9988776655", "FirstName", "Bathinda").submit()
 
 
-def test_profile_update():
+def test_profile_update(upload_photo=PROFILE_IMAGELIST):
     citizen_login()
     TopMenuNavigationComponent().ham()
     LoginPage().profile()
     ProfilePage().update("Manjunatha S", "manju@ulb.in")
-    ProfilePage().change_photo()
+    ProfilePage().change_profile_picture(upload_photo)
     ProfilePage().save()
-    assert ProfilePage().save() == "Profile is Successfully Updated"
+    assert ProfilePage().toaster_message() == "Profile is Successfully Updated"
     navigation = TopMenuNavigationComponent()
     navigation.back()
     logout()

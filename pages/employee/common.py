@@ -28,7 +28,7 @@ class EmployeeLoginPage(Page):
     def navigate(self):
         url = BASE_URL + APP_EMPLOYEE_URL
         goto(url)
-        return url
+        return self
 
     def employee_id(self, employee_id):
         set(self.ID.txtEmployeeID, employee_id)
