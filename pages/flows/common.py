@@ -55,6 +55,12 @@ def add_complaint_details(complaint_type, location, landmark, additional_details
     if flag_complaint_submit:
         complaint.submit()
 
+    complaint_no = complaint_registration_number_recevied()
+    MyComplaintsPage().select_my_complaint()
+    MyComplaintsPage().open_compalint(complaint_no)
+    image = ComplaintSummaryPage().get_no_of_image()
+    assert image == len(upload_photo) , "Number of image uploaded while creating complaint"
+
 
 def complaint_registration_number_recevied(flag_is_continue=True):
     acknowledgement = ComplaintSubmittedPage()

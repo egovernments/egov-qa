@@ -13,7 +13,7 @@ def my_fixture():
     # setup_stuff
     yield
     try:
-        quit_driver()
+        # quit_driver()
         pass
     finally:
         pass
@@ -140,10 +140,10 @@ def test_view_my_complaint():
 
 def test_citizen_should_file_complaint_with_one_image(citizen_login, upload_photo=DEFAULT_IMAGELIST_ONE):
     # Create a new complaint
-    complaint_type = "Water Body"
+    complaint_type = "Garbage"
     location = "Amritsar, Punjab, India "
     landmark = "Street end"
-    additional_details = "Leakage of water"
+    additional_details = "Uneven"
 
     add_complaint_details(complaint_type, location, landmark, additional_details, upload_photo)
 
