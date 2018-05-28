@@ -113,12 +113,16 @@ class MyComplaintsPage(Page):
         txtComment = "div#citizen-comment"
         btnSend = "svg[class='comment-send']"
         lblComplaintNumber = "xpath=//div[contains(@class,'complaint-complaint-number')]/*[text()='{}']"
+        prmComplaintCard = "xpath=//div[contains(@class,'complaints-card-main-cont')][.//div[contains(@class,'complaint-complaint-number')]/div[text()='{}']]"
 
     def open_compalint(self, complaint_number):
         elem = find(self.ID.lblComplaintNumber.format(complaint_number))
         scroll_into_view(elem)
         click(elem)
         return self
+
+    def get_complaint_card(self, complaint_number) -> ComplainCardComponent:
+        return ComplainCardComponent(find(self.ID.prmComplaintCard.format(complaint_number)))
 
     def get_all_complaints(self) -> List[ComplainCardComponent]:
         cards = []

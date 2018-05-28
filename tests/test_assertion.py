@@ -1,4 +1,5 @@
 from environment import APP_EMPLOYEE_URL
+import time
 from pages import *
 from pages.employee.common import EmployeeLoginPage
 
@@ -42,18 +43,27 @@ def test_open_assigned_complaint_gro_login():
     EmployeeLoginPage().navigate().employee_id("Amardeep").password("12345678").submit()
     GroHomePage() \
         .click_assigned_complaint_list() \
-        .open_complaint("18/05/2018/000809")
+        .open_compalint("18/05/2018/000809")
 
 
 def test_get_count_of_assigned_and_unassigned_complaint():
-    print(GroHomePage().get_unassigned_complaint_count())
-    print(GroHomePage().get_assigned_complaint_count())
+    EmployeeLoginPage().navigate().employee_id("Amardeep").password("12345678").submit()
+    time.sleep(2) #TODO
+    Gro = GroHomePage()
+    print(Gro.get_unassigned_complaint_count())
+    print(Gro.get_assigned_complaint_count())
+    print(Gro.get_total_complaints())
 
 
 def test_get_details_from_complaint_list():
     EmployeeLoginPage().navigate().employee_id("Amardeep").password("12345678").submit()
-    card = MyComplaintsPage().get_complaint_card("24/05/2018/000854")
+    card = MyComplaintsPage().get_complaint_card("24/05/2018/000851") #TODO
     print(len(card.complain_images()))
+    print(card.get_complaint_date())
+    print(card.get_complaint_header())
+    print(card.get_complaint_no())
+    print(card.get_complaint_status())
+
 
 
 
