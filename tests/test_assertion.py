@@ -57,7 +57,7 @@ def test_get_count_of_assigned_and_unassigned_complaint():
 
 def test_get_details_from_complaint_list():
     EmployeeLoginPage().navigate().employee_id("Amardeep").password("12345678").submit()
-    card = MyComplaintsPage().get_complaint_card("24/05/2018/000851") #TODO
+    card = MyComplaintsPage().get_complaint_card("25/05/2018/000861") #TODO
     print(len(card.complain_images()))
     print(card.get_complaint_date())
     print(card.get_complaint_header())
