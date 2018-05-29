@@ -28,6 +28,15 @@ def test_new_complaint(citizen_login):
     create_new_complaint("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs", "landmarkdetail", True)
 
 
+def test_open_complaint_and_comment(citizen_login, logout_citizen):
+    complain_number = "09/05/2018/000652"
+    comment_on_complaint(complain_number)
+
+
+def test_logout(citizen_login):
+    logout()
+
+
 def test_citizen_should_file_complaint_with_one_image(citizen_login, upload_photo=DEFAULT_IMAGELIST_ONE):
     # Create a new complaint
     complaint_type = "Water Body"

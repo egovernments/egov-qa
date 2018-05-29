@@ -11,16 +11,16 @@ __all__ = ['AddComplaintPage', 'ComplaintFeedbackPage', 'ComplaintSubmittedPage'
 @PageObject
 class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintTypeComponent):
     class ID:
-        btnFileComplaint = ".file-complaint"
+        btnComplaints = "button#complaints-button"
         txtLocation = "input#address"
         txtComplaintDetails = "textarea[id='additional details']"
         txtComplaintType = "input#complaint-type"
         txtLandmarkDetails = "input#landmark"
-        btnAddIcon = "button#mycomplaints-add"
         btnSubmit = "button#addComplaint-submit-complaint"
+        btnPlusIcon = "button#mycomplaints-add"
 
-    def file_complaint(self):
-        click(self.ID.btnFileComplaint)
+    def complaints_icon(self):
+        click(self.ID.btnComplaints)
         return self
 
     def set_location_by_address(self, address, result_index=0):
@@ -41,8 +41,8 @@ class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintT
         set(self.ID.txtComplaintDetails, details)
         return self
 
-    def click_on_add_icon(self):
-        click(self.ID.btnAddIcon)
+    def click_on_plus_icon(self):
+        click(self.ID.btnPlusIcon)
         return self
 
     def submit(self):
@@ -110,7 +110,7 @@ class MyComplaintsPage(Page):
         btnMyComplaints = ".file-complaint"
         rowComplaintCards = "xpath=//div[contains(@class,'complaint-card-wrapper')]"
         btnAddComplaintPlus = "button#mycomplaints-add"
-        txtComment = "div#citizen-comment"
+        txtComment = "textarea#citizen-comment"
         btnSend = "svg[class='comment-send']"
         lblComplaintNumber = "xpath=//div[contains(@class,'complaint-complaint-number')]/*[text()='{}']"
 

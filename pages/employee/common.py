@@ -26,7 +26,8 @@ class EmployeeLoginPage(Page):
         errMsgEnterValidPassword = "Password is Incorrect"
 
     def navigate(self):
-        goto(BASE_URL + APP_EMPLOYEE_URL)
+        url = BASE_URL + APP_EMPLOYEE_URL
+        goto(url)
         return self
 
     def employee_id(self, employee_id):
