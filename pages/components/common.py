@@ -1,6 +1,6 @@
 from selenium.common.exceptions import InvalidElementStateException
 
-from framework.common import Component, PageObject
+from framework.common import *
 from framework.selenium_plus import *
 from framework.selenium_plus import click, set, finds, get
 
@@ -11,14 +11,27 @@ __all__ = ['ComplaintTypeComponent',
            'ComplainCardComponent',
            'TopMenuNavigationComponent',
            'BottomMenuComponent',
-           'SideBarComponentEmployee'
+           'SideBarComponentEmployee',
+           'CommonComponent'
            ]
+
+
+class CommonComponent(Component):
+    class ID:
+        iconBusy = "div#loading-indicator"
+        toastNotification = "div#toast-message"
+
+    def wait_for_busy(self):
+        wait_for_appear_then_disappear(self.ID.iconBusy)
+
+    def wait_for_toast(self):
+        return wait_for_appear_then_disappear(self.ID.toastNotification)
 
 
 class ComplaintTypeComponent(Component):
     class ID:
         txtComplaintTypeSearch = "input#complainttype-search"
-        prmLblComplaintType = "xpath=//div[.='{}']"
+        prmLblComplaintType = "xpath=//div[contains(text(), '{}')]"
 
     def select_complaint_type(self, complaint_type, complaint_filter=None):
         if complaint_filter is None:
@@ -49,6 +62,7 @@ class UploadImageComponent(Component):
     class ID:
         prmBtnRemoveImage = "xpath=(//div[contains(@class,'image-remove')])[{}]"
         fileImageUploadPlaceHolder = ".upload-placeholder input,.upload-photo-overlay input"
+        profileImagePlaceHolder = "#uploadDrawerGallaryIcon, .gallery-upload-drawer, #photo-picker"
         pass
 
     def remove_image_1(self):
@@ -75,6 +89,15 @@ class UploadImageComponent(Component):
             except InvalidElementStateException:
                 unhide(elem)
                 set(elem, image)
+
+    def profile_upload_image(self, image):
+        elem = find(self.ID.profileImagePlaceHolder)
+        try:
+            set(elem, image)
+        except InvalidElementStateException:
+            unhide(elem)
+            set(elem, image)
+        CommonComponent().wait_for_busy()
 
 
 class SelectCityComponent(Component):
@@ -164,6 +187,7 @@ class SideBarComponentEmployee(Component):
         btnEmployeeDirectory = "#header-contact-us"
         btnEditProfile = "#header-profile"
         btnLogOut = "#header-logout"
+
     def click_home(self):
         click(self.ID.btnHome)
         return self
@@ -183,4 +207,3 @@ class SideBarComponentEmployee(Component):
     def click_logout(self):
         click(self.ID.btnLogOut)
         return self
-
