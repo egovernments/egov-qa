@@ -37,13 +37,13 @@ def test_open_unassigned_complaint_gro_login():
     EmployeeLoginPage().navigate().employee_id("Amardeep").password("12345678").submit()
     GroHomePage()\
         .click_unassigned_complaint_list()\
-        .open_compalint("18/05/2018/000793")
+        .click_to_open_compalint("18/05/2018/000793")
 
 def test_open_assigned_complaint_gro_login():
     EmployeeLoginPage().navigate().employee_id("Amardeep").password("12345678").submit()
     GroHomePage() \
         .click_assigned_complaint_list() \
-        .open_compalint("18/05/2018/000809")
+        .click_to_open_compalint("18/05/2018/000809")
 
 
 def test_get_count_of_assigned_and_unassigned_complaint():

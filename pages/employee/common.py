@@ -54,3 +54,13 @@ class EmployeeLoginPage(Page):
 
     def get_error_pop_up_message(self):
         return get(self.ID.errPopUp)
+
+
+class EmployeeComplaintAcknowledgementPage(Page):
+    class ID:
+        lblAssignedTo = "div.label-container.thankyou-text"
+        btnGoToHome = "button#resolve-success-continue"
+
+    def go_to_home(self):
+        click(self.ID.btnGoToHome)
+        return self

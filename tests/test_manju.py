@@ -91,7 +91,7 @@ def test_homepage():
 
 def test_add_complaint(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
     # Create a new complaint
-    add_complaint_details("Garbage", "Amritsar, Punjab, India ", "Street end", "Leakage of water", upload_photo)
+    create_new_complaint("Garbage", "Amritsar, Punjab, India ", "Street end", "Leakage of water", upload_photo)
     # Acknowledgement on successful complaint submission
     complaint_no = complaint_registration_number_recevied()
     print(complaint_no)
@@ -106,7 +106,7 @@ def test_add_complaint(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
 
 def test_pgr_workflow(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
     # Create a new complaint
-    add_complaint_details("Garbage", "Amritsar, Punjab, India ", "Street end", "Leakage of water", upload_photo)
+    create_new_complaint("Garbage", "Amritsar, Punjab, India ", "Street end", "Leakage of water", upload_photo)
     # Acknowledgement on successful complaint submission
     complaint_no = complaint_registration_number_recevied()
     print(complaint_no)
@@ -121,13 +121,13 @@ def test_pgr_workflow(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
     # Login as GRO
     gro_employee_login("Amardeep", "12345678")
     view_my_complaints(complaint_no)
-    assign_open_complaints(complaint_no, "Complaint Assigned", "LastMileEmployee")
+    assign_open_complaints(complaint_no, "AntrikshKumar")
     logout()
     quit_driver()
     # Login as Last Mile Employee
     last_mile_employee_login("Antarikshkumar", "12345678")
     view_my_complaints(complaint_no)
-    resolve_assigned_complaint(complaint_no, "Complaint Resolved")
+    resolve_assigned_complaint(complaint_no)
     logout()
     quit_driver()
 
@@ -135,7 +135,7 @@ def test_pgr_workflow(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
 def test_view_my_complaint():
     gro_employee_login("Amardeep", "12345678")
     view_my_complaints("18/05/2018/000800")
-    assign_open_complaints("18/05/2018/000800", "Complaint Assigned", "V Sudheer")
+    assign_open_complaints("18/05/2018/000800", "V Sudheer")
 
 
 def test_citizen_should_file_complaint_with_one_image(citizen_login, upload_photo=DEFAULT_IMAGELIST_ONE):
@@ -145,7 +145,7 @@ def test_citizen_should_file_complaint_with_one_image(citizen_login, upload_phot
     landmark = "Street end"
     additional_details = "Uneven"
 
-    add_complaint_details(complaint_type, location, landmark, additional_details, upload_photo)
+    create_new_complaint(complaint_type, location, landmark, additional_details, upload_photo)
 
 
 def test_citizen_should_file_complaint_with_two_image(citizen_login):

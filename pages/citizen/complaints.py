@@ -25,7 +25,7 @@ class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintT
 
     def set_location_by_address(self, address, result_index=0):
         click(self.ID.txtLocation)
-        time.sleep(2)
+        time.sleep(3)
         return super(AddComplaintPage, self).set_location_by_address(address, result_index)
 
     def set_complaint_type(self, complaint_type, complaint_filter=None):
@@ -115,7 +115,7 @@ class MyComplaintsPage(Page):
         lblComplaintNumber = "xpath=//div[contains(@class,'complaint-complaint-number')]/*[text()='{}']"
         prmComplaintCard = "xpath=//div[contains(@class,'complaints-card-main-cont')][.//div[contains(@class,'complaint-complaint-number')]/div[text()='{}']]"
 
-    def open_compalint(self, complaint_number):
+    def click_to_open_compalint(self, complaint_number):
         elem = find(self.ID.lblComplaintNumber.format(complaint_number))
         scroll_into_view(elem)
         click(elem)
@@ -190,7 +190,6 @@ class ComplaintSummaryPage(Page):
         lblLocation = "#complaint-details-complaint-location .label-text"
         lblAdditionalComment = "#complaint-details-complaint-description .label-text"
         lblImageCount = ".complaint-detail-full-width img.img-responsive"
-
         btnRate = "xpath=// div[contains( @class ,'label-container ')]/*[text()='RATE']"
         btnReopen = "xpath=// div[contains( @class ,'label-container ')]/*[text()='RE-OPEN']"
 

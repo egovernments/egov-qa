@@ -15,9 +15,9 @@ class UnassignedComplaintsPage(Page):
         txtComment = "textarea#citizen-comment"
         btnSendComment = "svg[class='comment-send']"
         btnAssign = "button#actionTwo"
-        txtEmployeeSearch = "input#employee-search"
-        lblAssignee = "id#23289"
-        btnAssignLastMile = "//div[contains(text(), 'ASSIGN')]"
+        txtSearch = "input#employee-search"
+        lblAssignee = "id=23293"
+        btnAssignLastMile = "div.assign-complaint-button-cont"
 
     def get_all_complaints(self) -> List[ComplainCardComponent]:
         cards = []
@@ -36,9 +36,10 @@ class UnassignedComplaintsPage(Page):
 
     def assign_complaint(self, assignee):
         click(self.ID.btnAssign)
-        set(self.ID.txtEmployeeSearch, assignee)
+        set(self.ID.txtSearch, assignee)
         click(self.ID.lblAssignee)
         click(self.ID.btnAssignLastMile)
+        return self
 
 
 @PageObject
@@ -70,11 +71,12 @@ class ComplaintReassignPage(Page):
 class ComplaintResolvedCommentPage(Page, UploadImageComponent):
     class ID:
         txtComment = "textarea#reopencomplaint-comment-field"
-        btnMarkResolved = "button#complaint-resolved-submit"
+        btnMarkResolved = "button#actionTwo"
+        btnSubmitToResolve = "button#complaintresolved-submit-action"
 
-    def navigate(self):
-        goto("http://egov-micro-dev.egovernments.org/app/v3/employee/complaint-resolved")
-        return self
+    # def navigate(self):
+    #     goto("http://egov-micro-dev.egovernments.org/app/v3/employee/complaint-resolved")
+    #     return self
 
     def set_comment(self, comment):
         set(self.ID.txtComment, comment)
@@ -82,6 +84,7 @@ class ComplaintResolvedCommentPage(Page, UploadImageComponent):
 
     def click_mark_resolved(self):
         click(self.ID.btnMarkResolved)
+        click(self.ID.btnSubmitToResolve)
 
 
 @PageObject
@@ -177,14 +180,11 @@ class GroHomePage(Page):
         return self.get_assigned_complaint_count()+ self.get_unassigned_complaint_count()
 
 
-
-
-
 @PageObject
 class ComplaintSummaryPage(Page):
     class ID:
         lblComplainNumber = "#complaint-details-complaint-number .label-text"
-        lblcomplaintStatus = "#complaint-details-current-status .label-text"
+        lblcomplaintStatus = "div#complaint-details-current-status"
         lblSubmissionDate = "#complaint-details-submission-date .label-text"
         lblComplaintType = ".rainmaker-big-font"
         lblLocation = "#complaint-details-complaint-location .label-text"
@@ -194,8 +194,6 @@ class ComplaintSummaryPage(Page):
         btnMarkResolved = "//div[text()='MARK RESOLVED']"
         btnReject = "//div[text()='REJECT']"
         btnAssign = "//div[text()='ASSIGN']"
-
-
 
     def get_compalint_type(self):
         return get(self.ID.lblComplaintType)
@@ -233,7 +231,3 @@ class ComplaintSummaryPage(Page):
     def click_request_reassign(self):
         click(self.ID.btnRequestReAssign)
         return self
-
-
-
-

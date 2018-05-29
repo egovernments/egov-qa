@@ -39,8 +39,8 @@ def logout():
     LogoutPage().submit()
 
 
-def add_complaint_details(complaint_type, location, landmark, additional_details, upload_photo,
-                          flag_complaint_submit=True):
+def create_new_complaint(complaint_type, location, landmark, additional_details, upload_photo=False,
+                         flag_complaint_submit=True):
     complaint = AddComplaintPage()
     complaint.complaints_icon()
     complaint.click_on_plus_icon()
@@ -49,17 +49,13 @@ def add_complaint_details(complaint_type, location, landmark, additional_details
     time.sleep(2)
     complaint.set_landmark_details(landmark)
     complaint.set_complaint_details(additional_details)
-    complaint.upload_images(upload_photo)
-    time.sleep(2)
+
+    if upload_photo == True:
+        complaint.upload_images(upload_photo)
+        time.sleep(2)
 
     if flag_complaint_submit:
         complaint.submit()
-
-    complaint_no = complaint_registration_number_recevied()
-    MyComplaintsPage().select_my_complaint()
-    MyComplaintsPage().open_compalint(complaint_no)
-    image = ComplaintSummaryPage().get_no_of_image()
-    assert image == len(upload_photo) , "Number of image uploaded while creating complaint"
 
 
 def complaint_registration_number_recevied(flag_is_continue=True):
@@ -97,9 +93,11 @@ def complaint_successful_page():
 
 
 def view_my_complaints(complaint_number):
-    complain = []
     AddComplaintPage().complaints_icon()
-    myComplaint = MyComplaintsPage()
+    # MyComplaintsPage().select_my_complaint()
+    MyComplaintsPage().click_to_open_compalint(complaint_number)
+    # image = ComplaintSummaryPage().get_no_of_image()
+    # assert image == len(upload_photo) , "Number of image uploaded while creating complaint"
 
 
 def comment_on_complaint(comment):
@@ -108,28 +106,27 @@ def comment_on_complaint(comment):
     myComplaint.send_comment()
 
 
-def assign_open_complaints(complaint_number, comments, assignee):
+def assign_open_complaints(complaint_number, assignee):
     complaints = UnassignedComplaintsPage()
     # cards = complaints.get_all_complaints()
     # for i in cards:
     #     complain.append(i.get_complaint_no())
     # a = complain.index(complaint_number[0])
     # cards[a].track_complaint()
-    complaints.add_comments(comments).send_comment()
     complaints.assign_complaint(assignee)
 
 
 def open_complaint(complaint_number):
     MyComplaintsPage().select_my_complaint()
     time.sleep(2)
-    MyComplaintsPage().open_compalint(complaint_number)
+    MyComplaintsPage().click_to_open_compalint(complaint_number)
     time.sleep(2)
 
 
 def complaint_details(complaint_number):
     MyComplaintsPage().select_my_complaint()
     time.sleep(2)
-    MyComplaintsPage().open_compalint(complaint_number)
+    MyComplaintsPage().click_to_open_compalint(complaint_number)
     time.sleep(2)
     """
     complaint_summary_page = ComplaintSummaryPage()
@@ -147,7 +144,7 @@ def complaint_details(complaint_number):
 def rate_closed_complaint(complaint_number):
     MyComplaintsPage().select_my_complaint()
     time.sleep(2)
-    MyComplaintsPage().open_compalint(complaint_number)
+    MyComplaintsPage().click_to_open_compalint(complaint_number)
     complaint_summary_page = ComplaintSummaryPage()
     complaint_summary_page.rate_complaint()
     complaint_feedback_page = ComplaintFeedbackPage()
@@ -158,7 +155,7 @@ def rate_closed_complaint(complaint_number):
 
 def reopen_closed_complaint(complaint_number):
     MyComplaintsPage().select_my_complaint()
-    MyComplaintsPage().open_compalint(complaint_number)
+    MyComplaintsPage().click_to_open_compalint(complaint_number)
     complaint_summary_page = ComplaintSummaryPage()
     time.sleep(2)
     complaint_summary_page.reopen_complaint()
@@ -171,7 +168,7 @@ def reopen_closed_complaint(complaint_number):
     assert "Re-opened" in acknowledgement, "acknowledgement should contain the Re-Opened"
     ComplaintReopenedPage().go_to_home()
     MyComplaintsPage().select_my_complaint()
-    MyComplaintsPage().open_compalint(complaint_number)
+    MyComplaintsPage().click_to_open_compalint(complaint_number)
     assert ComplaintSummaryPage().get_complaint_status() == "Re-opened", "status is not Re-Opened"
 
 
@@ -182,26 +179,12 @@ def login_gro(username=None, password=None):
     HomePage().navigate()
 
 
-def create_new_complaint(
-        location,
-        additional_details,
-        landmark_details,
-        complaint_type_search,
-        complaint_type_select,
-        images,
-        flag_submit_complaint=True):
-    acp = AddComplaintPage()
-
-    acp.navigate() \
-        .set_landmark_details(landmark_details) \
-        .set_complaint_details(additional_details) \
-        .set_complaint_type(complaint_type_select, complaint_type_search) \
-        .set_location_by_address(location)
-    acp.upload_images(images)
-
-    if flag_submit_complaint:
-        acp.click_submit()
-
-
-def resolve_assigned_complaint(complaint_number, comments):
+def resolve_assigned_complaint(complaint_number):
+    MyComplaintsPage().click_to_open_compalint(complaint_number)
+    ComplaintResolvedCommentPage().click_mark_resolved()
     pass
+
+
+def get_current_status():
+    complaint_summary_page = ComplaintSummaryPage()
+    return complaint_summary_page.get_complaint_status()

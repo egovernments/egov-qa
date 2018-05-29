@@ -155,7 +155,7 @@ def test_register_mobile_with_specialchar():
 
 def test_add_complaint(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
     # Create a new complaint
-    add_complaint_details("Garbage", "Amritsar, Punjab, India ", "Street end", "Leakage of water", upload_photo)
+    create_new_complaint("Garbage", "Amritsar, Punjab, India ", "Street end", "Leakage of water", upload_photo)
     # Acknowledgement on successful complaint submission
     complaint_no = complaint_registration_number_recevied()
     print(complaint_no)
@@ -170,7 +170,7 @@ def test_add_complaint(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
 
 def test_pgr_workflow(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
     # Create a new complaint
-    add_complaint_details("Garbage", "Amritsar, Punjab, India ", "Street end", "Leakage of water", upload_photo)
+    create_new_complaint("Garbage", "Amritsar, Punjab, India ", "Street end", "Leakage of water", upload_photo)
     # Acknowledgement on successful complaint submission
     complaint_no = complaint_registration_number_recevied()
     print(complaint_no)
@@ -203,7 +203,7 @@ def test_view_my_complaint():
 
 
 def test_complaint_register_to_resolve(login_citizen):
-    add_complaint_details("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs", "landmarkdetail", True)
+    create_new_complaint("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs", "landmarkdetail", True)
     complain_number = ComplaintSubmittedPage().get_complaint_number()
     # logout_citizen()
     gro_employee_login("9090909010", "murali@1993")
@@ -272,7 +272,7 @@ def test_citizen_should_file_complaint_with_one_image(login_citizen, images=DEFA
     complaint_type_search = "Stray"
     complaint_type_select = "Stray Dogs"
     HomePage().new_complaint()
-    add_complaint_details(
+    create_new_complaint(
         location,
         complaint_details,
         landmark_details,

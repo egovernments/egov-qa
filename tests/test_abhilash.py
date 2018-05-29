@@ -19,6 +19,7 @@ def test_upadate_profile(login_citizen):
     profile.set_email_id("abhilash.seth@gmail.com").set_name("Abhilash Seth").set_city("Am")
     profile.save()
 
+
 def test_discard_changes_in_profile(login_citizen):
     TopMenuNavigationComponent().ham()
     LoginPage().profile()
@@ -41,6 +42,7 @@ def test_uploading_large_size_image_for_profile_picture(login_citizen):
     ProfilePage().change_profile_picture()
     ProfilePage().profile_upload_image(LARGE_SIZE_IMAGE)
 
+
 def test_selecting_city_from_dropdown_of_citizen_profile_page(login_citizen):
     drpCity = "span[id='pb.ludhiana']"
     TopMenuNavigationComponent().ham()
@@ -48,6 +50,7 @@ def test_selecting_city_from_dropdown_of_citizen_profile_page(login_citizen):
     click(ProfilePage().ID.drpCity)
     click(drpCity)
     ProfilePage().save()
+
 
 def test_image_no(login_citizen, images=DEFAULT_IMAGELIST_THREE):
     click("div.file-complaint")
