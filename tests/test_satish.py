@@ -64,16 +64,28 @@ def test_add_three_image_then_remove_one(citizen_login):
 
 
 def test_open_compalint(citizen_login):
-    open_complaint("10/05/2018/000676")
+    open_complaint("25/05/2018/000863")
 
 
 def test_complaint_detail(citizen_login):
-    complaint_details("09/05/2018/000666")
+    complaint_details("28/05/2018/000867")
 
 
 def test_rate_closed_compalint(citizen_login):
-    rate_closed_complaint("07/05/2018/000607")
+    rate_closed_complaint("28/05/2018/000868")
 
 
 def test_reopen_closed_complaint(citizen_login):
-    reopen_closed_complaint("21/05/2018/000820")
+    reopen_closed_complaint("28/05/2018/000869")
+
+
+def test_timeline_details(citizen_login):
+    complaint_timeline_details('23/05/2018/000835')
+
+
+def test_view_my_complaint(citizen_login):
+    view_my_complaint('25/05/2018/000860')
+
+
+def test_get_all_comaplint(citizen_login):
+    get_all_comments("25/05/2018/000861")
