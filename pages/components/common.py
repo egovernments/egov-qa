@@ -113,7 +113,7 @@ class SelectCityComponent(Component):
 
 class ComplainCardComponent(Component):
     class ID:
-        lblComplaintHeader = "span.complaint-header"
+        lblComplaintHeader = ".complaint-header"
         lblComplaintStatus = ".complaint-status-text"
         lblComplaintDate = ".complaint-date"
         lblComplaintNo = ".complaint-complaint-number .label-text"
@@ -123,8 +123,8 @@ class ComplainCardComponent(Component):
     def __init__(self, container=None):
         self.container = container
 
-    def complain_images(self):
-        return finds(self.ID.colComplaintImages)
+    def complain_images(self): #TODO
+        return finds(self.ID.colComplaintImages, context=self.container)
 
     def get_complaint_header(self):
         return get(self.ID.lblComplaintHeader, context=self.container)

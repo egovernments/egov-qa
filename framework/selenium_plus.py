@@ -32,6 +32,23 @@ class count_zero_or_invisible(object):
         except StaleElementReferenceException:
             return False
 
+class element_text_is_consistent(object):
+
+    def __init__(self, locator):
+        self.locator = locator
+
+    def __call__(self, driver):
+        try:
+            elem = driver.find_element(*self.locator)
+            last_text = ""
+            while last_text != elem.text:
+                last_text = elem.text
+                time.sleep(2)
+                elem = driver.find_element(*self.locator)
+
+        except StaleElementReferenceException:
+            return False
+
 
 class count_non_zero_and_visible(object):
 
@@ -152,6 +169,8 @@ def finds(identifier, context=None, timeout=-1, condition=None):
 
     if context is None:
         context = driver
+    else:
+        context.session_id = driver.session_id
 
     locator = get_identifier(identifier)
 
@@ -160,7 +179,7 @@ def finds(identifier, context=None, timeout=-1, condition=None):
     else:
         condition = condition(locator)
 
-    wdw = WebDriverWait(driver, timeout)
+    wdw = WebDriverWait(context, timeout)
 
     try:
         elems = wdw.until(condition)

@@ -148,6 +148,8 @@ class GroHomePage(Page):
         btnUnassigned = ".unassigned-label-text"
         btnAssigned = ".assigned-label-text"
         lblComplaintNumber = "xpath=//div[contains(@class,'complaint-complaint-number')]/*[text()='{}']"
+        txtUnassignedCount = "xpath=//div[div[text()='UNASSIGNED']]/following-sibling::div/div"
+        txtAssignedcount = "xpath=//div[div[text()='ASSIGNED']]/following-sibling::div/div"
 
     def click_unassigned_complaint_list(self):
         click(self.ID.btnUnassigned)
@@ -162,6 +164,20 @@ class GroHomePage(Page):
         scroll_into_view(elem)
         click(elem)
         return self
+
+    def get_unassigned_complaint_count(self):
+        count = get(self.ID.txtUnassignedCount)
+        return int(count[1:-1])
+
+    def get_assigned_complaint_count(self):
+        count = get(self.ID.txtAssignedcount)
+        return int(count[1:-1])
+
+    def get_total_complaints(self):
+        return self.get_assigned_complaint_count()+ self.get_unassigned_complaint_count()
+
+
+
 
 
 @PageObject
