@@ -81,10 +81,6 @@ class ComplaintResolvedCommentPage(Page, UploadImageComponent):
         btnMarkResolved = "button#actionTwo"
         btnSubmitToResolve = "button#complaintresolved-submit-action"
 
-    # def navigate(self):
-    #     goto("http://egov-micro-dev.egovernments.org/app/v3/employee/complaint-resolved")
-    #     return self
-
     def set_comment(self, comment):
         set(self.ID.txtComment, comment)
         return self

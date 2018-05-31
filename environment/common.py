@@ -11,3 +11,4 @@ DEFAULT_PASSWORD = "12345678"
 
 DEFAULT_IMAGELIST = ["../assets/images/image1.jpg", "../assets/images/image2.jpg", "../assets/images/image3.jpg"]
 PROFILE_IMAGELIST = ["../assets/images/profileImage.jpg"]
+LARGE_IMAGELIST = ["../assets/images/largeSizeImage"]

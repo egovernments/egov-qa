@@ -1,6 +1,6 @@
 from framework.selenium_plus import *
 from pages.flows.common import *
-from pages.employee.complains import ComplaintResolvedCommentPage, RequestReassignReasonPage
+from pages.employee.complaints import *
 
 
 # def pytest_sessionstart(session):
@@ -127,8 +127,9 @@ def test_navigation():  # DONE
 
 
 def test_complaint_resolved_comment():  # done
+    last_mile_employee_login()
     resolved = ComplaintResolvedCommentPage()
-    resolved.navigate().upload_images("/home/abh/Pictures/Screenshot from 2018-02-11 13-13-22.png")
+    resolved.upload_images(DEFAULT_IMAGELIST_ONE)
     resolved.set_comment("GOTTYA").click_mark_resolved()
 
 
@@ -185,7 +186,7 @@ def test_pgr_workflow(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
     # Login as GRO
     gro_employee_login("Amardeep", "12345678")
     view_my_complaints(complaint_no)
-    assign_open_complaint(complaint_no, "Complaint Assigned", "LastMileEmployee")
+    assign_open_complaint(complaint_no, "LastMileEmployee")
     logout()
     quit_driver()
     # Login as Last Mile Employee
@@ -199,7 +200,7 @@ def test_pgr_workflow(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE):
 def test_view_my_complaint():
     gro_employee_login("Amardeep", "12345678")
     view_my_complaints("18/05/2018/000800")
-    assign_open_complaint("18/05/2018/000800", "Complaint Assigned", "V Sudheer")
+    assign_open_complaint("18/05/2018/000800", "V Sudheer")
 
 
 def test_complaint_register_to_resolve(login_citizen):
@@ -227,23 +228,22 @@ def test_registering_with_already_registered_mobile_no():  # error
 
 
 def test_add_more_than_three_image():  # suscess
-    photo1 = "/home/abh/Pictures/Screenshot from 2018-02-11 13-13-22.png"
-    photo2 = "/home/abh/Pictures/Screenshot from 2018-03-29 14-51-09.png"
-    photo3 = "/home/abh/Pictures/Screenshot from 2018-03-29 14-51-20.png"
+    photo1 = DEFAULT_IMAGELIST_ONE
+    photo2 = DEFAULT_IMAGELIST_ONE
+    photo3 = DEFAULT_IMAGELIST_ONE
     AddComplaintPage().navigate().upload_images(photo1, photo2, photo3)
     AddComplaintPage().upload_images(photo1)
 
 
 def test_upload_other_than_image_format():  # error, Should give an error becasuse we are uploading pdf file
     pdf1 = "/home/abh/Documents/HDFC Bank Credit Card.pdf"
-    photo1 = "/home/abh/Pictures/Screenshot from 2018-02-11 13-13-22.png"
-    photo2 = "/home/abh/Pictures/Screenshot from 2018-03-29 14-51-09.png"
+    photo1 = DEFAULT_IMAGELIST_ONE
+    photo2 = DEFAULT_IMAGELIST_ONE
     AddComplaintPage().navigate().upload_images(photo1, photo2, pdf1)
 
 
 def test_upload_a_large_size_file():  # field , it is uploading the file, it shuld give error mesaage
-    large_file = "/home/abh/Desktop/shong's party/IMG_8844.JPG"
-    AddComplaintPage().navigate().upload_images(large_file)
+    AddComplaintPage().navigate().upload_images(LARGE_IMAGELIST)
 
 
 def test_select_location_by_typing_address():
@@ -257,9 +257,9 @@ def test_flow_check_1():
     HomePage().new_complaint()
     AddComplaintPage().set_location_by_address("amritsar ")
     AddComplaintPage().set_complaint_type("Stray Dogs", "Stray")
-    photo1 = "/home/abh/Pictures/Screenshot from 2018-02-11 13-13-22.png"
-    photo2 = "/home/abh/Pictures/Screenshot from 2018-03-29 14-51-09.png"
-    photo3 = "/home/abh/Pictures/Screenshot from 2018-03-29 14-51-20.png"
+    photo1 = DEFAULT_IMAGELIST_ONE
+    photo2 = DEFAULT_IMAGELIST_ONE
+    photo3 = DEFAULT_IMAGELIST_ONE
     AddComplaintPage().upload_images(photo1, photo2, photo3)
     AddComplaintPage().set_complaint_details("VAGAO YAAR JALDI")
     AddComplaintPage().set_landmark_details("HAIN WAHI HAI")
