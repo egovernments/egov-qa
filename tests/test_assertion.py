@@ -1,4 +1,3 @@
-from environment import APP_EMPLOYEE_URL
 import time
 from pages import *
 from pages.employee.common import EmployeeLoginPage

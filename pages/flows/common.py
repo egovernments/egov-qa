@@ -40,7 +40,7 @@ def logout():
     LogoutPage().submit()
 
 
-def create_new_complaint(complaint_type, location, landmark, additional_details, upload_photo=False,
+def create_new_complaint(complaint_type, location, landmark, additional_details, upload_photos=None,
                          flag_complaint_submit=True):
     complaint = AddComplaintPage()
     complaint.complaints_icon()
@@ -51,8 +51,8 @@ def create_new_complaint(complaint_type, location, landmark, additional_details,
     complaint.set_landmark_details(landmark)
     complaint.set_complaint_details(additional_details)
 
-    if upload_photo == True:
-        complaint.upload_images(upload_photo)
+    if upload_photos:
+        complaint.upload_images(upload_photos)
         time.sleep(2)
 
     if flag_complaint_submit:
