@@ -10,12 +10,13 @@ def test_homepage_displayed_after_sucessful_login(login_citizen):
 
     pass
 
+
 def test_upadate_profile(login_citizen):
     TopMenuNavigationComponent().ham()
     LoginPage().profile()
     profile = ProfilePage()
     profile.change_profile_picture()
-    profile.profile_upload_image(DEFAULT_IMAGELIST_ONE)
+    profile.profile_upload_image(PROFILE_IMAGELIST)
     profile.set_email_id("abhilash.seth@gmail.com").set_name("Abhilash Seth").set_city("Am")
     profile.save()
 
@@ -27,7 +28,7 @@ def test_discard_changes_in_profile(login_citizen):
     emailId = get(ProfilePage().ID.txtProfileEmailId)
     city = get(ProfilePage().ID.drpCity)
     ProfilePage().change_profile_picture()
-    ProfilePage().profile_upload_image(DEFAULT_IMAGELIST_ONE)
+    ProfilePage().profile_upload_image(PROFILE_IMAGELIST)
     ProfilePage().set_email_id("YO.YO@gmail.com").set_name("YO YO").set_city("Pa").click_back()
     TopMenuNavigationComponent().ham()
     LoginPage().profile()
@@ -39,8 +40,8 @@ def test_discard_changes_in_profile(login_citizen):
 def test_uploading_large_size_image_for_profile_picture(login_citizen):
     TopMenuNavigationComponent().ham()
     LoginPage().profile()
-    ProfilePage().change_profile_picture()
-    ProfilePage().profile_upload_image(LARGE_SIZE_IMAGE)
+    ProfilePage().change_profile_picture(PROFILE_IMAGELIST)
+    ProfilePage().profile_upload_image(PROFILE_IMAGELIST)
 
 
 def test_selecting_city_from_dropdown_of_citizen_profile_page(login_citizen):
@@ -72,13 +73,8 @@ def test_image_no(login_citizen, images=DEFAULT_IMAGELIST_THREE):
     complaint_no = ComplaintSubmittedPage().get_complaint_number()
     ComplaintSubmittedPage().click_continue()
     click("div.file-complaint")
-    ComplaintSummaryPage().open_compalint(complaint_no)
-    assert complaint_no == ComplaintSummaryPage().get_complaint_number(), "COMPAINT NO IS WRONG"
-    assert ComplaintSummaryPage().get_no_of_image() == 3, "IMAGE NO IS NOT RIGHT"
-    assert complaint_details == ComplaintSummaryPage.get_additional_details(), "ADDITIONAL DETAILS IS WRONG"
-    assert landmark_details == ComplaintSummaryPage()
-
-
-
-
-
+    ComplaintCitizenSummaryPage().open_compalint(complaint_no)
+    assert complaint_no == ComplaintCitizenSummaryPage().get_complaint_number(), "COMPAINT NO IS WRONG"
+    assert ComplaintCitizenSummaryPage().get_no_of_image() == 3, "IMAGE NO IS NOT RIGHT"
+    assert complaint_details == ComplaintCitizenSummaryPage.get_additional_details(), "ADDITIONAL DETAILS IS WRONG"
+    assert landmark_details == ComplaintCitizenSummaryPage()

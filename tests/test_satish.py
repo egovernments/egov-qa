@@ -1,5 +1,3 @@
-from framework.selenium_plus import *
-from pages.employee.common import EmployeeComplaintAcknowledgementPage
 from pages.flows.common import *
 
 
@@ -30,7 +28,8 @@ def test_new_complaint(citizen_login):
 
 
 def test_open_complaint_and_comment(citizen_login, upload_photo=DEFAULT_IMAGELIST_TWO):
-    create_new_complaint("No water or electricity in Public Toilet", "Amritsar, Punjab, India ", "Street end", "Leakage of water", upload_photo)
+    create_new_complaint("No water or electricity in Public Toilet", "Amritsar, Punjab, India ", "Street end",
+                         "Leakage of water", upload_photo)
     complain_number = complaint_registration_number_recevied()
     view_my_complaints(complain_number)
     comment_on_complaint("Comments")
@@ -79,57 +78,137 @@ def test_complaint_detail(citizen_login):
 
 
 def test_rate_closed_compalint():
+
+    # From create complaint to resolve
+    pgr_details = complaint_workflow_from_citizen_to_employee("Mark as Resolve")
+
+    # Complaint Details (Test Data)
+    complaint_number = pgr_details["complaint_number"]
+    status = pgr_details["status"]
+    print("Complaint Number: {}".format(complaint_number), "Complaint Status: {}".format(status))
+    current_status = pgr_details["current_status"]
+
+    # Verification
+    print("Complaint Number: {}".format(complaint_number), "Complaint Status: {}".format(current_status))
+
+    # rate the closed complaint
     citizen_login()
-    create_new_complaint("Blocked Drain", "Amritsar, Punjab, India ", "Main roads", "Drainage water is flooding")
-    complaint_number = complaint_registration_number_recevied()
-    print(complaint_number)
-    open_complaint(complaint_number)
-    status = get_current_status()
-    print(status) # Submitted
+    rate_complaint = rate_closed_complaint(complaint_number)
+    status_before = rate_complaint["Status_before_rate"]
+    status_after = rate_complaint["Status_after_rate"]
+    print("Complaint Number: {}".format(complaint_number), "Current Status: {}".format(status_before))
+    print("Complaint Number: {}".format(complaint_number), "Current Status: {}".format(status_after))
+
+
+def test_reopen_closed_complaint():
+
+    # From create complaint to resolve
+    pgr_details = complaint_workflow_from_citizen_to_employee("Mark as Resolve")
+
+    # Complaint Details (Test Data)
+    complaint_number = pgr_details["complaint_number"]
+    status = pgr_details["status"]
+    print("Complaint Number: {}".format(complaint_number), "Complaint Status: {}".format(status))
+    current_status = pgr_details["current_status"]
+
+    # Verification
+    print("Complaint Number: {}".format(complaint_number), "Complaint Status: {}".format(current_status))
+
+    # Reopen the closed complaint
+    citizen_login()
+    reopen_complaint = reopen_closed_complaint(complaint_number)
+    status_before = reopen_complaint["Status_before_reopen"]
+    status_after = reopen_complaint["Status_after_reopen"]
+    print("Complaint Number: {}".format(complaint_number), "Current Status: {}".format(status_before))
+    print("Complaint Number: {}".format(complaint_number), "Current Status: {}".format(status_after))
+
+
+def test_reassign_complaint():
+    # Create complaint from citizen to last mile employee verification
+    pgr_details = complaint_workflow_from_citizen_to_employee("Request for Re-Assign")
+
+    # Complaint Details (Test Data)
+    complaint_number = pgr_details["complaint_number"]
+    status = pgr_details["status"]
+    print("Complaint Number: {}".format(complaint_number), "Complaint Status: {}".format(status))
+    current_status = pgr_details["current_status"]
+
+    # Verification
+    print("Complaint Number: {}".format(complaint_number), "Complaint Status: {}".format(current_status))
+
+    # Re-Assign complaint
+    gro_employee_login("Amardeep", "12345678")
+    reassign = complaint_reassign(complaint_number)
+    current_status = reassign["status"]
+    print("Complaint Number: {}".format(complaint_number), "Complaint Status: {}".format(current_status))
+    # last_mile_employee_login("MamataDevi", "12345678")
+    # last_mile_employee_verification(complaint_number, "Mark as Resolve")
+
+
+def test_reject_complaint():
+    # Create complaint from citizen
+    citizen_login()
+    upload_photo = DEFAULT_IMAGELIST_TWO
+    complaint_info = create_new_complaint("No water or electricity in Public Toilet", "Amritsar, Punjab, India ", "Street end",
+                         "Leakage of water", upload_photo)
+    complaint_number = complaint_info["complaint_number"]
+    status = complaint_info["status"]
+    print("Complaint Number: {}".format(complaint_number), "Complaint Status: {}".format(status))
     navigation = TopMenuNavigationComponent()
     navigation.back().back()
     logout()
     quit_driver()
 
+    # GRO verification (Reject Complaint)
     gro_employee_login("Amardeep", "12345678")
-    GroHomePage().click_unassigned_complaint_list().open_compalint(complaint_number)
-    assign_open_complaints(complaint_number, "Antriksh Kumar")
-    EmployeeComplaintAcknowledgementPage().go_to_home()
-    GroHomePage().click_assigned_complaint_list().open_compalint(complaint_number)
-    status = get_current_status()
-    print(status) # Assigned
-    navigation.back()
+    complaint_reject(complaint_number)
     logout()
     quit_driver()
 
-    last_mile_employee_login("AntrikshKumar", "12345678")
-    resolve_assigned_complaint(complaint_number)
-    EmployeeComplaintAcknowledgementPage().go_to_home()
-    # open_complaint(complaint_number)
-    # status = get_current_status()
-    # print(status) # Resolved
-    # navigation.back()
-    logout()
-    quit_driver()
-"""
+    # Citizen Login
     citizen_login()
-    # open_complaint(complaint_number)
-    # status = get_current_status()
-    # print(status)
-    rate_closed_complaint(complaint_number)
+    open_complaint(complaint_number)
+    status = get_current_status()
+    print("Complaint Number: {}".format(complaint_number), "Complaint Status: {}".format(status))
+    navigation.back().back()
+    logout()
+    quit_driver()
 
 
-def test_reopen_closed_complaint(citizen_login):
-    reopen_closed_complaint("28/05/2018/000869")
+def test_reopen_rejected_complaint():
+    # Create complaint from citizen
+    citizen_login()
+    upload_photo = DEFAULT_IMAGELIST_TWO
+    complaint_info = create_new_complaint("No water or electricity in Public Toilet", "Amritsar, Punjab, India ", "Street end",
+                         "Leakage of water", upload_photo)
+    complaint_number = complaint_info["complaint_number"]
+    status = complaint_info["status"]
+    print("Complaint Number: {}".format(complaint_number), "Complaint Status: {}".format(status))
+    navigation = TopMenuNavigationComponent()
+    navigation.back().back()
+    logout()
+    quit_driver()
 
+    # GRO verification (Reject Complaint)
+    gro_employee_login("Amardeep", "12345678")
+    complaint_reject(complaint_number)
+    logout()
+    quit_driver()
 
+    # Citizen Login: Reopen Rejected Complaint
+    citizen_login()
+    reopen_complaint = reopen_closed_complaint(complaint_number)
+    status_before = reopen_complaint["Status_before_reopen"]
+    status_after = reopen_complaint["Status_after_reopen"]
+    print("Complaint Number: {}".format(complaint_number), "Current Status: {}".format(status_before))
+    print("Complaint Number: {}".format(complaint_number), "Current Status: {}".format(status_after))
+    navigation.back().back()
+    logout()
+    quit_driver()
+
+"""
 def test_timeline_details(citizen_login):
     complaint_timeline_details('23/05/2018/000835')
-
-
-def test_view_my_complaint(citizen_login):
-    view_my_complaint('25/05/2018/000860')
-
 
 def test_get_all_comaplint(citizen_login):
     get_all_comments("25/05/2018/000861")

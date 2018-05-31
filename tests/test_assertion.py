@@ -33,11 +33,13 @@ def test_employee_login_assertion():
     assert emp.get_user_name_error_message() == emp.ERROR_MESSAGE.errMsgEnterValidName, "error at username error message for special character"
     assert emp.get_password_error_message() == emp.ERROR_MESSAGE.errMsgEnterValidPassword, "error at password error message for special character"
 
+
 def test_open_unassigned_complaint_gro_login():
     EmployeeLoginPage().navigate().employee_id("Amardeep").password("12345678").submit()
     GroHomePage()\
         .click_unassigned_complaint_list()\
         .click_to_open_compalint("18/05/2018/000793")
+
 
 def test_open_assigned_complaint_gro_login():
     EmployeeLoginPage().navigate().employee_id("Amardeep").password("12345678").submit()
@@ -63,13 +65,3 @@ def test_get_details_from_complaint_list():
     print(card.get_complaint_header())
     print(card.get_complaint_no())
     print(card.get_complaint_status())
-
-
-
-
-
-
-
-
-
-

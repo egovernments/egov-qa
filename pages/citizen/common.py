@@ -51,7 +51,3 @@ class LanguageSelectionPage(Page):
     def submit(self):
         click(self.ID.btnContinue)
         return self
-
-    def navigate(self):
-        goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/user/language-selection")
-        return self

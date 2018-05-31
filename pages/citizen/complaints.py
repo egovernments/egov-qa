@@ -5,7 +5,7 @@ from framework.selenium_plus import *
 from ..components import *
 
 __all__ = ['AddComplaintPage', 'ComplaintFeedbackPage', 'ComplaintSubmittedPage', 'MyComplaintsPage',
-           'ReopenComplaintPage', 'ComplaintSummaryPage', 'ComplaintReopenedPage']
+           'ReopenComplaintPage', 'ComplaintCitizenSummaryPage', 'ComplaintReopenedPage']
 
 
 @PageObject
@@ -52,6 +52,12 @@ class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintT
 
 @PageObject
 class ComplaintFeedbackPage(Page):
+    class Feedback:
+        SERVICES = "Services"
+        RESOLUTION_TIME = "Resolution Time"
+        QUALITY_OF_WORK = "Quality of Work"
+        OTHERS = "Others"
+
     class ID:
         prmStarRating = "span#feedback-ratings{}"
         chkServices = "input#feedback-checkbox0"
@@ -60,6 +66,14 @@ class ComplaintFeedbackPage(Page):
         chkOthers = "input#feedback-checkbox3"
         txtFeedbackComment = "textarea#feedback-comments"
         btnFeedbackSubmit = "button#feedback-submit-action"
+        btnGoToHome = "button#feedback-acknowledgement"
+
+    FEEDBACK_REASON = {
+        Feedback.SERVICES: ID.chkServices.format("Services"),
+        Feedback.QUALITY_OF_WORK: ID.chkQualityOfWork.format("Resolution Time"),
+        Feedback.RESOLUTION_TIME: ID.chkResolutionTime.format("Quality of Work"),
+        Feedback.OTHERS: ID.chkOthers.format("Others")
+    }
 
     def set(self, feedback_comment):
         set(self.ID.txtFeedbackComment, feedback_comment)
@@ -69,24 +83,13 @@ class ComplaintFeedbackPage(Page):
         click(self.ID.prmStarRating.format(int(a) - 1), condition=EC.presence_of_element_located)
         return self
 
-    def check_services(self):
-        click(self.ID.chkServices, condition=EC.presence_of_element_located)
-        return self
-
-    def check_resolution_time(self):
-        click(self.ID.chkResolutionTime, condition=EC.presence_of_element_located)
-        return self
-
-    def check_quality_of_work(self):
-        click(self.ID.chkQualityOfWork, condition=EC.presence_of_element_located)
-        return self
-
-    def check_others(self):
-        click(self.ID.chkOthers, condition=EC.presence_of_element_located)
+    def reason_for_feedback(self, choice):
+        click(self.FEEDBACK_REASON[choice], condition=EC.presence_of_element_located)
         return self
 
     def submit(self):
         click(self.ID.btnFeedbackSubmit)
+        click(self.ID.btnGoToHome)
         return self
 
 
@@ -107,7 +110,7 @@ class ComplaintSubmittedPage(Page):
 @PageObject
 class MyComplaintsPage(Page):
     class ID:
-        btnMyComplaints = ".file-complaint"
+        btnMyComplaints = "button#complaints-button"
         rowComplaintCards = "xpath=//div[contains(@class,'complaint-card-wrapper')]"
         btnAddComplaintPlus = "button#mycomplaints-add"
         txtComment = "textarea#citizen-comment"
@@ -160,6 +163,7 @@ class ReopenComplaintPage(Page, UploadImageComponent):
         prmRadReopenReason = "input[type='radio'][value='{}']"
         txtTypeComplaint = "#reopencomplaint-comment-field"
         btnSubmit = "button#reopencomplaint-submit-action"
+        btnGoToHome = "button#success-message-acknowledgement"
 
     REOPEN_REASON = {
         Reason.NO_WORK_WAS_DONE: ID.prmRadReopenReason.format("No work was done"),
@@ -181,7 +185,7 @@ class ReopenComplaintPage(Page, UploadImageComponent):
 
 
 @PageObject
-class ComplaintSummaryPage(Page):
+class ComplaintCitizenSummaryPage(Page):
     class ID:
         lblComplainNumber = "#complaint-details-complaint-number .label-text"
         lblComplaintStatus = "#complaint-details-current-status .label-text"
