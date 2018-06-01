@@ -60,6 +60,7 @@ def create_new_complaint(complaint_type, location, landmark, additional_details,
 
     complaint_number = complaint_registration_number_recevied()
     open_complaint(complaint_number)
+    comment_on_complaint("Complaint registered")
     status = get_current_status()
 
     return {
@@ -153,6 +154,7 @@ def complaint_details(complaint_number):
 
 def resolve_assigned_complaint(complaint_number):
     MyComplaintsPage().click_to_open_compalint(complaint_number)
+    comment_on_complaint("Complaint Resolved")
     ComplaintResolvedCommentPage().click_mark_resolved()
     pass
 
@@ -167,6 +169,7 @@ def gro_verification(complaint_number):
     assign_open_complaint(complaint_number, "Antriksh Kumar")
     EmployeeComplaintAcknowledgementPage().go_to_home()
     GroHomePage().click_assigned_complaint_list().open_compalint(complaint_number)
+    comment_on_complaint("Complaint Under verification")
     current_status = get_current_status()
 
     return {
@@ -264,6 +267,7 @@ def complaint_reject(complaint_number):
 
 def request_for_reassign_complaint(complaint_number):
     MyComplaintsPage().click_to_open_compalint(complaint_number)
+    comment_on_complaint("Requested for re-assign")
     reassign = RequestReassignReasonPage()
     reassign.click_request_assign()
     reassign.option(reassign.REASONS.NOT_MY_DEPARTMENT)
