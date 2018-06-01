@@ -91,7 +91,6 @@ class ComplaintFeedbackPage(Page):
 
     def submit(self):
         click(self.ID.btnFeedbackSubmit)
-        click(self.ID.btnGoToHome)
         return self
 
 
@@ -120,7 +119,7 @@ class MyComplaintsPage(Page):
         lblComplaintNumber = "xpath=//div[contains(@class,'complaint-complaint-number')]/*[text()='{}']"
         prmComplaintCard = "xpath=//div[contains(@class,'complaints-card-main-cont')][.//div[contains(@class,'complaint-complaint-number')]/div[text()='{}']]"
 
-    def click_to_open_compalint(self, complaint_number):
+    def open_compalint(self, complaint_number):
         elem = find(self.ID.lblComplaintNumber.format(complaint_number))
         scroll_into_view(elem)
         click(elem)

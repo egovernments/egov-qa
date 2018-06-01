@@ -8,15 +8,15 @@ __all__ = ['HomePage', 'LanguageSelectionPage']
 @PageObject
 class HomePage(Page):
     class ID:
-        btnNewComplain = "button#complaints-button"
-        btnOldComplain = "div#home-old-complaint"
+        btnNewComplaints = "button#complaints-button"
+        btnOldComplaints = "div#home-old-complaint"
 
     def new_complaint(self):
-        click(self.ID.btnNewComplain)
+        click(self.ID.btnNewComplaints)
         return self
 
     def my_complaints(self):
-        click(self.ID.btnOldComplain)
+        click(self.ID.btnOldComplaints)
         return self
 
 

@@ -49,8 +49,6 @@ def test_citizen_should_file_complaint_with_one_image(citizen_login, upload_phot
 def test_add_three_image_then_remove_one(citizen_login):
     test_citizen_should_file_complaint_with_one_image(citizen_login, upload_photo=DEFAULT_IMAGELIST_THREE)
 
-# Below tests were commented out, leaving for tests need to be retain or not ?
-
 
 def test_open_compalint(citizen_login):
     create_new_complaint("Illegal Cutting of Trees", "Amritsar, Punjab, India ", "Street end", "Useful trees")
@@ -64,9 +62,9 @@ def test_complaint_detail(citizen_login):
     complaint_details(complaint_number)
 
 
-def test_get_all_comaplint(citizen_login):
+def test_get_all_comment(citizen_login):  # TODO: this need to be try in end to end test cases
     get_all_comments("31/05/2018/000961")
 
 
-def test_timeline_details(citizen_login):
+def test_timeline_details(citizen_login):  # TODO: this need to be try in end to end test cases
     complaint_timeline_details('31/05/2018/000961')

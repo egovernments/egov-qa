@@ -17,7 +17,7 @@ class UnassignedComplaintsPage(Page):
         btnSendComment = "svg[class='comment-send']"
         btnAssign = "button#actionTwo"
         txtSearch = "input#employee-search"
-        lblAssignee = "id=23293"
+        prmLblAssignee = "xpath=//div[contains(@class,'label-container ')]//div[contains(text(),'{}')]"
         btnAssignLastMile = "div.assign-complaint-button-cont"
 
     def get_all_complaints(self) -> List[ComplainCardComponent]:
@@ -38,7 +38,7 @@ class UnassignedComplaintsPage(Page):
     def assign_complaint(self, assignee):
         click(self.ID.btnAssign)
         set(self.ID.txtSearch, assignee)
-        click(self.ID.lblAssignee)
+        click(self.ID.prmLblAssignee.format(assignee))
         click(self.ID.btnAssignLastMile)
         return self
 
@@ -50,7 +50,7 @@ class ComplaintReassignPage(Page):
         btnReject = "button#actionOne"
         btnReAssign = "button#actionTwo"
         txtEmployeeSearch = "input#employee-search"
-        lblReAssignee = "id=23283"
+        prmLblAssignee = "xpath=//div[contains(@class,'label-container ')]//div[contains(text(),'{}')]"
         btnReAssignSubmit = "div.assign-complaint-button-cont"
         txtComments = "textarea[id]"
 
@@ -70,7 +70,7 @@ class ComplaintReassignPage(Page):
     def reassign(self, assignee):
         click(self.ID.btnReAssign)
         set(self.ID.txtEmployeeSearch, assignee)
-        click(self.ID.lblReAssignee)
+        click(self.ID.prmLblAssignee.format(assignee))
         click(self.ID.btnReAssignSubmit)
         return self
 

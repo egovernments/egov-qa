@@ -123,7 +123,7 @@ class ComplainCardComponent(Component):
     def __init__(self, container=None):
         self.container = container
 
-    def complain_images(self):  # TODO
+    def complaint_images(self):  # TODO: is not used in the any of the tests
         return finds(self.ID.colComplaintImages, context=self.container)
 
     def get_complaint_header(self):

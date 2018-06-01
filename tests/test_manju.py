@@ -97,7 +97,7 @@ def test_reassign_complaint():
     print("Complaint Number:{0}, Complaint Status:{1}".format(complaint_number, current_status))
 
     # Re-Assign complaint
-    gro_employee_login("Amardeep", "12345678")
+    gro_employee_login(GRO_EMPLOYEE_USERNAME, DEFAULT_PASSWORD)
     reassign = complaint_reassign(complaint_number)
     current_status = reassign["status"]
     print("Complaint Number:{0}, Complaint Status:{1}".format(complaint_number, current_status))
@@ -121,7 +121,7 @@ def test_reject_complaint():
     quit_driver()
 
     # GRO verification (Reject Complaint)
-    gro_employee_login("Amardeep", "12345678")
+    gro_employee_login(GRO_EMPLOYEE_USERNAME, DEFAULT_PASSWORD)
     complaint_reject(complaint_number)
     logout()
     quit_driver()
@@ -152,7 +152,7 @@ def test_reopen_rejected_complaint():
     quit_driver()
 
     # GRO verification (Reject Complaint)
-    gro_employee_login("Amardeep", "12345678")
+    gro_employee_login(GRO_EMPLOYEE_USERNAME, DEFAULT_PASSWORD)
     complaint_reject(complaint_number)
     logout()
     quit_driver()

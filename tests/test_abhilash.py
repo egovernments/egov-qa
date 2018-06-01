@@ -3,7 +3,7 @@ from pages.flows.common import *
 
 
 def test_homepage_displayed_after_sucessful_login(citizen_login):
-    if exists(HomePage().ID.btnNewComplain):
+    if exists(HomePage().ID.btnNewComplaints):
         assert True
     else:
         assert False

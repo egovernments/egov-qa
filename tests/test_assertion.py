@@ -37,14 +37,14 @@ def test_open_unassigned_complaint_gro_login():
     EmployeeLoginPage().navigate().employee_id("Amardeep").password("12345678").submit()
     GroHomePage()\
         .click_unassigned_complaint_list()\
-        .click_to_open_compalint("18/05/2018/000793")
+        .open_compalint("18/05/2018/000793")
 
 
 def test_open_assigned_complaint_gro_login():
     EmployeeLoginPage().navigate().employee_id("Amardeep").password("12345678").submit()
     GroHomePage() \
         .click_assigned_complaint_list() \
-        .click_to_open_compalint("18/05/2018/000809")
+        .open_compalint("18/05/2018/000809")
 
 
 def test_get_count_of_assigned_and_unassigned_complaint():
@@ -59,7 +59,7 @@ def test_get_count_of_assigned_and_unassigned_complaint():
 def test_get_details_from_complaint_list():
     EmployeeLoginPage().navigate().employee_id("Amardeep").password("12345678").submit()
     card = MyComplaintsPage().get_complaint_card("25/05/2018/000861") #TODO
-    print(len(card.complain_images()))
+    print(len(card.complaint_images()))
     print(card.get_complaint_date())
     print(card.get_complaint_header())
     print(card.get_complaint_no())

@@ -106,7 +106,7 @@ def complaint_successful_page():
 def view_my_complaints(complaint_number):
     AddComplaintPage().complaints_icon()
     # MyComplaintsPage().select_my_complaint()
-    MyComplaintsPage().click_to_open_compalint(complaint_number)
+    MyComplaintsPage().open_compalint(complaint_number)
     # image = ComplaintSummaryPage().get_no_of_image()
     # assert image == len(upload_photo) , "Number of image uploaded while creating complaint"
 
@@ -130,14 +130,14 @@ def assign_open_complaint(complaint_number, assignee):
 def open_complaint(complaint_number):
     MyComplaintsPage().select_my_complaint()
     time.sleep(2)
-    MyComplaintsPage().click_to_open_compalint(complaint_number)
+    MyComplaintsPage().open_compalint(complaint_number)
     time.sleep(2)
 
 
 def complaint_details(complaint_number):
     MyComplaintsPage().select_my_complaint()
     time.sleep(2)
-    MyComplaintsPage().click_to_open_compalint(complaint_number)
+    MyComplaintsPage().open_compalint(complaint_number)
     time.sleep(2)
     """
     complaint_summary_page = ComplaintSummaryPage()
@@ -153,7 +153,7 @@ def complaint_details(complaint_number):
 
 
 def resolve_assigned_complaint(complaint_number):
-    MyComplaintsPage().click_to_open_compalint(complaint_number)
+    MyComplaintsPage().open_compalint(complaint_number)
     comment_on_complaint("Complaint Resolved")
     ComplaintResolvedCommentPage().click_mark_resolved()
     pass
@@ -189,7 +189,7 @@ def last_mile_employee_verification(complaint_number, complaint_action):
 
 def rate_closed_complaint(complaint_number):
     MyComplaintsPage().select_my_complaint()
-    MyComplaintsPage().click_to_open_compalint(complaint_number)
+    MyComplaintsPage().open_compalint(complaint_number)
     status_before = get_current_status()
     complaint_summary_page = ComplaintCitizenSummaryPage()
     complaint_summary_page.rate_complaint()
@@ -198,7 +198,7 @@ def rate_closed_complaint(complaint_number):
     complaint_feedback_page.reason_for_feedback(complaint_feedback_page.Feedback.SERVICES)
     complaint_feedback_page.set("done i am happy with work").submit()
     MyComplaintsPage().select_my_complaint()
-    MyComplaintsPage().click_to_open_compalint(complaint_number)
+    MyComplaintsPage().open_compalint(complaint_number)
     status_after = get_current_status()
 
     return {
@@ -214,7 +214,7 @@ def reassign_open_complaint(assignee):
 
 def reopen_closed_complaint(complaint_number):
     MyComplaintsPage().select_my_complaint()
-    MyComplaintsPage().click_to_open_compalint(complaint_number)
+    MyComplaintsPage().open_compalint(complaint_number)
     status_before = get_current_status()
     complaint_summary_page = ComplaintCitizenSummaryPage()
     complaint_summary_page.reopen_complaint()
@@ -226,7 +226,7 @@ def reopen_closed_complaint(complaint_number):
     assert "Re-opened" in acknowledgement, "acknowledgement should contain the Re-Opened"
     ComplaintReopenedPage().go_to_home()
     MyComplaintsPage().select_my_complaint()
-    MyComplaintsPage().click_to_open_compalint(complaint_number)
+    MyComplaintsPage().open_compalint(complaint_number)
     status_after = get_current_status()
     assert ComplaintCitizenSummaryPage().get_complaint_status() == "Re-opened", "status is not Re-Opened"
     return {
@@ -266,7 +266,7 @@ def complaint_reject(complaint_number):
 
 
 def request_for_reassign_complaint(complaint_number):
-    MyComplaintsPage().click_to_open_compalint(complaint_number)
+    MyComplaintsPage().open_compalint(complaint_number)
     comment_on_complaint("Requested for re-assign")
     reassign = RequestReassignReasonPage()
     reassign.click_request_assign()
@@ -288,7 +288,7 @@ def complaint_workflow_from_citizen_to_employee(complaint_action):
     quit_driver()
 
     # GRO Complaint Verification: Assigning complaints
-    gro_employee_login("Amardeep", "12345678")
+    gro_employee_login(GRO_EMPLOYEE_USERNAME, DEFAULT_PASSWORD)
     workflow_status = gro_verification(complaint_number)
     gro_status = workflow_status["current_status"]
     navigation.back()
@@ -296,7 +296,7 @@ def complaint_workflow_from_citizen_to_employee(complaint_action):
     quit_driver()
 
     # Last Mile Employee Complaint Verification: Resolving Assigned complaints
-    last_mile_employee_login("AntrikshKumar", "12345678")
+    last_mile_employee_login(LAST_MILE_EMPLOYEE_USERNAME, DEFAULT_PASSWORD)
     last_mile_employee_verification(complaint_number, complaint_action)
 
     return {
@@ -308,7 +308,7 @@ def complaint_workflow_from_citizen_to_employee(complaint_action):
 
 def get_all_comments(complaint_number):
     MyComplaintsPage().select_my_complaint()
-    MyComplaintsPage().click_to_open_compalint(complaint_number)
+    MyComplaintsPage().open_compalint(complaint_number)
     ccc = ComplaintCommentCard()
     comments = ccc.get_all_comments()
     comment_number = 0
@@ -330,7 +330,7 @@ def get_all_comments(complaint_number):
 
 def complaint_timeline_details(complaint_number):
     MyComplaintsPage().select_my_complaint()
-    MyComplaintsPage().click_to_open_compalint(complaint_number)
+    MyComplaintsPage().open_compalint(complaint_number)
     ctp = ComplaintTimelinePage()
     timelines = ctp.get_all_timeline_card()
     for i in timelines:
