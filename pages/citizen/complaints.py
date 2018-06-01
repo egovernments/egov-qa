@@ -2,10 +2,12 @@ from typing import List
 
 from framework.common import PageObject, Page
 from framework.selenium_plus import *
+from pages.components.common import TimelineCardComponent
 from ..components import *
 
 __all__ = ['AddComplaintPage', 'ComplaintFeedbackPage', 'ComplaintSubmittedPage', 'MyComplaintsPage',
-           'ReopenComplaintPage', 'ComplaintCitizenSummaryPage', 'ComplaintReopenedPage']
+           'ReopenComplaintPage', 'ComplaintCitizenSummaryPage', 'ComplaintReopenedPage', 'FeedbackSubmittedPage',
+           'ComplaintTimelinePage', 'ComplaintCommentCard']
 
 
 @PageObject
@@ -238,3 +240,35 @@ class ComplaintReopenedPage(Page):
 
     def go_to_home(self):
         click(self.ID.btnGoToHome)
+
+
+@PageObject
+class ComplaintTimelinePage(Page):
+    class ID:
+        timelineCard = ".complaint-timeline-content-section"
+
+    def get_all_timeline_card(self) -> List[TimelineCardComponent]:
+        timeline = []
+        for timeline1 in finds(self.ID.timelineCard):
+            timeline.append(TimelineCardComponent(timeline1))
+        return timeline
+
+
+@PageObject
+class FeedbackSubmittedPage(Page):
+    class ID:
+        btnContinue = "#feedback-acknowledgement"
+
+    def click_continue(self):
+        click(self.ID.btnContinue)
+        return self
+
+@PageObject
+class ComplaintCommentCard(Page):
+    class ID:
+        lblComments = ".complaint-details-comments-section .label-text"
+
+    def get_all_comments(self):
+        comments = finds(self.ID.lblComments)
+        all_comments = list(map(lambda e: e.text, comments))
+        return all_comments

@@ -51,7 +51,7 @@ def test_add_three_image_then_remove_one(citizen_login):
 
 # Below tests were commented out, leaving for tests need to be retain or not ?
 
-"""
+
 def test_open_compalint(citizen_login):
     create_new_complaint("Illegal Cutting of Trees", "Amritsar, Punjab, India ", "Street end", "Useful trees")
     complaint_number = complaint_registration_number_recevied()
@@ -64,13 +64,9 @@ def test_complaint_detail(citizen_login):
     complaint_details(complaint_number)
 
 
-def test_timeline_details(citizen_login):
-    complaint_timeline_details('23/05/2018/000835')
-
 def test_get_all_comaplint(citizen_login):
-    get_all_comments("25/05/2018/000861")
-    
-def test_new_complaint(citizen_login):
-    create_new_complaint("Amritsar punjab", "additional details", "Stray Dogs", "StrayDogs", "landmarkdetail", True)
+    get_all_comments("31/05/2018/000961")
 
-"""
+
+def test_timeline_details(citizen_login):
+    complaint_timeline_details('31/05/2018/000961')

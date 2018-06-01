@@ -2,7 +2,7 @@ from framework.selenium_plus import *
 from pages.flows.common import *
 
 
-def test_homepage_displayed_after_sucessful_login(login_citizen):
+def test_homepage_displayed_after_sucessful_login(citizen_login):
     if exists(HomePage().ID.btnNewComplain):
         assert True
     else:
@@ -11,40 +11,7 @@ def test_homepage_displayed_after_sucessful_login(login_citizen):
     pass
 
 
-def test_upadate_profile(login_citizen):
-    TopMenuNavigationComponent().ham()
-    LoginPage().profile()
-    profile = ProfilePage()
-    profile.change_profile_picture(PROFILE_IMAGELIST)
-    profile.profile_upload_image(PROFILE_IMAGELIST)
-    profile.set_email_id("abhilash.seth@gmail.com").set_name("Abhilash Seth").set_city("Am")
-    profile.save()
-
-
-def test_discard_changes_in_profile(login_citizen):
-    TopMenuNavigationComponent().ham()
-    LoginPage().profile()
-    name = get(ProfilePage().ID.txtProfileName)
-    emailId = get(ProfilePage().ID.txtProfileEmailId)
-    city = get(ProfilePage().ID.drpCity)
-    ProfilePage().change_profile_picture(PROFILE_IMAGELIST)
-    ProfilePage().profile_upload_image(PROFILE_IMAGELIST)
-    ProfilePage().set_email_id("YO.YO@gmail.com").set_name("YO YO").set_city("Pa").click_back()
-    TopMenuNavigationComponent().ham()
-    LoginPage().profile()
-    assert name == get(ProfilePage().ID.txtProfileName), "Verify name in applcation is correct"
-    assert emailId == get(ProfilePage().ID.txtProfileEmailId), "Verify email in application is correct"
-    assert city == get(ProfilePage().ID.drpCity), "Verfy city in application is correct"
-
-
-def test_uploading_large_size_image_for_profile_picture(login_citizen):
-    TopMenuNavigationComponent().ham()
-    LoginPage().profile()
-    ProfilePage().change_profile_picture(PROFILE_IMAGELIST)
-    ProfilePage().profile_upload_image(PROFILE_IMAGELIST)
-
-
-def test_selecting_city_from_dropdown_of_citizen_profile_page(login_citizen):
+def test_selecting_city_from_dropdown_of_citizen_profile_page(citizen_login):
     drpCity = "span[id='pb.ludhiana']"
     TopMenuNavigationComponent().ham()
     LoginPage().profile()
@@ -53,7 +20,7 @@ def test_selecting_city_from_dropdown_of_citizen_profile_page(login_citizen):
     ProfilePage().save()
 
 
-def test_image_no(login_citizen, images=DEFAULT_IMAGELIST_THREE):
+def test_image_no(citizen_login, images=DEFAULT_IMAGELIST_THREE):
     click("div.file-complaint")
     click("button#mycomplaints-add")
     complaint_details = "VAGAO YAAR JALDI"

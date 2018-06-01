@@ -123,7 +123,7 @@ class ComplainCardComponent(Component):
     def __init__(self, container=None):
         self.container = container
 
-    def complain_images(self): #TODO
+    def complain_images(self):  # TODO
         return finds(self.ID.colComplaintImages, context=self.container)
 
     def get_complaint_header(self):
@@ -207,3 +207,16 @@ class SideBarComponentEmployee(Component):
     def click_logout(self):
         click(self.ID.btnLogOut)
         return self
+
+
+class TimelineCardComponent(Component):
+    class ID:
+        lblText = ".label-text"
+
+    def __init__(self, container=None):
+        self.container = container
+
+    def get_timeline_details(self):
+        timelines = finds(self.ID.lblText, context=self.container)
+        timeline = list(map(lambda e: e.text, timelines))
+        return timeline

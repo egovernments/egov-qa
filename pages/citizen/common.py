@@ -8,7 +8,7 @@ __all__ = ['HomePage', 'LanguageSelectionPage']
 @PageObject
 class HomePage(Page):
     class ID:
-        btnNewComplain = "div#home-new-complaint"
+        btnNewComplain = "button#complaints-button"
         btnOldComplain = "div#home-old-complaint"
 
     def new_complaint(self):

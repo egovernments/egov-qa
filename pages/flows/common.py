@@ -300,3 +300,34 @@ def complaint_workflow_from_citizen_to_employee(complaint_action):
         "status": status,
         "current_status": gro_status,
     }
+
+
+def get_all_comments(complaint_number):
+    MyComplaintsPage().select_my_complaint()
+    MyComplaintsPage().click_to_open_compalint(complaint_number)
+    ccc = ComplaintCommentCard()
+    comments = ccc.get_all_comments()
+    comment_number = 0
+    list_of_all_comment = []
+    for i in range(0, len(comments) // 3):
+        commentsdict = dict()
+        commentsdict['name'] = comments[comment_number]
+        comment_number += 1
+        commentsdict['comment'] = comments[comment_number]
+        comment_number += 1
+        commentsdict['date'] = comments[comment_number]
+        comment_number += 1
+        # TO-DO TYPE SHOULD NOT BE BLANK
+        commentsdict['type'] = ""
+        list_of_all_comment.append(commentsdict)
+
+    print(list_of_all_comment)
+
+
+def complaint_timeline_details(complaint_number):
+    MyComplaintsPage().select_my_complaint()
+    MyComplaintsPage().click_to_open_compalint(complaint_number)
+    ctp = ComplaintTimelinePage()
+    timelines = ctp.get_all_timeline_card()
+    for i in timelines:
+        print(i.get_timeline_details())
