@@ -5,8 +5,9 @@ from framework.selenium_plus import *
 from ..components import *
 
 __all__ = ['UnassignedComplaintsPage', 'ComplaintResolvedCommentPage', 'ComplaintResolvedPageSucessPage',
-           'RequestReassignReasonPage',
-           'ReAssignComplaintSuccessPage', 'GroHomePage', 'ComplaintSummaryPage']
+           'RequestReassignReasonPage', 'ReAssignComplaintSuccessPage', 'GroHomePage', 'ComplaintSummaryPage',
+           'ComplaintReassignPage',
+           'ComplaintRejectPage']
 
 
 class UnassignedComplaintsPage(Page):
@@ -15,9 +16,9 @@ class UnassignedComplaintsPage(Page):
         txtComment = "textarea#citizen-comment"
         btnSendComment = "svg[class='comment-send']"
         btnAssign = "button#actionTwo"
-        txtEmployeeSearch = "input#employee-search"
-        lblAssignee = "id#23289"
-        btnAssignLastMile = "//div[contains(text(), 'ASSIGN')]"
+        txtSearch = "input#employee-search"
+        prmLblAssignee = "xpath=//div[contains(@class,'label-container ')]//div[contains(text(),'{}')]"
+        btnAssignLastMile = "div.assign-complaint-button-cont"
 
     def get_all_complaints(self) -> List[ComplainCardComponent]:
         cards = []
@@ -36,9 +37,10 @@ class UnassignedComplaintsPage(Page):
 
     def assign_complaint(self, assignee):
         click(self.ID.btnAssign)
-        set(self.ID.txtEmployeeSearch, assignee)
-        click(self.ID.lblAssignee)
+        set(self.ID.txtSearch, assignee)
+        click(self.ID.prmLblAssignee.format(assignee))
         click(self.ID.btnAssignLastMile)
+        return self
 
 
 @PageObject
@@ -46,7 +48,10 @@ class ComplaintReassignPage(Page):
     class ID:
         # todo satish: add id for call,commenet box,send button
         btnReject = "button#actionOne"
-        btnAssign = "button#actionTwo"
+        btnReAssign = "button#actionTwo"
+        txtEmployeeSearch = "input#employee-search"
+        prmLblAssignee = "xpath=//div[contains(@class,'label-container ')]//div[contains(text(),'{}')]"
+        btnReAssignSubmit = "div.assign-complaint-button-cont"
         txtComments = "textarea[id]"
 
     def reject(self):
@@ -62,19 +67,19 @@ class ComplaintReassignPage(Page):
         set(self.ID.txtComments, comments)
         return self
 
-    def navigate(self):
-        goto("http://egov-micro-dev.egovernments.org/app/v3/employee/complaint-details?status=unassigned&reassign")
+    def reassign(self, assignee):
+        click(self.ID.btnReAssign)
+        set(self.ID.txtEmployeeSearch, assignee)
+        click(self.ID.prmLblAssignee.format(assignee))
+        click(self.ID.btnReAssignSubmit)
         return self
 
 
 class ComplaintResolvedCommentPage(Page, UploadImageComponent):
     class ID:
         txtComment = "textarea#reopencomplaint-comment-field"
-        btnMarkResolved = "button#complaint-resolved-submit"
-
-    def navigate(self):
-        goto("http://egov-micro-dev.egovernments.org/app/v3/employee/complaint-resolved")
-        return self
+        btnMarkResolved = "button#actionTwo"
+        btnSubmitToResolve = "button#complaintresolved-submit-action"
 
     def set_comment(self, comment):
         set(self.ID.txtComment, comment)
@@ -82,6 +87,7 @@ class ComplaintResolvedCommentPage(Page, UploadImageComponent):
 
     def click_mark_resolved(self):
         click(self.ID.btnMarkResolved)
+        click(self.ID.btnSubmitToResolve)
 
 
 @PageObject
@@ -103,11 +109,12 @@ class RequestReassignReasonPage(Page):
 
     class ID:
         txtComment = "textarea#reopencomplaint-comment-field"
-        clickRequestAssign = "button#reassigncomplaint-submit-action"
+        btnRequestAssign = "button#actionOne"
         radNotMyDepartment = "input#reopencomplaint-radio-button-0"
         radNotMyJurisdiction = "input#reopencomplaint-radio-button-1"
         radAbsentOrLeave = "input#reopencomplaint-radio-button-2"
         radNotAValidComplaint = "input#reopencomplaint-radio-button-3"
+        btnReAssign = "button#reopencomplaint-submit-action"
 
     radOption = {
         REASONS.NOT_MY_DEPARTMENT: ID.radNotMyDepartment,
@@ -125,7 +132,11 @@ class RequestReassignReasonPage(Page):
         return self
 
     def click_request_assign(self):
-        click(self.ID.clickRequestAssign)
+        click(self.ID.btnRequestAssign)
+        return self
+
+    def click_reassign(self):
+        click(self.ID.btnReAssign)
         return self
 
 
@@ -174,17 +185,14 @@ class GroHomePage(Page):
         return int(count[1:-1])
 
     def get_total_complaints(self):
-        return self.get_assigned_complaint_count()+ self.get_unassigned_complaint_count()
-
-
-
+        return self.get_assigned_complaint_count() + self.get_unassigned_complaint_count()
 
 
 @PageObject
 class ComplaintSummaryPage(Page):
     class ID:
         lblComplainNumber = "#complaint-details-complaint-number .label-text"
-        lblcomplaintStatus = "#complaint-details-current-status .label-text"
+        lblcomplaintStatus = "div#complaint-details-current-status"
         lblSubmissionDate = "#complaint-details-submission-date .label-text"
         lblComplaintType = ".rainmaker-big-font"
         lblLocation = "#complaint-details-complaint-location .label-text"
@@ -194,8 +202,6 @@ class ComplaintSummaryPage(Page):
         btnMarkResolved = "//div[text()='MARK RESOLVED']"
         btnReject = "//div[text()='REJECT']"
         btnAssign = "//div[text()='ASSIGN']"
-
-
 
     def get_compalint_type(self):
         return get(self.ID.lblComplaintType)
@@ -235,5 +241,41 @@ class ComplaintSummaryPage(Page):
         return self
 
 
+class ComplaintRejectPage(Page):
+    class REASONS:
+        NOT_MY_DEPARTMENT = "Not my Department"
+        OUT_OF_OPERATIONAL_SCOPE = "Out of operational scope"
+        OPERATION_ALREADY_UNDERWAY = "Operation already underway"
+        OTHER = "Other"
 
+    class ID:
+        btnReject = "button#actionOne"
+        btnRejectSubmit = "button#reopencomplaint-submit-action"
+        radNotMyDepartment = "input#reopencomplaint-radio-button-0"
+        radOutOfOperationalScope = "input#reopencomplaint-radio-button-1"
+        radOperationAlreadyUnderway = "input#reopencomplaint-radio-button-2"
+        radOther = "input#reopencomplaint-radio-button-2"
+        txtComment = "textarea#reopencomplaint-comment-field"
 
+    radOption = {
+        REASONS.NOT_MY_DEPARTMENT: ID.radNotMyDepartment,
+        REASONS.OUT_OF_OPERATIONAL_SCOPE: ID.radOutOfOperationalScope,
+        REASONS.OPERATION_ALREADY_UNDERWAY: ID.radOperationAlreadyUnderway,
+        REASONS.OTHER: ID.radOther
+    }
+
+    def click_reject(self):
+        click(self.ID.btnReject)
+        return self
+
+    def option(self, option):
+        click(self.radOption[option], condition=EC.presence_of_element_located)
+        return self
+
+    def send_comment(self, comment):
+        set(self.ID.txtComment, comment)
+        return self
+
+    def submit_reject(self):
+        click(self.ID.btnRejectSubmit)
+        return self

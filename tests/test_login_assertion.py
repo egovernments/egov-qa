@@ -82,7 +82,3 @@ def test_otp_assertions():
 
     # Resend OTP validation
     assert otp_page.resend() == "OTP has been Resent"
-
-
-def test_add_complaint_assertion():
-    pass

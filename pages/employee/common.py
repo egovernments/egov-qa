@@ -5,7 +5,7 @@ from framework.common import PageObject, Page
 from framework.selenium_plus import goto, set, click, get
 from ..components import *
 
-__all__ = ['EmployeeLoginPage']
+__all__ = ['EmployeeLoginPage', 'EmployeeComplaintAcknowledgementPage']
 
 
 @PageObject
@@ -54,3 +54,14 @@ class EmployeeLoginPage(Page):
 
     def get_error_pop_up_message(self):
         return get(self.ID.errPopUp)
+
+
+@PageObject
+class EmployeeComplaintAcknowledgementPage(Page):
+    class ID:
+        lblAssignedTo = "div.label-container.thankyou-text"
+        btnGoToHome = "button#resolve-success-continue"
+
+    def go_to_home(self):
+        click(self.ID.btnGoToHome)
+        return self

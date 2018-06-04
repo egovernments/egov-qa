@@ -38,6 +38,7 @@ class ProfilePage(Page, UploadImageComponent):
         btnProfilePhoto = "#profile-upload-icon"
         btnPhotoRemove = "#uploadDrawerRemoveIcon"
         lblToaster = "#toast-message span"
+        drpCity = "input#person-city"
 
     def update(self, name, email_id):
         clear(self.ID.txtProfileName)
