@@ -25,7 +25,6 @@ def my_fixture():
 def test_citizen_login():
     citizen_login()
 
-
 @fixture
 def test_gro_login():
     gro_employee_login()
@@ -178,3 +177,5 @@ def test_add_more_than_three_image(citizen_login):
 
 def test_upload_a_large_size_file(citizen_login):  # it is uploading the file, it shuld give error mesaage
     test_citizen_should_file_complaint_with_one_image(citizen_login, upload_photo=LARGE_IMAGELIST)
+
+
