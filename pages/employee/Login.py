@@ -13,11 +13,11 @@ class LoginEmployeePage(Page):
         txtPassword="#employee-password"
 
     def username(self,username):
-        set(self.ID.txtUsername,username)
+        set_text(self.ID.txtUsername, username)
         return self
 
     def password(self,password):
-        set(self.ID.txtPassword,password)
+        set_text(self.ID.txtPassword, password)
         return self
 
     def submit(self):

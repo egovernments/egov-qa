@@ -1,4 +1,6 @@
 from functools import partial
+
+from environment import *
 from framework.common import PageObject, Page
 from framework.selenium_plus import click, goto
 
@@ -8,19 +10,19 @@ __all__ = ['HomePage', 'LanguageSelectionPage']
 @PageObject
 class HomePage(Page):
     class ID:
-        btnNewComplain = "div#home-new-complaint"
-        btnOldComplain = "div#home-old-complaint"
+        btnNewComplaints = "div#home-new-complaint"
+        btnOldComplaints = "div#home-old-complaint"
+
+    def navigate(self):
+        goto(BASE_URL+CITIZEN_HOME_URL)
+        return self
 
     def new_complaint(self):
-        click(self.ID.btnNewComplain)
+        click(self.ID.btnNewComplaints)
         return self
 
     def my_complaints(self):
-        click(self.ID.btnOldComplain)
-        return self
-
-    def navigate(self):
-        goto("http://egov-micro-dev.egovernments.org/app/v3/citizen")
+        click(self.ID.btnOldComplaints)
         return self
 
 
@@ -54,8 +56,4 @@ class LanguageSelectionPage(Page):
 
     def submit(self):
         click(self.ID.btnContinue)
-        return self
-
-    def navigate(self):
-        goto("http://egov-micro-dev.egovernments.org/app/v3/citizen/user/language-selection")
         return self

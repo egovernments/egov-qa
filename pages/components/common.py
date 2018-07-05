@@ -1,8 +1,8 @@
 from selenium.common.exceptions import InvalidElementStateException
 
-from framework.common import Component, PageObject
+from framework.common import *
 from framework.selenium_plus import *
-from framework.selenium_plus import click, set, finds, get
+from framework.selenium_plus import click, set_text, finds, get
 
 __all__ = ['ComplaintTypeComponent',
            'LocationComponent',
@@ -11,20 +11,33 @@ __all__ = ['ComplaintTypeComponent',
            'ComplainCardComponent',
            'TopMenuNavigationComponent',
            'BottomMenuComponent',
-           'SideBarComponentEmployee'
+           'SideBarComponentEmployee',
+           'CommonComponent'
            ]
+
+
+class CommonComponent(Component):
+    class ID:
+        iconBusy = "div#loading-indicator"
+        toastNotification = "div#toast-message"
+
+    def wait_for_busy(self):
+        wait_for_appear_then_disappear(self.ID.iconBusy)
+
+    def wait_for_toast(self):
+        return wait_for_appear_then_disappear(self.ID.toastNotification)
 
 
 class ComplaintTypeComponent(Component):
     class ID:
         txtComplaintTypeSearch = "input#complainttype-search"
-        prmLblComplaintType = "xpath=//div[.='{}']"
+        prmLblComplaintType = "xpath=//div[contains(text(), '{}')]"
 
     def select_complaint_type(self, complaint_type, complaint_filter=None):
         if complaint_filter is None:
             complaint_filter = complaint_type
 
-        set(self.ID.txtComplaintTypeSearch, complaint_filter)
+        set_text(self.ID.txtComplaintTypeSearch, complaint_filter)
         click(self.ID.prmLblComplaintType.format(complaint_type))
         return self
 
@@ -36,7 +49,8 @@ class LocationComponent(Component):
         lblSearchAddressResults = "div.pac-container > div.pac-item"
 
     def set_location_by_address(self, address, result_index=0):
-        set(self.ID.txtSearchAddress, address)
+        set_text(self.ID.txtSearchAddress, address)
+        time.sleep(2)
         elems = finds(self.ID.lblSearchAddressResults, condition=count_non_zero_and_clickable)
         assert len(elems) != 0, "No search results found"
         elems[result_index].click()
@@ -49,6 +63,7 @@ class UploadImageComponent(Component):
     class ID:
         prmBtnRemoveImage = "xpath=(//div[contains(@class,'image-remove')])[{}]"
         fileImageUploadPlaceHolder = ".upload-placeholder input,.upload-photo-overlay input"
+        profileImagePlaceHolder = "#uploadDrawerGallaryIcon, .gallery-upload-drawer, #photo-picker"
         pass
 
     def remove_image_1(self):
@@ -71,10 +86,19 @@ class UploadImageComponent(Component):
         for image in images:
             elem = find(self.ID.fileImageUploadPlaceHolder)
             try:
-                set(elem, image)
+                set_text(elem, image)
             except InvalidElementStateException:
                 unhide(elem)
-                set(elem, image)
+                set_text(elem, image)
+
+    def profile_upload_image(self, image):
+        elem = find(self.ID.profileImagePlaceHolder)
+        try:
+            set_text(elem, image)
+        except InvalidElementStateException:
+            unhide(elem)
+            set_text(elem, image)
+        CommonComponent().wait_for_busy()
 
 
 class SelectCityComponent(Component):
@@ -83,7 +107,7 @@ class SelectCityComponent(Component):
         txtSearch = "div.search-field-container input"
 
     def set_city(self, city):
-        set(self.ID.txtSearch, city)
+        set_text(self.ID.txtSearch, city)
         click(self.ID.prmLblCity.format(city))
         return self
 
@@ -100,7 +124,8 @@ class ComplainCardComponent(Component):
     def __init__(self, container=None):
         self.container = container
 
-    def complain_images(self): #TODO
+
+    def complaint_images(self):  # TODO: is not used in the any of the tests
         return finds(self.ID.colComplaintImages, context=self.container)
 
     def get_complaint_header(self):
@@ -145,15 +170,10 @@ class BottomMenuComponent(Component):
 
 class TopMenuNavigationComponent(Component):
     class ID:
-        btnHam = "#icon-hamburger"
-        btnBackNavigate = "#back-navigator"
+        btnProfile = "div.userSettingsInnerContainer"
 
-    def ham(self):
-        click(self.ID.btnHam)
-        return self
-
-    def back(self):
-        click(self.ID.btnBackNavigate)
+    def user_profile(self):
+        click(self.ID.btnProfile)
         return self
 
 
@@ -164,6 +184,7 @@ class SideBarComponentEmployee(Component):
         btnEmployeeDirectory = "#header-contact-us"
         btnEditProfile = "#header-profile"
         btnLogOut = "#header-logout"
+
     def click_home(self):
         click(self.ID.btnHome)
         return self
@@ -184,3 +205,15 @@ class SideBarComponentEmployee(Component):
         click(self.ID.btnLogOut)
         return self
 
+
+class TimelineCardComponent(Component):
+    class ID:
+        lblText = ".label-text"
+
+    def __init__(self, container=None):
+        self.container = container
+
+    def get_timeline_details(self):
+        timelines = finds(self.ID.lblText, context=self.container)
+        timeline = list(map(lambda e: e.text, timelines))
+        return timeline

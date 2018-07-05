@@ -1,5 +1,11 @@
+<<<<<<< HEAD
 from environment import APP_EMPLOYEE_URL
 import time
+=======
+import time
+
+from environment import GRO_EMPLOYEE_USERNAME, DEFAULT_PASSWORD
+>>>>>>> 361fd0ba1296273f90bfa503618eb44022e785de
 from pages import *
 from pages.employee.common import EmployeeLoginPage
 
@@ -13,7 +19,7 @@ def test_employee_login_assertion():
     assert emp.get_password_error_message() == emp.ERROR_MESSAGE.errMsgRequired, "error at password error message for both field blank"
 
     # Test for password field blank
-    emp.employee_id("Amardeep").submit()
+    emp.employee_id(GRO_EMPLOYEE_USERNAME).submit()
     assert emp.get_password_error_message() == emp.ERROR_MESSAGE.errMsgRequired, "error at password error message for password field blank"
     assert emp.get_user_name_error_message() == "", "error at username error message for password field blank"
 
@@ -33,7 +39,9 @@ def test_employee_login_assertion():
     assert emp.get_user_name_error_message() == emp.ERROR_MESSAGE.errMsgEnterValidName, "error at username error message for special character"
     assert emp.get_password_error_message() == emp.ERROR_MESSAGE.errMsgEnterValidPassword, "error at password error message for special character"
 
+
 def test_open_unassigned_complaint_gro_login():
+<<<<<<< HEAD
     EmployeeLoginPage().navigate().employee_id("Amardeep").password("12345678").submit()
     GroHomePage()\
         .click_unassigned_complaint_list()\
@@ -67,9 +75,35 @@ def test_get_details_from_complaint_list():
 
 
 
+=======
+    EmployeeLoginPage().navigate().employee_id(GRO_EMPLOYEE_USERNAME).password(DEFAULT_PASSWORD).submit()
+    GroHomePage()\
+        .click_unassigned_complaint_list()\
+        .open_complaint("18/05/2018/000793")
+>>>>>>> 361fd0ba1296273f90bfa503618eb44022e785de
 
 
+def test_open_assigned_complaint_gro_login():
+    EmployeeLoginPage().navigate().employee_id(GRO_EMPLOYEE_USERNAME).password(DEFAULT_PASSWORD).submit()
+    GroHomePage() \
+        .click_assigned_complaint_list() \
+        .open_complaint("18/05/2018/000809")
 
 
+def test_get_count_of_assigned_and_unassigned_complaint():
+    EmployeeLoginPage().navigate().employee_id(GRO_EMPLOYEE_USERNAME).password(DEFAULT_PASSWORD).submit()
+    time.sleep(2)
+    Gro = GroHomePage()
+    print(Gro.get_unassigned_complaint_count())
+    print(Gro.get_assigned_complaint_count())
+    print(Gro.get_total_complaints())
 
 
+def test_get_details_from_complaint_list():  # TODO: to be handle in the flows
+    EmployeeLoginPage().navigate().employee_id(GRO_EMPLOYEE_USERNAME).password(DEFAULT_PASSWORD).submit()
+    card = MyComplaintsPage().get_complaint_card("25/05/2018/000861")
+    print(len(card.complaint_images()))
+    print(card.get_complaint_date())
+    print(card.get_complaint_header())
+    print(card.get_complaint_no())
+    print(card.get_complaint_status())

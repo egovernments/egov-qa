@@ -2,30 +2,31 @@ from typing import List
 
 from framework.common import PageObject, Page
 from framework.selenium_plus import *
+from pages.components.common import TimelineCardComponent
 from ..components import *
 
 __all__ = ['AddComplaintPage', 'ComplaintFeedbackPage', 'ComplaintSubmittedPage', 'MyComplaintsPage',
-           'ReopenComplaintPage', 'ComplaintSummaryPage', 'ComplaintReopenedPage']
+           'ReopenComplaintPage', 'ComplaintCitizenSummaryPage', 'ComplaintReopenedPage', 'FeedbackSubmittedPage',
+           'ComplaintTimelinePage', 'ComplaintCommentCard']
 
 
 @PageObject
 class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintTypeComponent):
     class ID:
-        btnFileComplaint = ".file-complaint"
+        btnComplaints = "div#home-new-complaint"
         txtLocation = "input#address"
         txtComplaintDetails = "textarea[id='additional details']"
         txtComplaintType = "input#complaint-type"
         txtLandmarkDetails = "input#landmark"
-        btnAddIcon = "button#mycomplaints-add"
         btnSubmit = "button#addComplaint-submit-complaint"
 
-    def file_complaint(self):
-        click(self.ID.btnFileComplaint)
+    def complaints_icon(self):
+        click(self.ID.btnComplaints)
         return self
 
     def set_location_by_address(self, address, result_index=0):
         click(self.ID.txtLocation)
-        time.sleep(2)
+        time.sleep(3)
         return super(AddComplaintPage, self).set_location_by_address(address, result_index)
 
     def set_complaint_type(self, complaint_type, complaint_filter=None):
@@ -34,15 +35,15 @@ class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintT
         return self
 
     def set_landmark_details(self, details):
-        set(self.ID.txtLandmarkDetails, details)
+        set_text(self.ID.txtLandmarkDetails, details)
         return self
 
     def set_complaint_details(self, details):
-        set(self.ID.txtComplaintDetails, details)
+        set_text(self.ID.txtComplaintDetails, details)
         return self
 
-    def click_on_add_icon(self):
-        click(self.ID.btnAddIcon)
+    def click_on_plus_icon(self):
+        click(self.ID.btnPlusIcon)
         return self
 
     def submit(self):
@@ -52,6 +53,12 @@ class AddComplaintPage(Page, UploadImageComponent, LocationComponent, ComplaintT
 
 @PageObject
 class ComplaintFeedbackPage(Page):
+    class Feedback:
+        SERVICES = "Services"
+        RESOLUTION_TIME = "Resolution Time"
+        QUALITY_OF_WORK = "Quality of Work"
+        OTHERS = "Others"
+
     class ID:
         prmStarRating = "span#feedback-ratings{}"
         chkServices = "input#feedback-checkbox0"
@@ -60,29 +67,25 @@ class ComplaintFeedbackPage(Page):
         chkOthers = "input#feedback-checkbox3"
         txtFeedbackComment = "textarea#feedback-comments"
         btnFeedbackSubmit = "button#feedback-submit-action"
+        btnGoToHome = "button#feedback-acknowledgement"
+
+    FEEDBACK_REASON = {
+        Feedback.SERVICES: ID.chkServices.format("Services"),
+        Feedback.QUALITY_OF_WORK: ID.chkQualityOfWork.format("Resolution Time"),
+        Feedback.RESOLUTION_TIME: ID.chkResolutionTime.format("Quality of Work"),
+        Feedback.OTHERS: ID.chkOthers.format("Others")
+    }
 
     def set(self, feedback_comment):
-        set(self.ID.txtFeedbackComment, feedback_comment)
+        set_text(self.ID.txtFeedbackComment, feedback_comment)
         return self
 
     def star_click(self, a):
         click(self.ID.prmStarRating.format(int(a) - 1), condition=EC.presence_of_element_located)
         return self
 
-    def check_services(self):
-        click(self.ID.chkServices, condition=EC.presence_of_element_located)
-        return self
-
-    def check_resolution_time(self):
-        click(self.ID.chkResolutionTime, condition=EC.presence_of_element_located)
-        return self
-
-    def check_quality_of_work(self):
-        click(self.ID.chkQualityOfWork, condition=EC.presence_of_element_located)
-        return self
-
-    def check_others(self):
-        click(self.ID.chkOthers, condition=EC.presence_of_element_located)
+    def reason_for_feedback(self, choice):
+        click(self.FEEDBACK_REASON[choice], condition=EC.presence_of_element_located)
         return self
 
     def submit(self):
@@ -107,17 +110,17 @@ class ComplaintSubmittedPage(Page):
 @PageObject
 class MyComplaintsPage(Page):
     class ID:
-        btnMyComplaints = ".file-complaint"
+        btnMyComplaints = "div#home-old-complaint"
         rowComplaintCards = "xpath=//div[contains(@class,'complaint-card-wrapper')]"
         btnAddComplaintPlus = "button#mycomplaints-add"
-        txtComment = "div#citizen-comment"
+        txtComment = "textarea#citizen-comment"
         btnSend = "svg[class='comment-send']"
         lblComplaintNumber = "xpath=//div[contains(@class,'complaint-complaint-number')]/*[text()='{}']"
         prmComplaintCard = "xpath=//div[contains(@class,'complaints-card-main-cont')][.//div[contains(@class,'complaint-complaint-number')]/div[text()='{}']]"
 
-    def open_compalint(self, complaint_number):
+    def open_complaint(self, complaint_number):
         elem = find(self.ID.lblComplaintNumber.format(complaint_number))
-        scroll_into_view(elem)
+        #scroll_into_view(elem)
         click(elem)
         return self
 
@@ -140,7 +143,7 @@ class MyComplaintsPage(Page):
         return self
 
     def add_comments(self, citizen_comment):
-        set(self.ID.txtComment, citizen_comment)
+        set_text(self.ID.txtComment, citizen_comment)
         return self
 
     def send_comment(self):
@@ -160,6 +163,7 @@ class ReopenComplaintPage(Page, UploadImageComponent):
         prmRadReopenReason = "input[type='radio'][value='{}']"
         txtTypeComplaint = "#reopencomplaint-comment-field"
         btnSubmit = "button#reopencomplaint-submit-action"
+        btnGoToHome = "button#success-message-acknowledgement"
 
     REOPEN_REASON = {
         Reason.NO_WORK_WAS_DONE: ID.prmRadReopenReason.format("No work was done"),
@@ -172,7 +176,7 @@ class ReopenComplaintPage(Page, UploadImageComponent):
         click(self.REOPEN_REASON[choice])
 
     def set(self, type_complaint):
-        set(self.ID.txtTypeComplaint, type_complaint)
+        set_text(self.ID.txtTypeComplaint, type_complaint)
         return self
 
     def submit(self):
@@ -181,7 +185,7 @@ class ReopenComplaintPage(Page, UploadImageComponent):
 
 
 @PageObject
-class ComplaintSummaryPage(Page):
+class ComplaintCitizenSummaryPage(Page):
     class ID:
         lblComplainNumber = "#complaint-details-complaint-number .label-text"
         lblComplaintStatus = "#complaint-details-current-status .label-text"
@@ -190,7 +194,6 @@ class ComplaintSummaryPage(Page):
         lblLocation = "#complaint-details-complaint-location .label-text"
         lblAdditionalComment = "#complaint-details-complaint-description .label-text"
         lblImageCount = ".complaint-detail-full-width img.img-responsive"
-
         btnRate = "xpath=// div[contains( @class ,'label-container ')]/*[text()='RATE']"
         btnReopen = "xpath=// div[contains( @class ,'label-container ')]/*[text()='RE-OPEN']"
 
@@ -235,3 +238,36 @@ class ComplaintReopenedPage(Page):
 
     def go_to_home(self):
         click(self.ID.btnGoToHome)
+
+
+@PageObject
+class ComplaintTimelinePage(Page):
+    class ID:
+        timelineCard = ".complaint-timeline-content-section"
+
+    def get_all_timeline_card(self) -> List[TimelineCardComponent]:
+        timeline = []
+        for timeline1 in finds(self.ID.timelineCard):
+            timeline.append(TimelineCardComponent(timeline1))
+        return timeline
+
+
+@PageObject
+class FeedbackSubmittedPage(Page):
+    class ID:
+        btnContinue = "#feedback-acknowledgement"
+
+    def click_continue(self):
+        click(self.ID.btnContinue)
+        return self
+
+
+@PageObject
+class ComplaintCommentCard(Page):
+    class ID:
+        lblComments = ".complaint-details-comments-section .label-text"
+
+    def get_all_comments(self):
+        comments = finds(self.ID.lblComments)
+        all_comments = list(map(lambda e: e.text, comments))
+        return all_comments

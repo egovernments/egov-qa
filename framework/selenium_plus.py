@@ -2,6 +2,8 @@ import selenium
 from selenium import webdriver
 from selenium.common.exceptions import StaleElementReferenceException, \
     TimeoutException
+from selenium.webdriver import ActionChains
+from selenium.webdriver.common.actions.action_builder import ActionBuilder
 from selenium.webdriver.common.by import By
 from selenium.webdriver.remote.webelement import WebElement
 from selenium.webdriver.support.wait import WebDriverWait
@@ -31,6 +33,7 @@ class count_zero_or_invisible(object):
                 return True
         except StaleElementReferenceException:
             return False
+
 
 class element_text_is_consistent(object):
 
@@ -134,7 +137,11 @@ def get_identifier(identifier):
         locator = "css"
         locator_value = identifier
 
-    return (map_locator_to_by[locator], locator_value)
+        if identifier.startswith("//") or identifier.startswith("./") or identifier.startswith(
+                "(//") or identifier.startswith("(./"):
+            locator = "xpath"
+
+    return map_locator_to_by[locator], locator_value
 
 
 def click(identifier, context=None, timeout=-1, scroll_in_view=False, condition=EC.element_to_be_clickable):
@@ -150,7 +157,7 @@ def exists(identifier, context=None, timeout=-1, condition=EC.presence_of_elemen
     return find(identifier, context, timeout, condition)
 
 
-def set(identifier, text, context=None, timeout=-1):
+def set_text(identifier, text, context=None, timeout=-1):
     elem = find(identifier, context, timeout)
     elem.clear()
     elem.send_keys(text)
@@ -209,7 +216,7 @@ def wait_any(identifiers, **kwargs):
 
 
 def find(identifier, context=None, timeout=-1,
-         condition=EC.presence_of_element_located):
+         condition=EC.presence_of_element_located) -> WebElement:
     """
         @return: Returns the web element found by identifier
         @rtype: selenium.webdriver.remote.webelement.WebElement
@@ -249,15 +256,25 @@ def init_driver(param_driver):
     driver.implicitly_wait(0)
 
 
+def chrome(**kwargs):
+    options = kwargs.pop("options", None)
+    if options is None:
+        options = webdriver.ChromeOptions()
+        options.add_argument("disable-infobars")
+
+    return webdriver.Chrome(chrome_options=options, **kwargs)
+
+
+default_driver = chrome
+
+
 def get_driver():
     """
         @rtype: selenium.webdriver.remote.WebDriver
     """
     global driver
     if driver is None:
-        driver = webdriver.Chrome()
-        driver.maximize_window()
-        init_driver(driver)
+        driver = default_driver()
     return driver
 
 
@@ -265,6 +282,15 @@ def scroll_into_view(elem_or_identifier, **kwargs):
     elem = find(elem_or_identifier, **kwargs)
     execute_script(
         "arguments[0].scrollIntoView()",
+        elem
+    )
+    return elem
+
+
+def click_using_js(elem_or_identifier, **kwargs):
+    elem = find(elem_or_identifier, **kwargs)
+    execute_script(
+        "arguments[0].click()",
         elem
     )
     return elem
@@ -299,6 +325,10 @@ def get(elem, **kwargs):
     return find(elem, **kwargs).text
 
 
+def clear(elem, **kwargs):
+    find(elem, **kwargs).clear()
+
+
 def unhide(identifier, **kwargs):
     elem = find(identifier, **kwargs)
     execute_script("""
@@ -309,6 +339,22 @@ def unhide(identifier, **kwargs):
     return elem
 
 
+def wait_for_appear_then_disappear(id_or_elem, appear_timeout=5, disappear_timeout=60):
+    elem = find(id_or_elem, timeout=appear_timeout)
+    text = elem.text.strip()
+    find(id_or_elem, timeout=disappear_timeout, condition=EC.invisibility_of_element_located)
+    return text
+
+
 def get_html(identifier, context=None, timeout=-1):
     return execute_script("return arguments[0].outerHTML", find(identifier, context=context, timeout=timeout))
 
+
+def set_text_using_keyboard(elem_or_id, text):
+    elem = find(elem_or_id)
+
+    action = ActionChains(get_driver())
+
+    action.move_to_element(elem).click().send_keys_to_element(elem, text).perform()
+
+    return elem
