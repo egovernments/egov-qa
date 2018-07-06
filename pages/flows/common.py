@@ -385,11 +385,18 @@ def csr_create_complaint(citizen_name, citien_mobile_no, complaint_type, complai
     time.sleep(1)
 
     ccp.set_city(city)
-
     time.sleep(1)
+
     ccp.submit()
     complaint_number = ccp.get_complaint_number()
     return {
-        "complaint_number": complaint_number,
-        "mobile_number": citien_mobile_no
+        "citizen_name": citizen_name,
+        "mobile_number": citien_mobile_no,
+        "complaint_type": complaint_type,
+        "complaint_details": complaint_details,
+        "address": address,
+        "city": city,
+        "landmark": landmark,
+        "mohalla": mohalla,
+        "complaint_number": complaint_number
     }

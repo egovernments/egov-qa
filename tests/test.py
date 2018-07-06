@@ -1,5 +1,6 @@
 from framework.selenium_plus import *
 from pages.flows.common import *
+import datetime
 
 
 # def pytest_sessionstart(session):
@@ -226,8 +227,51 @@ def test_csr_workflow(csr_employee_login):
                                             "Amritsar",
                                             "Land mark ABC",
                                             "Malind Nagar")
-    csr_search_complaint(complaint["complaint_number"])
 
+    csr_home_page = CsrHomePage()
+
+    # Search with Complaint No
+    csr_search_complaint('', complaint["complaint_number"])
+    time.sleep(2)
+    csr_home_page.clear_search()
+
+    # Search with Mobile No
+    csr_search_complaint(complaint["mobile_number"])
+    time.sleep(10)
+    csr_home_page.clear_search()
+
+    # Search with Mobile  No and Complaint No
+    csr_search_complaint(complaint["mobile_number"], complaint["complaint_number"])
+    time.sleep(2)
+    csr_home_page.clear_search()
+
+    #Logout
+    CsrHomePage().wait_for_busy()
+    logout()
+
+
+def test_csr_assertion(csr_employee_login):
+    complaint = csr_create_complaint("Spandan Raj Seth",
+                                     "9439576138",
+                                     "Garbage",
+                                     "Clean it as soon as possible",
+                                     "House No : 106, near CCD",
+                                     "Amritsar",
+                                     "Land mark ABC",
+                                     "Malind Nagar")
+
+    csr_search_complaint('', complaint["complaint_number"])
+
+    MyComplaintsPage().open_complaint(complaint["complaint_number"])
+
+    ccs= ComplaintCitizenSummaryPage()
+    assert complaint["complaint_number"]== ccs.get_complaint_number(), ""
+    assert "Submitted" == ccs.get_complaint_status(), ""
+    assert 0 == ccs.get_no_of_image()
+    assert complaint["complaint_details"] == ccs.get_additional_comments(), ""
+    assert complaint["complaint_type"] in ccs.get_compalint_type()
+    assert datetime.date.today().strftime("%d-%b-%y") == ccs.get_complaint_submission_date()
+    assert complaint["address"] == ccs.get_location()
 
 
 

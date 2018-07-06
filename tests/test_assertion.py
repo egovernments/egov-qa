@@ -107,3 +107,5 @@ def test_get_details_from_complaint_list():  # TODO: to be handle in the flows
     print(card.get_complaint_header())
     print(card.get_complaint_no())
     print(card.get_complaint_status())
+
+

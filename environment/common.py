@@ -1,7 +1,7 @@
-BASE_URL = "https://egov-micro-dev.egovernments.org/app/v3"
+BASE_URL = "http://egov-micro-dev.egovernments.org"
 CITIZEN_HOME_URL = "/rainmaker-citizen/citizen"
 APP_CITIZEN_URL = "/rainmaker-citizen/citizen/user/login"
-APP_EMPLOYEE_URL = "/rainmaker-employee/employee/user/login"
+APP_EMPLOYEE_URL = "/employee/user/login"
 
 DEFAULT_CITIZEN_USERNAME = "9439576138"
 DEFAULT_FIXED_OTP = "123456"
